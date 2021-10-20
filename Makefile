@@ -1,6 +1,6 @@
-NAME	= itoa
+NAME	= strtrim
 
-SRCS	= ft_itoa.c
+SRCS	= ft_strtrim.c
 
 OBJS	= ${SRCS:.c=.o}
 
