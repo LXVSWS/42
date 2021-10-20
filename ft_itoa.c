@@ -22,5 +22,13 @@ static int	intlen(int a)
 
 char	*ft_itoa(int n)
 {
-	char *s = malloc(sizeof(char) * . + 1);
+	int len = intlen(n);
+	char *s = malloc(sizeof(char) * len + 1);
+	printf("%i\n", len);
+	return (s);
+}
+
+int main()
+{
+	char *s = ft_itoa(42);
 }
