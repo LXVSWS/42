@@ -1,6 +1,6 @@
-NAME	= lstsize
+NAME	= lstadd_back
 
-SRCS	= ft_lstsize.c
+SRCS	= ft_lstadd_back.c
 
 OBJS	= ${SRCS:.c=.o}
 
