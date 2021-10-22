@@ -1,6 +1,6 @@
-NAME	= strtrim
+NAME	= lstsize
 
-SRCS	= ft_strtrim.c
+SRCS	= ft_lstsize.c
 
 OBJS	= ${SRCS:.c=.o}
 
