@@ -3,53 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/18 16:43:02 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/18 16:43:07 by lwyss            ###   ########.fr       */
+/*   Created: 2021/10/23 19:51:50 by lwyss             #+#    #+#             */
+/*   Updated: 2021/10/23 19:53:01 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_strcat(char *dst, char *src)
-{
-	int	i;
-	int	j;
-
-	i = ft_strlen(dst);
-	j = 0;
-	while (src[j])
-		dst[i++] = src[j++];
-	dst[i] = 0;
-}
-
-static void	ft_strncat(char *dst, char *src, int size)
-{
-	int	i;
-	int	j;
-
-	i = ft_strlen(dst);
-	j = 0;
-	while (src[j] && j < size)
-		dst[i++] = src[j++];
-	dst[i] = 0;
-}
-
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t	len;
+	size_t	i;
+	size_t	dstlen;
+	size_t	srclen;
 
-	if (size > ft_strlen(dst) + ft_strlen(src) + 1)
+	i = 0;
+	dstlen = ft_strlen(dst);
+	srclen = ft_strlen(src);
+	if (dstlen > size)
+		return (size + srclen);
+	while (i < size - dstlen - 1 && src[i] && dstlen + i < size)
 	{
-		ft_strcat(dst, (char *)src);
-		return (ft_strlen(dst));
+		dst[dstlen + i] = src[i];
+		i++;
 	}
-	else if (size >= ft_strlen(dst) + 1)
-	{
-		len = ft_strlen(dst);
-		ft_strncat(dst, (char *)src, size - ft_strlen(dst) - 1);
-		return (ft_strlen(src) + len);
-	}
-	return (ft_strlen(src) + size);
+	dst[dstlen + i] = 0;
+	return (dstlen + srclen);
 }

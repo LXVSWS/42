@@ -1,6 +1,6 @@
-NAME	= 
+NAME	= strlcat
 
-SRCS	= .c
+SRCS	= ft_strlcat.c
 
 OBJS	= ${SRCS:.c=.o}
 
