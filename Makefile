@@ -1,6 +1,6 @@
-NAME	= lstadd_back
+NAME	= 
 
-SRCS	= ft_lstadd_back.c
+SRCS	= .c
 
 OBJS	= ${SRCS:.c=.o}
 
