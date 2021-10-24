@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:54:06 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/18 16:54:46 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/10/24 16:15:47 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	if (c == '\0')
 		return ((char *)&s[i]);
-	if (c == s[j])
+	if ((char)c == s[j])
 		return ((char *)&s[j]);
 	return (NULL);
 }
