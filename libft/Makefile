@@ -6,10 +6,12 @@ SRCS	= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		  ft_putnbr_fd.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c \
 		  ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strrchr.c ft_substr.c ft_itoa.c \
 		  ft_strnstr.c ft_strlcpy.c ft_tolower.c ft_toupper.c ft_strtrim.c ft_split.c \
-		  ft_lstadd_front.c ft_lstlast.c ft_lstnew.c ft_lstsize.c ft_lstadd_back.c \
-		  ft_lstdelone.c ft_lstclear.c ft_lstiter.c
+
+SRCS_B	= $(SRCS) ft_lstadd_back.c ft_lstadd_front.c ft_lstlast.c ft_lstnew.c \
+		  ft_lstsize.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 
 OBJS	= ${SRCS:.c=.o}
+OBJS_B	= ${SRCS_B:.c=.o}
 
 CC		= gcc
 RM		= rm -f
@@ -25,12 +27,15 @@ $(NAME):	${OBJS}
 
 all:	${NAME}
 
+bonus:	${OBJS_B}
+		${AR} ${NAME} ${OBJS_B}
+
 clean:
-		${RM} ${OBJS}
+		${RM} ${OBJS} ${OBJS_B}
 
 fclean:	clean
 		${RM} ${NAME}
 
 re:		fclean all
 
-.PHONY:	all clean fclean re
+.PHONY:	all bonus clean fclean re
