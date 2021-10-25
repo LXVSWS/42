@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 16:55:05 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/24 17:55:45 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/10/25 17:39:40 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*str;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	if (start >= ft_strlen(s))
 		return (ft_calloc(1, 1));
 	if (len > ft_strlen(s))
