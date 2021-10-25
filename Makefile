@@ -1,6 +1,6 @@
-NAME	= prog
+NAME	= split
 
-SRCS	= prog.c
+SRCS	= ft_split.c
 
 OBJS	= ${SRCS:.c=.o}
 
