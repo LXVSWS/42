@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:20:21 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/21 13:20:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/10/25 16:46:13 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 		j++;
 	len = ft_strlen(s1) - (i + j);
 	s = malloc(sizeof(char) * len + 1);
+	if (!s)
+		return (NULL);
 	s[len] = 0;
 	while (k < len)
 		s[k++] = s1[i++];
