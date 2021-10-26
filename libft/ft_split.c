@@ -9,14 +9,14 @@ static int	countword(char *s, char c)
 	word = 0;
 	while (s[i])
 	{
-		if (s[i] == c)
+		while (s[i] == c)
+			i++;
+		if (s[i] && s[i] != c)
 		{
-			while (s[i] == c)
+			word++;
+			while (s[i] && s[i] != c)
 				i++;
 		}
-		if ((s[i + 1] == 0 || s[i + 1] == c) && s[i] != c && s[i])
-			word++;
-		i++;
 	}
 	return (word);
 }
@@ -77,14 +77,13 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	j = 0;
 	word = countword((char *)s, c);
-	printf("%i\n", word);
 	pp = malloc(sizeof(char *) * word + 1);
 	while (i < word)
 	{
+		//while (s[os] == c)
+		//	os++;
 		wsize = sizeword((char *)s, c);
 		*(pp + i) = wordalloc(wsize);
-		if (!pp[i])
-			return (NULL);
 		while (j < wsize)
 		{
 			pp[i][j] = s[os];
@@ -99,17 +98,3 @@ char	**ft_split(char const *s, char c)
 	*(pp + i) = NULL;
 	return (pp);
 }
-/*
-int	main()
-{
-	char s[] = "HellxbonjouxxcavaxHahaoxHello";
-	char c = 'x';
-	char **pp = ft_split(s, c);
-	int	i = 0;
-	while (pp[i])
-	{
-		printf("%s\n", pp[i]);
-		i++;
-	}
-}
-*/
