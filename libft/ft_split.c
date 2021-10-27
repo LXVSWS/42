@@ -65,11 +65,15 @@ char	**ft_split(char const *s, char c)
 	int		i;
 	int		j;
 
+	if (!s)
+		return (NULL);
 	os = 0;
 	i = 0;
 	j = 0;
 	word = countword((char *)s, c);
 	pp = malloc(sizeof(char *) * word + 1);
+	if (!pp)
+		return (NULL);
 	while (i < word)
 	{
 		while (isep(s[os], c))
