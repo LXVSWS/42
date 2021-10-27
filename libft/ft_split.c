@@ -1,5 +1,12 @@
 #include "libft.h"
 
+static int	isep(char c1, char c2)
+{
+	if (c1 == c2)
+		return (1);
+	return (0);
+}
+
 static int	countword(char *s, char c)
 {
 	int	i;
@@ -26,16 +33,15 @@ static int	sizeword(char *s, char sep)
 	static int	i = 0;
 	int	size = 0;
 
+	while (s[i] == sep)
+		i++;
 	while (s[i] && s[i] != sep)
 	{
 		size++;
 		i++;
 	}
-	if (s[i] == sep)
-	{
-		while (s[i] == sep)
-			i++;
-	}
+	while (s[i] == sep)
+		i++;
 	return (size);
 }
 
@@ -48,20 +54,6 @@ static	char *wordalloc(int size)
 		return (NULL);
 	word[size] = 0;
 	return (word);
-}
-
-static int	offset(char *s, char sep)
-{
-	static int	i = 0;
-
-	while (s[i] && s[i] != sep)
-		i++;
-	if (s[i] == sep)
-	{
-		while (s[i] == sep)
-			i++;
-	}
-	return (i);
 }
 
 char	**ft_split(char const *s, char c)
@@ -80,8 +72,8 @@ char	**ft_split(char const *s, char c)
 	pp = malloc(sizeof(char *) * word + 1);
 	while (i < word)
 	{
-		//while (s[os] == c)
-		//	os++;
+		while (isep(s[os], c))
+			os++;
 		wsize = sizeword((char *)s, c);
 		*(pp + i) = wordalloc(wsize);
 		while (j < wsize)
@@ -92,7 +84,6 @@ char	**ft_split(char const *s, char c)
 		}
 		pp[i][j] = 0;
 		j = 0;
-		os = offset((char *)s, c);
 		i++;
 	}
 	*(pp + i) = NULL;
