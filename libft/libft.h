@@ -3,22 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:22:01 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/18 15:29:14 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/10/28 00:34:06 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <strings.h>
-# include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <stdarg.h>
 
 typedef struct s_list
 {

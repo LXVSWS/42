@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/28 00:31:30 by lwyss             #+#    #+#             */
+/*   Updated: 2021/10/28 00:32:04 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 static int	isep(char c1, char c2)
@@ -16,7 +28,7 @@ static int	countword(char *s, char c)
 	word = 0;
 	while (s[i])
 	{
-		while (s[i] == c)
+		while (s[i] && s[i] == c)
 			i++;
 		if (s[i] && s[i] != c)
 		{
@@ -30,24 +42,17 @@ static int	countword(char *s, char c)
 
 static int	sizeword(char *s, char sep)
 {
-	static int	i = 0;
-	int	size = 0;
+	int	i;
 
-	while (s[i] == sep)
-		i++;
+	i = 0;
 	while (s[i] && s[i] != sep)
-	{
-		size++;
 		i++;
-	}
-	while (s[i] == sep)
-		i++;
-	return (size);
+	return (i);
 }
 
-static	char *wordalloc(int size)
+static char	*wordalloc(int size)
 {
-	char *word;
+	char	*word;
 
 	word = malloc(sizeof(char) * size + 1);
 	if (!word)
@@ -69,17 +74,17 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	os = 0;
 	i = 0;
-	j = 0;
 	word = countword((char *)s, c);
-	pp = malloc(sizeof(char *) * word + 1);
+	pp = malloc(sizeof(char *) * (word + 1));
 	if (!pp)
 		return (NULL);
 	while (i < word)
 	{
 		while (isep(s[os], c))
 			os++;
-		wsize = sizeword((char *)s, c);
-		*(pp + i) = wordalloc(wsize);
+		wsize = sizeword((char *)&s[os], c);
+		pp[i] = wordalloc(wsize);
+		j = 0;
 		while (j < wsize)
 		{
 			pp[i][j] = s[os];
@@ -87,7 +92,6 @@ char	**ft_split(char const *s, char c)
 			os++;
 		}
 		pp[i][j] = 0;
-		j = 0;
 		i++;
 	}
 	*(pp + i) = NULL;
