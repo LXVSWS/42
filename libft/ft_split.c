@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 00:31:30 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/28 00:32:04 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/10/28 01:15:01 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,17 @@ static char	*wordalloc(int size)
 char	**ft_split(char const *s, char c)
 {
 	char	**pp;
-	int		word;
 	int		wsize;
 	int		os;
 	int		i;
 	int		j;
 
-	if (!s)
+	pp = malloc(sizeof(char *) * (countword((char *)s, c) + 1));
+	if (!s || !pp)
 		return (NULL);
 	os = 0;
-	i = 0;
-	word = countword((char *)s, c);
-	pp = malloc(sizeof(char *) * (word + 1));
-	if (!pp)
-		return (NULL);
-	while (i < word)
+	i = -1;
+	while (++i < countword((char *)s, c))
 	{
 		while (isep(s[os], c))
 			os++;
@@ -86,13 +82,8 @@ char	**ft_split(char const *s, char c)
 		pp[i] = wordalloc(wsize);
 		j = 0;
 		while (j < wsize)
-		{
-			pp[i][j] = s[os];
-			j++;
-			os++;
-		}
+			pp[i][j++] = s[os++];
 		pp[i][j] = 0;
-		i++;
 	}
 	*(pp + i) = NULL;
 	return (pp);
