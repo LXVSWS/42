@@ -1,6 +1,6 @@
-NAME	= split
+NAME	= ft
 
-SRCS	= ft_split.c
+SRCS	= ft_.c
 
 OBJS	= ${SRCS:.c=.o}
 
