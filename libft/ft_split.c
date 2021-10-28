@@ -6,18 +6,11 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 00:31:30 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/28 01:15:01 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/10/28 15:16:52 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	isep(char c1, char c2)
-{
-	if (c1 == c2)
-		return (1);
-	return (0);
-}
 
 static int	countword(char *s, char c)
 {
@@ -61,22 +54,18 @@ static char	*wordalloc(int size)
 	return (word);
 }
 
-char	**ft_split(char const *s, char c)
+static char	**wordcopy(char **pp, char *s, char c)
 {
-	char	**pp;
-	int		wsize;
 	int		os;
 	int		i;
 	int		j;
+	int		wsize;
 
-	pp = malloc(sizeof(char *) * (countword((char *)s, c) + 1));
-	if (!s || !pp)
-		return (NULL);
 	os = 0;
 	i = -1;
 	while (++i < countword((char *)s, c))
 	{
-		while (isep(s[os], c))
+		while (s[os] == c)
 			os++;
 		wsize = sizeword((char *)&s[os], c);
 		pp[i] = wordalloc(wsize);
@@ -86,5 +75,18 @@ char	**ft_split(char const *s, char c)
 		pp[i][j] = 0;
 	}
 	*(pp + i) = NULL;
+	return (pp);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**pp;
+
+	if (!s)
+		return (NULL);
+	pp = malloc(sizeof(char *) * (countword((char *)s, c) + 1));
+	if (!pp)
+		return (NULL);
+	pp = wordcopy(pp, (char *)s, c);
 	return (pp);
 }
