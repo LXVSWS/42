@@ -1,6 +1,6 @@
-NAME	= printf
+NAME	= test
 
-SRCS	= ft_printf.c
+SRCS	= test.c
 
 OBJS	= ${SRCS:.c=.o}
 
