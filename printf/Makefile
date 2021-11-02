@@ -11,8 +11,8 @@ AR		= ar rcs
 CFLAGS = -Wall -Wextra -Werror
 
 %.o: %.c
-			cd libft && make bonus && \
-			mv libft.a .. && make clean
+			cd libft && make bonus && mv \
+			libft.a ../${NAME} && make clean
 			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}
@@ -24,7 +24,7 @@ clean:
 		${RM} ${OBJS}
 
 fclean:	clean
-		${RM} ${NAME} libft.a
+		${RM} ${NAME}
 
 re:		fclean all
 

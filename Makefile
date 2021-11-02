@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -o $@ -L. -lft
+			${CC} ${CFLAGS} ${OBJS} -o $@ -L. -lft -lftprintf
 
 all:	${NAME}
 
