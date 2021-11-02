@@ -9,11 +9,11 @@ int	main(int ac, char **av)
 
 	cp = 0;
 	cpp = 0;
-	if (ac == 2)
+	if (ac > 0)
 	{
 		cp = ft_printf("xxx%sxxx%ixxx%cxxx%dxxx%uxxx%%xxx%xxxx%pxxx", av[1], -198, 'c', -843, 4, 123456789, (void *)4548);
 		ft_putchar_fd('\n', 1);
-		cpp = printf("xxx%sxxx%ixxx%cxxx%dxxx%uxxx%%xxx%xxxx%pxxx", av[1], -198, 'c', -843, 4, 123456789, (void *)4548);
+		cpp = printf("xxx%sxxx%ixxx%cxxx%dxxx%uxxx%%xxx%Xxxx%pxxx", av[1], -198, 'c', -843, 4, 123456789, (void *)4548);
 		printf("\nmy:%i\nor:%i\n", cp, cpp);
 	}
 }
