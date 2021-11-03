@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 00:01:05 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/04 00:38:24 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/04 00:46:13 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static size_t	ft_strlen(char const *s)
 	return (i);
 }
 
-void	ft_putchar_fd(char c, int fd)
+static void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
