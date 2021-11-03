@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 14:24:13 by lwyss             #+#    #+#             */
-/*   Updated: 2021/10/20 14:24:18 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/04 00:39:50 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
+
+static size_t	ft_strlen(char const *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+static char	*ft_strdup(const char *s)
+{
+	size_t	size;
+	char	*str;
+	int		i;
+
+	size = ft_strlen(s);
+	str = (char *) malloc(sizeof(char) * size + 1);
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = 0;
+	return (str);
+}
 
 static int	intlen(int a)
 {

@@ -1,6 +1,6 @@
 NAME	= libftprintf.a
 
-SRCS	= ft_printf.c ft_getflag.c ft_putsize.c
+SRCS	= ft_printf.c ft_getflag.c ft_putsize.c ft_itoa.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -11,8 +11,6 @@ AR		= ar rcs
 CFLAGS = -Wall -Wextra -Werror
 
 %.o: %.c
-			cd libft && make bonus && mv \
-			libft.a ../${NAME} && make clean
 			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}

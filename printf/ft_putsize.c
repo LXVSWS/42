@@ -6,12 +6,26 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 00:01:05 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/04 00:02:41 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/04 00:38:24 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "ft_printf.h"
+
+static size_t	ft_strlen(char const *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
 
 static void	putbase(unsigned long long nb, char *base)
 {

@@ -6,11 +6,10 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 23:15:07 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/03 23:56:14 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/04 00:36:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "ft_printf.h"
 
 int	ft_printf(const char *s, ...)

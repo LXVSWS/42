@@ -6,12 +6,21 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 23:55:24 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/04 00:13:15 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/04 00:36:27 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "ft_printf.h"
+
+static size_t	ft_strlen(char const *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 static int	print_c(char c)
 {
