@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/03 23:28:17 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/03 23:28:54 by lwyss            ###   ########.fr       */
+/*   Created: 2021/11/04 00:01:05 by lwyss             #+#    #+#             */
+/*   Updated: 2021/11/04 00:02:41 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	putbase(unsigned long long nb, char *base)
 	ft_putchar_fd(base[nb % ft_strlen(base)], 1);
 }
 
-int	putsize(unsigned long long i, char *base, void *ptr)
+int	ft_putsize(unsigned long long i, char *base, void *ptr)
 {
 	int	size;
 

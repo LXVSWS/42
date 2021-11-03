@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/03 23:15:07 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/03 23:56:14 by lwyss            ###   ########.fr       */
+/*   Created: 2021/11/03 23:48:13 by lwyss             #+#    #+#             */
+/*   Updated: 2021/11/03 23:49:06 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "ft_printf.h"
 
-int	ft_printf(const char *s, ...)
+int	print_c(char c)
 {
-	va_list			ap;
-	int				i;
-	int				size;
+	return (write(1, &c, 1));
+}
 
-	va_start(ap, s);
-	i = 0;
+int	print_s(char *s)
+{
+	if (s)
+		return (write(1, s, ft_strlen(s)));
+	return (write(1, "(null)", 6));
+}
+
+int	print_id(int i)
+{
+	int		size;
+	char	*s;
+
 	size = 0;
-	while (s[i])
-	{
-		if (s[i] == '%')
-			size += ft_getflag(s[++i], ap);
-		else
-			size += write(1, &s[i], 1);
-		i++;
-	}
-	va_end(ap);
+	s = ft_itoa(i);
+	size = write(1, s, ft_strlen(s));
+	free(s);
 	return (size);
 }
