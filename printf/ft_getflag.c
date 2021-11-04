@@ -12,16 +12,6 @@
 
 #include "ft_printf.h"
 
-static size_t	ft_strlen(char const *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 static int	print_c(char c)
 {
 	return (write(1, &c, 1));
@@ -68,5 +58,5 @@ int	ft_getflag(char c, va_list ap)
 		return (ft_putsize(va_arg(ap, unsigned int), "0123456789ABCDEF", NULL));
 	else if (c == '%')
 		return (write(1, "%", 1));
-	return (0);
+	return (size);
 }

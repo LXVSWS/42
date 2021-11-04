@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/20 14:24:13 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/04 00:39:50 by lwyss            ###   ########.fr       */
+/*   Created: 2021/11/03 23:15:07 by lwyss             #+#    #+#             */
+/*   Updated: 2021/11/04 00:36:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static size_t	ft_strlen(char const *s)
+size_t	ft_strlen(char const *s)
 {
 	size_t	i;
 
@@ -22,7 +22,12 @@ static size_t	ft_strlen(char const *s)
 	return (i);
 }
 
-static char	*ft_strdup(const char *s)
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+char	*ft_strdup(const char *s)
 {
 	size_t	size;
 	char	*str;

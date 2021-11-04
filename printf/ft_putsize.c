@@ -12,21 +12,6 @@
 
 #include "ft_printf.h"
 
-static size_t	ft_strlen(char const *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-static void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
-
 static void	putbase(unsigned long long nb, char *base)
 {
 	if (nb >= ft_strlen(base))
