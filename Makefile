@@ -7,7 +7,7 @@ OBJS	= ${SRCS:.c=.o}
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=42
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@
