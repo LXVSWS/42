@@ -14,13 +14,9 @@
 
 char	*get_next_line(int fd)
 {
-	char *s = 0;
-	(void)fd;
-	return (s);
-}
-
-int	main()
-{
-	char *s = get_next_line(1);
-	(void)s;
+	static char buf[42];
+    unsigned int count = 42;
+    int bytes_read = read(fd, buf, count);
+    (void)bytes_read;
+	return (buf);
 }

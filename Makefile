@@ -1,6 +1,6 @@
-NAME	= test
+NAME	= tests
 
-SRCS	= test.c
+SRCS	= tests.c
 
 OBJS	= ${SRCS:.c=.o}
 
