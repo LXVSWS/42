@@ -39,8 +39,8 @@ char	*get_next_line(int fd)
 	char *buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
     if (!buf)
         return (NULL);
-    buf[BUFFER_SIZE] = 0;
 	int i = 0;
+    buf[BUFFER_SIZE] = 0;
     read(fd, buf, BUFFER_SIZE);
 	s = ft_strjoin(s, buf);
     free(buf);
