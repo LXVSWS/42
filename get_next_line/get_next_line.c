@@ -14,9 +14,13 @@
 
 char	*get_next_line(int fd)
 {
-	static char buf[42];
-    unsigned int count = 42;
-    int bytes_read = read(fd, buf, count);
-    (void)bytes_read;
-	return (buf);
+    static char *s = "";
+	char *buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+    if (!buf)
+        return (NULL);
+    buf[BUFFER_SIZE] = 0;
+    while (read(fd, buf, BUFFER_SIZE))
+	    s = ft_strjoin(s, buf);
+    free(buf);
+	return (s);
 }

@@ -25,18 +25,18 @@ static char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*get_next_line(int fd)
 {
-	static char *s = "";
-	char buf[BUFFER_SIZE];
+    static char *s = "";
+	char *buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+    if (!buf)
+        return (NULL);
+    buf[BUFFER_SIZE] = 0;
     while (read(fd, buf, BUFFER_SIZE))
-		ft_strjoin(s, buf);
+	    s = ft_strjoin(s, buf);
+    free(buf);
 	return (s);
 }
 
 int	main()
 {
-	int fd = open("file.txt", O_RDONLY);
-	char *s = get_next_line(fd);
-	ft_printf("%s", s); 
-	while (s)
-		ft_printf("%s", get_next_line(fd));
+	ft_printf("%s", get_next_line(open("file.txt", O_RDONLY)));
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
