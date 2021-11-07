@@ -7,13 +7,15 @@ OBJS	= ${SRCS:.c=.o}
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=3
+CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=42
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -o $@ -L. -lftprintf
+			${CC} ${CFLAGS} ${OBJS} -o $@
+
+# -L. - lft -lftprintf
 
 all:	${NAME}
 

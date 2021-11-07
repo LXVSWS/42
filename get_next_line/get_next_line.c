@@ -12,15 +12,3 @@
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
-{
-    static char *s = "";
-	char *buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
-    if (!buf)
-        return (NULL);
-    buf[BUFFER_SIZE] = 0;
-    while (read(fd, buf, BUFFER_SIZE))
-	    s = ft_strjoin(s, buf);
-    free(buf);
-	return (s);
-}
