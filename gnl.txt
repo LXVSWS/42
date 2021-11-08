@@ -1,5 +1,4 @@
-Gestion
-d'erreur
+Gestion d'erreur
 
 - Passez un fd arbitraire a la fonction get_next_line, sur lequel il
 n'est pas possible de lire (par ex. 42) La fonction doit renvoyer NULL.

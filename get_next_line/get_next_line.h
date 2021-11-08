@@ -19,7 +19,7 @@
 char	*get_next_line(int fd);
 char	*trimline(char *line);
 char	*saveline(char *line);
-size_t	ft_strlen(char const *s);
+size_t  ft_strlen(char const *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);
 
