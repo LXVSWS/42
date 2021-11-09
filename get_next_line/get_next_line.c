@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 18:25:22 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/04 18:34:25 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/09 15:52:59 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ char	*get_next_line(int fd)
 			free(tmp);
 			break;
 		}
+		if (!bytes_read && !ft_strchr(save, '\n'))
+			free(save);
+		if (!save)
+			return (NULL);
 	}
 	return (line);
 }
