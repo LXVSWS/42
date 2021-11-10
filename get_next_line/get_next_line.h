@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 18:27:42 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/04 18:29:14 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/10 00:06:24 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 char	*get_next_line(int fd);
 char	*trimline(char *line);
 char	*saveline(char *line);
-size_t  ft_strlen(char const *s);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strchr(const char *s, int c);
+size_t  ft_strlen(char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(char *s, int c);
 
 #endif
