@@ -1,88 +1,96 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 18:25:22 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/10 01:06:25 by lwyss            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
-char	*trimline(char *s)
+char    *readline(char *save, int fd)
 {
-	char *res;
-	int	i;
+    char    *buf;
+    int     bytes_read;
 
-	i = 0;
-	while (s && s[i] && s[i] != '\n')
-		i++;
-	if (s[i])
-		res = malloc(sizeof(char) * (i + 2));
+    bytes_read = 1;
+    buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    if (!buf)
+        return (NULL);
+    while (bytes_read && !ft_strchr(save, '\n'))
+    {
+        bytes_read = read(fd, buf, BUFFER_SIZE);
+        if (bytes_read == -1)
+        {
+            free(buf);
+            return (NULL);
+        }
+        buf[bytes_read] = 0;
+        save = ft_strjoin(save, buf);
+    }
+    free(buf);
+    return (save);
+}
+
+char    *trimline(char *save)
+{
+    char    *line;
+    size_t  i;
+
+    i = 0;
+    if (!save[i])
+        return (NULL);
+    while (save[i] && save[i] != '\n')
+        i++;
+    if (save[i] != '\n')
+		line = malloc(sizeof(char) * (i + 2));
 	else
-		res = malloc(sizeof(char) * (i + 1));
-	if (!res)
+		line = malloc(sizeof(char) * (i + 1));
+	if (!line)
 		return (NULL);
-	i = 0;
-	while (s && s[i] && s[i] != '\n')
-	{
-		res[i] = s[i];
-		i++;
-	}
-	if (s[i])
-		res[i++] = '\n';
-	res[i] = 0;
-	return (res);
+    i = -1;
+    while (save[++i] && save[i] != '\n')
+        line[i] = save[i];
+    if (save[i] == '\n')
+    {
+        line[i] = '\n';
+        i++;
+    }
+    line[i] = 0;
+    return (line);
 }
 
-char	*restline(char *s)
+char    *restline(char *save)
 {
-	char *res;
-	int	i = 0;
-	int j = 0;
+    char    *line;
+    size_t  i;
+    size_t  j;
 
-	while (s && s[i] && s[i] != '\n')
-		i++;
-	if (!s[i])
-		return (NULL);
-	res = malloc(sizeof(char) * (ft_strlen(s) - i + 1));
-	if (!res)
-		return (NULL);
-	while (s[i])
-		res[j++] = s[++i];
-	res[j] = 0;
-	free(s);
-	return (res);
+    i = 0;
+    j = 0;
+    while (save[i] && save[i] != '\n')
+        i++;
+    if (save[i])
+    {
+        line = malloc(sizeof(char) * (ft_strlen(save) - i + 1));
+        if (!line)
+            return (NULL);
+        while (save[i])
+            line[j++] = save[++i];
+        line[j] = 0;
+        free(save);
+        return (line);
+    }
+    else
+    {
+        free(save);
+        return (NULL);
+    }
 }
 
-char	*get_next_line(int fd)
+char    *get_next_line(int fd)
 {
-	static char *save = NULL;
-	char buf[BUFFER_SIZE + 1];
-	int bytes_read = 1;
-	char *line = NULL;
-	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
+    static char *save;
+    char        *line;
+
+    if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	while (bytes_read && !ft_strchr(save, '\n'))
-	{
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read < 0)
-			return (NULL);
-		buf[bytes_read] = 0;
-		if (bytes_read)
-			save = ft_strjoin(save, buf);
-	}
-	if (ft_strchr(save, '\n'))
-	{
-		line = trimline(save);
-		save = restline(save);
-		return (line);
-	}
-	free(save);
-	if (!bytes_read && !save)
-		return (NULL);
-	return (line);
+    save = readline(save, fd);
+    if (!save)
+        return (NULL);
+    line = trimline(save);
+    save = restline(save);
+    return (line);
 }

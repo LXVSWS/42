@@ -17,10 +17,11 @@
 #include <unistd.h>
 
 char	*get_next_line(int fd);
-char	*trimline(char *line);
-char	*saveline(char *line);
+char    *readline(char *save, int fd);
+char    *trimline(char *save);
+char    *restline(char *save);
+char	*ft_strchr(char *s, int c);
 size_t  ft_strlen(char *s);
 char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(char *s, int c);
 
 #endif
