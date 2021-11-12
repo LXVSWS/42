@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:15:15 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/12 15:15:49 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/12 15:41:51 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*trimline(char *save)
 		return (NULL);
 	while (save[i] && save[i] != '\n')
 		i++;
-	if (save[i] != '\n')
+	if (save[i] == '\n')
 		line = malloc(sizeof(char) * (i + 2));
 	else
 		line = malloc(sizeof(char) * (i + 1));
