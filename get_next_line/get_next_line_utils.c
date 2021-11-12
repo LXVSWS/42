@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 18:28:12 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/10 00:29:37 by lwyss            ###   ########.fr       */
+/*   Created: 2021/11/12 15:15:03 by lwyss             #+#    #+#             */
+/*   Updated: 2021/11/12 15:16:20 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_strchr(char *s, int c)
 	size_t	i;
 
 	if (!s)
-        return (NULL);
+		return (NULL);
 	i = 0;
 	while (s[i])
 	{
@@ -40,17 +40,17 @@ size_t	ft_strlen(char *s)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char    *s;
-	size_t  i;
-	size_t  j;
+	char	*s;
+	size_t	i;
+	size_t	j;
 
 	i = -1;
 	j = 0;
-    if (!s1)
-    {
-        s1 = malloc(sizeof(char));
-        s1[0] = 0;
-    } 
+	if (!s1)
+	{
+		s1 = malloc(sizeof(char));
+		s1[0] = 0;
+	}
 	if (!s1 || !s2)
 		return (NULL);
 	s = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
