@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:15:23 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/12 15:15:57 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/12 15:56:41 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
-char	*readline(char *save, int fd);
 char	*trimline(char *save);
 char	*restline(char *save);
 char	*ft_strchr(char *s, int c);
