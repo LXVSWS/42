@@ -4,4 +4,4 @@
 ## 2) printf (100%)
 ## 3) get_next_line (in progress...)
 
-[![Stats](https://badge42.herokuapp.com/api/stats/lwyss)]
+![Stats](https://badge42.herokuapp.com/api/stats/lwyss)
