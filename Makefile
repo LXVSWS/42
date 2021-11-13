@@ -1,13 +1,13 @@
 NAME	= tests
 
-SRCS	= tests.c get_next_line/get_next_line_bonus.c get_next_line/get_next_line_utils_bonus.c
+SRCS	= tests.c
 
 OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=42
+CFLAGS = -Wall -Wextra -Werror -g
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@
