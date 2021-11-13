@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:15:15 by lwyss             #+#    #+#             */
-/*   Updated: 2021/11/13 00:29:07 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/11/13 19:11:44 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,13 @@ char	*restline(char *save)
 
 char	*get_next_line(int fd)
 {
-	static char	*save[FD_MAX + 1];
+	static char	*save[FD_MAX];
 	char		*line;
 	char		buf[BUFFER_SIZE + 1];
 	int			bytes_read;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FD_MAX)
 		return (NULL);
-	save[FD_MAX] = NULL;
 	bytes_read = 1;
 	while (bytes_read && !ft_strchr(save[fd], '\n'))
 	{
