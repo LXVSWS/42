@@ -1,8 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include "mlx/mlx.h"
+#include "fractol.h"
 
-void *mlx_initialisation()
+void    *mlx_initialisation()
 {
     void    *mlx;
 
@@ -12,7 +10,7 @@ void *mlx_initialisation()
     return (mlx);
 }
 
-void *window_init(void *mlx, int x_max, int y_max)
+void    *window_init(void *mlx, int x_max, int y_max)
 {
     void    *win;
 
@@ -23,15 +21,14 @@ void *window_init(void *mlx, int x_max, int y_max)
     return (win);
 }
 
-void *julia(void *mlx, int iterations, int zoom)
+void    image_size_calculation(t_struct *lx)
 {
-    void    *win;
-    float   x1;
-    float   x2;
-    float   y1;
-    float   y2;
-    float   x_max;
-    float   y_max;
+    lx->x_max = (lx->x2 - lx->x1) * lx->zoom;
+    lx->y_max = (lx->y2 - lx->y1) * lx->zoom;
+}
+
+void    julia(t_struct *lx)
+{
     float   x;
     float   y;
     float   c_r;
@@ -41,20 +38,13 @@ void *julia(void *mlx, int iterations, int zoom)
     float   tmp;
     int     i;
 
-    x1 = -1;
-    x2 = 1;
-    y1 = -1.2;
-    y2 = 1.2;
-    x_max = (x2 - x1) * zoom;
-    y_max = (y2 - y1) * zoom;
-    win = window_init(mlx, x_max, y_max);
-    for (x = 0 ; x < x_max ; x++)
-        for (y = 0 ; y < y_max ; y++)
+    for (x = 0 ; x < lx->x_max ; x++)
+        for (y = 0 ; y < lx->y_max ; y++)
         {
             c_r = 0.285;
             c_i = 0.01;
-            z_r = x / zoom + x1;
-            z_i = y / zoom + y1 ;
+            z_r = x / lx->zoom + lx->x1;
+            z_i = y / lx->zoom + lx->y1 ;
             i = 0;
             do
             {
@@ -63,24 +53,16 @@ void *julia(void *mlx, int iterations, int zoom)
                 z_i = 2 * z_i * tmp + c_i;
                 i++;
             }
-            while (z_r * z_r + z_i * z_i < 4 && i < iterations);
-            if (i == iterations)
-                mlx_pixel_put(mlx, win, x, y, 0x000000);
+            while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
+            if (i == lx->iterations)
+                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000);
             else
-                mlx_pixel_put(mlx, win, x, y, i * 255 / iterations);
+                mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
-    return (win);  
 }
 
-void *mandelbrot(void *mlx, int iterations, int zoom)
+void    mandelbrot(t_struct *lx)
 {
-    void    *win;
-    float   x1;
-    float   x2;
-    float   y1;
-    float   y2;
-    float   x_max;
-    float   y_max;
     float   x;
     float   y;
     float   c_r;
@@ -90,18 +72,11 @@ void *mandelbrot(void *mlx, int iterations, int zoom)
     float   tmp;
     int     i;
 
-    x1 = -2.1;
-    x2 = 0.6;
-    y1 = -1.2;
-    y2 = 1.2;
-    x_max = (x2 - x1) * zoom;
-    y_max = (y2 - y1) * zoom;
-    win = window_init(mlx, x_max, y_max);
-    for (x = 0 ; x < x_max ; x++)
-        for (y = 0 ; y < y_max ; y++)
+    for (x = 0 ; x < lx->x_max ; x++)
+        for (y = 0 ; y < lx->y_max ; y++)
         {
-            c_r = x / zoom + x1;
-            c_i = y / zoom + y1;
+            c_r = x / lx->zoom + lx->x1;
+            c_i = y / lx->zoom + lx->y1;
             z_r = 0;
             z_i = 0;
             i = 0;
@@ -112,37 +87,59 @@ void *mandelbrot(void *mlx, int iterations, int zoom)
                 z_i = 2 * z_i * tmp + c_i;
                 i++;
             }
-            while (z_r * z_r + z_i * z_i < 4 && i < iterations);
-            if (i == iterations)
-                mlx_pixel_put(mlx, win, x, y, 0x000000);
+            while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
+            if (i == lx->iterations)
+                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000);
             else
-                mlx_pixel_put(mlx, win, x, y, i * 255 / iterations);
+                mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
-    return (win);  
+}
+
+int	redraw(int keycode, t_struct *lx)
+{
+    printf("%i\n", keycode);
+    lx->iterations -= 10;
+    mlx_clear_window(lx->mlx, lx->win);
+    //mlx_destroy_window(lx->mlx, lx->win);
+    mandelbrot(lx);
+    return (0);
 }
 
 int main(int ac, char **av)
 {
-    void    *mlx;
-    void    *win;
-    int     iterations;
-    int     zoom;
+    t_struct    lx;
 
-    zoom = 350;
-    mlx = mlx_initialisation();
+    lx.mlx = mlx_initialisation();
     if (ac == 2 && *av[1] == 'j')
     {
-        iterations = 150;
-        win = julia(mlx, iterations, zoom);
-        mlx_loop(mlx);
+        lx.iterations = 150;
+        lx.zoom = 350;
+        lx.x1 = -1;
+        lx.x2 = 1;
+        lx.y1 = -1.2;
+        lx.y2 = 1.2;
+        image_size_calculation(&lx);
+        lx.win = window_init(lx.mlx, lx.x_max, lx.y_max);
+        julia(&lx);
+        mlx_string_put(lx.mlx, lx.win, 10, 10, 0xFFFFFF, "Ensemble de Julia");
+        mlx_loop(lx.mlx);
     }
     else if (ac == 2 && *av[1] == 'm')
     {
-        iterations = 50;
-        win = mandelbrot(mlx, iterations, zoom);
-        mlx_loop(mlx);
+        lx.iterations = 50;
+        lx.zoom = 350;
+        lx.x1 = -2.1;
+        lx.x2 = 0.6;
+        lx.y1 = -1.2;  
+        lx.y2 = 1.2;
+        image_size_calculation(&lx);
+        lx.win = window_init(lx.mlx, lx.x_max, lx.y_max);
+        mandelbrot(&lx);
+        mlx_string_put(lx.mlx, lx.win, 10, 10, 0xFFFFFF, "Ensemble de Mandelbrot");
+        mlx_key_hook(lx.win, redraw, &lx);
+        mlx_loop(lx.mlx);
     }
     else
-        printf("------------------------\nParamètres :\nj -> Ensemble Julia\nm -> Ensemble Mandelbrot\n");
+        printf("------------------------\nParamètres :\nj -> Ensemble de Julia\nm -> Ensemble de Mandelbrot\n");
     return (0);
 }
