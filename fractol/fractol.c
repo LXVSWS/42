@@ -10,12 +10,11 @@ void    *mlx_initialisation()
     return (mlx);
 }
 
-void    *window_init(void *mlx, int x_max, int y_max)
+void    *window_init(void *mlx, int width, int height)
 {
     void    *win;
 
-    win = mlx_new_window(mlx, x_max, y_max, "fractol");
-    printf("%ix%i\n", x_max, y_max);
+    win = mlx_new_window(mlx, width, height, "fractol");
     if (!win)
         return (NULL);
     return (win);
@@ -31,9 +30,6 @@ void    alchemy(t_struct *lx, int iterations, int zoom, float x1, float x2, floa
     lx->y2 = y2;
     lx->x_max = (x2 - x1) * zoom;
     lx->y_max = (y2 - y1) * zoom;
-    if (lx->win)
-        mlx_destroy_window(lx->mlx, lx->win);
-    lx->win = window_init(lx->mlx, lx->x_max, lx->y_max);
 }
 
 void    julia(t_struct *lx)
@@ -64,7 +60,7 @@ void    julia(t_struct *lx)
             }
             while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
-                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000);
+                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000); // mlx image a implémenter
             else
                 mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
@@ -99,7 +95,7 @@ void    mandelbrot(t_struct *lx)
             }
             while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
-                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000);
+                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000); // mlx image a implémenter
             else
                 mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
@@ -108,21 +104,81 @@ void    mandelbrot(t_struct *lx)
 
 int	redraw_julia(int keycode, t_struct *lx)
 {
-    printf("%i\n", keycode);
-    mlx_clear_window(lx->mlx, lx->win);
-    lx->zoom += 100;
-    lx->iterations += 25;
-    julia(lx);
+    printf("%i\n", keycode); // touches 1 2 3 4 5 6 7 8 9 0 ) - par défaut
+    if (keycode == 18)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.5, lx->x2, lx->y1, lx->y2);
+    if (keycode == 19)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2 + 0.5, lx->y1, lx->y2);
+    if (keycode == 20)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.5, lx->y2);
+    if (keycode == 21)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2 + 0.5);
+    if (keycode == 23)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.5, lx->x2, lx->y1, lx->y2);
+    if (keycode == 22)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2 - 0.5, lx->y1, lx->y2);
+    if (keycode == 26)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.5, lx->y2);
+    if (keycode == 28)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2 - 0.5);
+    if (keycode == 25)
+        alchemy(lx, lx->iterations + 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode == 29)
+        alchemy(lx, lx->iterations, lx->zoom + 5, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode == 27)
+        alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode == 24)
+        alchemy(lx, lx->iterations, lx->zoom - 5, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode >= 18 && keycode <= 29)
+    {
+        mlx_clear_window(lx->mlx, lx->win);
+        julia(lx);
+    }
+    if (keycode == 53) // echap
+    {
+        mlx_destroy_window(lx->mlx, lx->win);
+        exit(0);
+    }
     return (0);
 }
 
 int	redraw_mandelbrot(int keycode, t_struct *lx)
 {
-    printf("%i\n", keycode);
-    mlx_clear_window(lx->mlx, lx->win);
-    lx->zoom += 100;
-    lx->iterations += 25;
-    mandelbrot(lx);
+    printf("%i\n", keycode); // touches 1 2 3 4 5 6 7 8 9 0 ) - par défaut
+    if (keycode == 18)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.5, lx->x2, lx->y1, lx->y2);
+    if (keycode == 19)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2 + 0.5, lx->y1, lx->y2);
+    if (keycode == 20)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.5, lx->y2);
+    if (keycode == 21)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2 + 0.5);
+    if (keycode == 23)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.5, lx->x2, lx->y1, lx->y2);
+    if (keycode == 22)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2 - 0.5, lx->y1, lx->y2);
+    if (keycode == 26)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.5, lx->y2);
+    if (keycode == 28)
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2 - 0.5);
+    if (keycode == 25)
+        alchemy(lx, lx->iterations + 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode == 29)
+        alchemy(lx, lx->iterations, lx->zoom + 5, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode == 27)
+        alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode == 24)
+        alchemy(lx, lx->iterations, lx->zoom - 5, lx->x1, lx->x2, lx->y1, lx->y2);
+    if (keycode >= 18 && keycode <= 29)
+    {
+        mlx_clear_window(lx->mlx, lx->win);
+        mandelbrot(lx);
+    }
+    if (keycode == 53) // echap
+    {
+        mlx_destroy_window(lx->mlx, lx->win);
+        exit(0);
+    }
     return (0);
 }
 
@@ -131,18 +187,19 @@ int main(int ac, char **av)
     t_struct    lx;
 
     lx.mlx = mlx_initialisation();
+    lx.win = window_init(lx.mlx, 1000, 800); // Dimensions fenêtre (résolution écran)
     if (ac == 2 && *av[1] == 'j')
     {
-        alchemy(&lx, 150, 350, -1, 1, -1.2, 1.2);
+        alchemy(&lx, 150, 300, -1.5, 1.5, -1.5, 1.5); // paramètres de base
         julia(&lx);
-        mlx_key_hook(lx.win, redraw_julia, &lx);
+        mlx_key_hook(lx.win, redraw_julia, &lx); // changement paramètres selon touche pressée
         mlx_loop(lx.mlx);
     }
     else if (ac == 2 && *av[1] == 'm')
     {
-        alchemy(&lx, 50, 350, -2.1, 0.6, -1.2, 1.2);
+        alchemy(&lx, 50, 300, -2.1, 0.6, -1.2, 1.2); // paramètres de base
         mandelbrot(&lx);
-        mlx_key_hook(lx.win, redraw_mandelbrot, &lx);
+        mlx_key_hook(lx.win, redraw_mandelbrot, &lx); // changement paramètres selon touche pressée
         mlx_loop(lx.mlx);
     }
     else
