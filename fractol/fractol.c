@@ -21,10 +21,19 @@ void    *window_init(void *mlx, int x_max, int y_max)
     return (win);
 }
 
-void    image_size_calculation(t_struct *lx)
+void    alchemy(t_struct *lx, int iterations, int zoom, float x1, float x2, float y1, float y2)
 {
-    lx->x_max = (lx->x2 - lx->x1) * lx->zoom;
-    lx->y_max = (lx->y2 - lx->y1) * lx->zoom;
+    lx->iterations = iterations;
+    lx->zoom = zoom;
+    lx->x1 = x1;
+    lx->x2 = x2;
+    lx->y1 = y1;
+    lx->y2 = y2;
+    lx->x_max = (x2 - x1) * zoom;
+    lx->y_max = (y2 - y1) * zoom;
+    if (lx->win)
+        mlx_destroy_window(lx->mlx, lx->win);
+    lx->win = window_init(lx->mlx, lx->x_max, lx->y_max);
 }
 
 void    julia(t_struct *lx)
@@ -59,6 +68,7 @@ void    julia(t_struct *lx)
             else
                 mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
+    mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Julia");   
 }
 
 void    mandelbrot(t_struct *lx)
@@ -93,14 +103,25 @@ void    mandelbrot(t_struct *lx)
             else
                 mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
+    mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Mandelbrot");
 }
 
-int	redraw(int keycode, t_struct *lx)
+int	redraw_julia(int keycode, t_struct *lx)
 {
     printf("%i\n", keycode);
-    lx->iterations -= 10;
     mlx_clear_window(lx->mlx, lx->win);
-    //mlx_destroy_window(lx->mlx, lx->win);
+    lx->zoom += 100;
+    lx->iterations += 25;
+    julia(lx);
+    return (0);
+}
+
+int	redraw_mandelbrot(int keycode, t_struct *lx)
+{
+    printf("%i\n", keycode);
+    mlx_clear_window(lx->mlx, lx->win);
+    lx->zoom += 100;
+    lx->iterations += 25;
     mandelbrot(lx);
     return (0);
 }
@@ -112,31 +133,16 @@ int main(int ac, char **av)
     lx.mlx = mlx_initialisation();
     if (ac == 2 && *av[1] == 'j')
     {
-        lx.iterations = 150;
-        lx.zoom = 350;
-        lx.x1 = -1;
-        lx.x2 = 1;
-        lx.y1 = -1.2;
-        lx.y2 = 1.2;
-        image_size_calculation(&lx);
-        lx.win = window_init(lx.mlx, lx.x_max, lx.y_max);
+        alchemy(&lx, 150, 350, -1, 1, -1.2, 1.2);
         julia(&lx);
-        mlx_string_put(lx.mlx, lx.win, 10, 10, 0xFFFFFF, "Ensemble de Julia");
+        mlx_key_hook(lx.win, redraw_julia, &lx);
         mlx_loop(lx.mlx);
     }
     else if (ac == 2 && *av[1] == 'm')
     {
-        lx.iterations = 50;
-        lx.zoom = 350;
-        lx.x1 = -2.1;
-        lx.x2 = 0.6;
-        lx.y1 = -1.2;  
-        lx.y2 = 1.2;
-        image_size_calculation(&lx);
-        lx.win = window_init(lx.mlx, lx.x_max, lx.y_max);
+        alchemy(&lx, 50, 350, -2.1, 0.6, -1.2, 1.2);
         mandelbrot(&lx);
-        mlx_string_put(lx.mlx, lx.win, 10, 10, 0xFFFFFF, "Ensemble de Mandelbrot");
-        mlx_key_hook(lx.win, redraw, &lx);
+        mlx_key_hook(lx.win, redraw_mandelbrot, &lx);
         mlx_loop(lx.mlx);
     }
     else
