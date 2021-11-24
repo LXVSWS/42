@@ -95,7 +95,7 @@ void    mandelbrot(t_struct *lx)
             }
             while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
-                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000); // mlx image a implémenter
+                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000);
             else
                 mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
         }
@@ -144,7 +144,7 @@ int	redraw_julia(int keycode, t_struct *lx)
 
 int	redraw_mandelbrot(int keycode, t_struct *lx)
 {
-    printf("%i\n", keycode); // touches 1 2 3 4 5 6 7 8 9 0 ) - par défaut
+    printf("%i\n", keycode);
     if (keycode == 18)
         alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.5, lx->x2, lx->y1, lx->y2);
     if (keycode == 19)
@@ -174,7 +174,7 @@ int	redraw_mandelbrot(int keycode, t_struct *lx)
         mlx_clear_window(lx->mlx, lx->win);
         mandelbrot(lx);
     }
-    if (keycode == 53) // echap
+    if (keycode == 53)
     {
         mlx_destroy_window(lx->mlx, lx->win);
         exit(0);
@@ -197,9 +197,9 @@ int main(int ac, char **av)
     }
     else if (ac == 2 && *av[1] == 'm')
     {
-        alchemy(&lx, 50, 300, -2.1, 0.6, -1.2, 1.2); // paramètres de base
+        alchemy(&lx, 50, 300, -2.1, 0.6, -1.2, 1.2);
         mandelbrot(&lx);
-        mlx_key_hook(lx.win, redraw_mandelbrot, &lx); // changement paramètres selon touche pressée
+        mlx_key_hook(lx.win, redraw_mandelbrot, &lx);
         mlx_loop(lx.mlx);
     }
     else

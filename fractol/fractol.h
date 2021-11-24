@@ -1,3 +1,6 @@
+#ifndef FRACTOL_H
+# define FRACTOL_H
+
 #include "mlx/mlx.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,3 +18,5 @@ typedef struct  s_struct
     float   x_max;
     float   y_max;
 }               t_struct;
+
+#endif
