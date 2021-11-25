@@ -53,27 +53,30 @@ void    julia(t_data *lx)
 
 	lx->img = mlx_new_image(lx->mlx, 1000, 1000);
 	lx->addr = mlx_get_data_addr(lx->img, &lx->bpp, &lx->ll, &lx->endian);
-    for (x = 0 ; x < lx->x_max ; x++)
-        for (y = 0 ; y < lx->y_max ; y++)
+	x = -1;
+    while (++x < lx->x_max)
+	{
+		y = -1;
+		while (++y < lx->y_max)
         {
             c_r = 0.285;
             c_i = 0.01;
             z_r = x / lx->zoom + lx->x1;
             z_i = y / lx->zoom + lx->y1;
             i = 0;
-            do
+            while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations)
             {
                 tmp = z_r;
                 z_r = z_r * z_r - z_i * z_i + c_r;
                 z_i = 2 * z_i * tmp + c_i;
                 i++;
             }
-            while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
                 pixel_put(lx, x, y, 0x000000);
             else
                 pixel_put(lx, x, y, i * 255 / lx->iterations);
         }
+	}
 	mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
     mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Julia");   
 }
@@ -91,27 +94,30 @@ void    mandelbrot(t_data *lx)
 
 	lx->img = mlx_new_image(lx->mlx, 1000, 1000);
 	lx->addr = mlx_get_data_addr(lx->img, &lx->bpp, &lx->ll, &lx->endian);
-    for (x = 0 ; x < lx->x_max ; x++)
-        for (y = 0 ; y < lx->y_max ; y++)
+	x = -1;
+    while (++x < lx->x_max)
+	{
+		y = -1;
+		while (++y < lx->y_max)
         {
             c_r = x / lx->zoom + lx->x1;
             c_i = y / lx->zoom + lx->y1;
             z_r = 0;
             z_i = 0;
             i = 0;
-            do
+            while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations)
             {
                 tmp = z_r;
                 z_r = z_r * z_r - z_i * z_i + c_r;
                 z_i = 2 * z_i * tmp + c_i;
                 i++;
             }
-            while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
 				pixel_put(lx, x, y, 0x000000);
             else
 				pixel_put(lx, x, y, i * 255 / lx->iterations);
         }
+	}
 	mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
     mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Mandelbrot");
 }
@@ -150,7 +156,6 @@ int	redraw_julia(int keycode, t_data *lx)
 
 int	redraw_mandelbrot(int keycode, t_data *lx)
 {
-	printf("%i\n", keycode);
     if (keycode == 123)
         alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.5, lx->x2, lx->y1, lx->y2);
     if (keycode == 126)
