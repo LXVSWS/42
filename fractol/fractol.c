@@ -20,7 +20,7 @@ void    *window_init(void *mlx, int width, int height)
     return (win);
 }
 
-void    alchemy(t_struct *lx, int iterations, int zoom, float x1, float x2, float y1, float y2)
+void    alchemy(t_data *lx, int iterations, int zoom, float x1, float x2, float y1, float y2)
 {
     lx->iterations = iterations;
     lx->zoom = zoom;
@@ -32,7 +32,15 @@ void    alchemy(t_struct *lx, int iterations, int zoom, float x1, float x2, floa
     lx->y_max = (y2 - y1) * zoom;
 }
 
-void    julia(t_struct *lx)
+void	pixel_put(t_data *lx, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = lx->addr + (y * lx->ll + x * (lx->bpp / 8));
+	*(unsigned int*)dst = color;
+}
+
+void    julia(t_data *lx)
 {
     float   x;
     float   y;
@@ -43,13 +51,15 @@ void    julia(t_struct *lx)
     float   tmp;
     int     i;
 
+	lx->img = mlx_new_image(lx->mlx, 1000, 800);
+	lx->addr = mlx_get_data_addr(lx->img, &lx->bpp, &lx->ll, &lx->endian);
     for (x = 0 ; x < lx->x_max ; x++)
         for (y = 0 ; y < lx->y_max ; y++)
         {
             c_r = 0.285;
             c_i = 0.01;
             z_r = x / lx->zoom + lx->x1;
-            z_i = y / lx->zoom + lx->y1 ;
+            z_i = y / lx->zoom + lx->y1;
             i = 0;
             do
             {
@@ -60,14 +70,15 @@ void    julia(t_struct *lx)
             }
             while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
-                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000); // mlx image a implémenter
+                pixel_put(lx, x, y, 0x000000);
             else
-                mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
+                pixel_put(lx, x, y, i * 255 / lx->iterations);
         }
+	mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
     mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Julia");   
 }
 
-void    mandelbrot(t_struct *lx)
+void    mandelbrot(t_data *lx)
 {
     float   x;
     float   y;
@@ -78,6 +89,8 @@ void    mandelbrot(t_struct *lx)
     float   tmp;
     int     i;
 
+	lx->img = mlx_new_image(lx->mlx, 1000, 800);
+	lx->addr = mlx_get_data_addr(lx->img, &lx->bpp, &lx->ll, &lx->endian);
     for (x = 0 ; x < lx->x_max ; x++)
         for (y = 0 ; y < lx->y_max ; y++)
         {
@@ -95,16 +108,16 @@ void    mandelbrot(t_struct *lx)
             }
             while (z_r * z_r + z_i * z_i < 4 && i < lx->iterations);
             if (i == lx->iterations)
-                mlx_pixel_put(lx->mlx, lx->win, x, y, 0x000000);
+				pixel_put(lx, x, y, 0x000000);
             else
-                mlx_pixel_put(lx->mlx, lx->win, x, y, i * 255 / lx->iterations);
+				pixel_put(lx, x, y, i * 255 / lx->iterations);
         }
+	mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
     mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Mandelbrot");
 }
 
-int	redraw_julia(int keycode, t_struct *lx)
+int	redraw_julia(int keycode, t_data *lx)
 {
-    printf("%i\n", keycode); // touches 1 2 3 4 5 6 7 8 9 0 ) - par défaut
     if (keycode == 18)
         alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.5, lx->x2, lx->y1, lx->y2);
     if (keycode == 19)
@@ -124,17 +137,18 @@ int	redraw_julia(int keycode, t_struct *lx)
     if (keycode == 25)
         alchemy(lx, lx->iterations + 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 29)
-        alchemy(lx, lx->iterations, lx->zoom + 5, lx->x1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom + 50, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 27)
         alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 24)
         alchemy(lx, lx->iterations, lx->zoom - 5, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode >= 18 && keycode <= 29)
     {
-        mlx_clear_window(lx->mlx, lx->win);
+		mlx_destroy_image(lx->mlx, lx->img);
+		mlx_clear_window(lx->mlx, lx->win);
         julia(lx);
     }
-    if (keycode == 53) // echap
+    if (keycode == 53)
     {
         mlx_destroy_window(lx->mlx, lx->win);
         exit(0);
@@ -142,9 +156,8 @@ int	redraw_julia(int keycode, t_struct *lx)
     return (0);
 }
 
-int	redraw_mandelbrot(int keycode, t_struct *lx)
+int	redraw_mandelbrot(int keycode, t_data *lx)
 {
-    printf("%i\n", keycode);
     if (keycode == 18)
         alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.5, lx->x2, lx->y1, lx->y2);
     if (keycode == 19)
@@ -164,14 +177,15 @@ int	redraw_mandelbrot(int keycode, t_struct *lx)
     if (keycode == 25)
         alchemy(lx, lx->iterations + 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 29)
-        alchemy(lx, lx->iterations, lx->zoom + 5, lx->x1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom + 50, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 27)
         alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 24)
         alchemy(lx, lx->iterations, lx->zoom - 5, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode >= 18 && keycode <= 29)
     {
-        mlx_clear_window(lx->mlx, lx->win);
+		mlx_destroy_image(lx->mlx, lx->img);
+		mlx_clear_window(lx->mlx, lx->win);
         mandelbrot(lx);
     }
     if (keycode == 53)
@@ -184,15 +198,15 @@ int	redraw_mandelbrot(int keycode, t_struct *lx)
 
 int main(int ac, char **av)
 {
-    t_struct    lx;
+    t_data   lx;
 
     lx.mlx = mlx_initialisation();
-    lx.win = window_init(lx.mlx, 1000, 800); // Dimensions fenêtre (résolution écran)
+    lx.win = window_init(lx.mlx, 1000, 800);
     if (ac == 2 && *av[1] == 'j')
     {
-        alchemy(&lx, 150, 300, -1.5, 1.5, -1.5, 1.5); // paramètres de base
+        alchemy(&lx, 150, 300, -1.5, 1.5, -1.2, 1.2);
         julia(&lx);
-        mlx_key_hook(lx.win, redraw_julia, &lx); // changement paramètres selon touche pressée
+        mlx_key_hook(lx.win, redraw_julia, &lx);
         mlx_loop(lx.mlx);
     }
     else if (ac == 2 && *av[1] == 'm')

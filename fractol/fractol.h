@@ -5,10 +5,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct  s_struct
+typedef struct  s_data
 {
     void    *mlx;
     void    *win;
+	void	*img;
+	char	*addr;
     int     iterations;
     int     zoom;
     float   x1;
@@ -17,6 +19,9 @@ typedef struct  s_struct
     float   y2;
     float   x_max;
     float   y_max;
-}               t_struct;
+	int		bpp; // bits per pixel
+	int		ll;	// line length
+	int		endian;
+}               t_data;
 
 #endif
