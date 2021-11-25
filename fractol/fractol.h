@@ -1,5 +1,7 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
+# define WIDTH 1000
+# define HEIGHT 1000
 
 #include "mlx/mlx.h"
 #include <stdlib.h>
@@ -12,13 +14,13 @@ typedef struct  s_data
 	void	*img;
 	char	*addr;
     int     iterations;
-    int     zoom;
+    float   zoom;
     float   x1;
     float   x2;
     float   y1;
     float   y2;
-    float   x_max;
-    float   y_max;
+    int     x_max;
+    int     y_max;
 	int		bpp; // bits per pixel
 	int		ll;	// line length
 	int		endian;
