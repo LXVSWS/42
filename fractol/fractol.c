@@ -1,25 +1,5 @@
 #include "fractol.h"
 
-void    *mlx_initialisation()
-{
-    void    *mlx;
-
-    mlx = mlx_init();
-    if (!mlx)
-        return (NULL);
-    return (mlx);
-}
-
-void    *window_init(void *mlx)
-{
-    void    *win;
-
-    win = mlx_new_window(mlx, WIDTH, HEIGHT, "fractol");
-    if (!win)
-        return (NULL);
-    return (win);
-}
-
 void    alchemy(t_data *lx, int iterations, int zoom, double x1, double x2, double y1, double y2)
 {
     lx->iterations = iterations;
@@ -28,13 +8,6 @@ void    alchemy(t_data *lx, int iterations, int zoom, double x1, double x2, doub
     lx->x2 = x2;
     lx->y1 = y1;
     lx->y2 = y2;
-    lx->x_max = (x2 - x1) * zoom;
-    lx->y_max = (y2 - y1) * zoom;
-    if (lx->x_max > 0 && lx->y_max > 0)
-        lx->img = mlx_new_image(lx->mlx, lx->x_max, lx->y_max);
-    else
-        lx->img = mlx_new_image(lx->mlx, WIDTH, HEIGHT);
-	lx->addr = mlx_get_data_addr(lx->img, &lx->bpp, &lx->ll, &lx->endian);
 }
 
 void	pixel_put(t_data *lx, int x, int y, int color)
@@ -54,13 +27,13 @@ void    julia(t_data *lx)
     double   z_r;
     double   z_i;
     double   tmp;
-    int     i;
+    int      i;
 
 	x = -1;
-    while (++x < lx->x_max)
+    while (++x < W)
 	{
 		y = -1;
-		while (++y < lx->y_max)
+		while (++y < H)
         {
             c_r = 0.285;
             c_i = 0.01;
@@ -93,13 +66,13 @@ void    mandelbrot(t_data *lx)
     double   z_r;
     double   z_i;
     double   tmp;
-    int     i;
+    int      i;
 
 	x = -1;
-    while (++x < lx->x_max)
+    while (++x < W)
 	{
 		y = -1;
-		while (++y < lx->y_max)
+		while (++y < H)
         {
             c_r = x / lx->zoom + lx->x1;
             c_i = y / lx->zoom + lx->y1;
@@ -187,10 +160,9 @@ int	redraw_mandelbrot(int keycode, t_data *lx)
     return (0);
 }
 
-int	zoom(int button, int x, int y, void *param)
+int	mouse_hook(int button, int x, int y, t_data *lx)
 {
-	printf("%i\n%i\n%i\n", button, x, y);
-	(void)param;
+	printf("%i\n%i\n%i\n%p\n", button, x, y, lx);
 	return (0);
 }
 
@@ -198,13 +170,16 @@ int main(int ac, char **av)
 {
     t_data   lx;
 
-    lx.mlx = mlx_initialisation();
-    lx.win = window_init(lx.mlx);
+    lx.mlx = mlx_init();
+    lx.win = mlx_new_window(lx.mlx, W, H, "fractol");
+    lx.img = mlx_new_image(lx.mlx, W, H);
+	lx.addr = mlx_get_data_addr(lx.img, &lx.bpp, &lx.ll, &lx.endian);
     if (ac == 2 && *av[1] == 'j')
     {
         alchemy(&lx, 150, 300, -1.5, 1.5, -1.5, 1.5);
         julia(&lx);
         mlx_key_hook(lx.win, redraw_julia, &lx);
+        mlx_mouse_hook(lx.win, mouse_hook, &lx);
         mlx_loop(lx.mlx);
     }
     else if (ac == 2 && *av[1] == 'm')
@@ -212,7 +187,7 @@ int main(int ac, char **av)
         alchemy(&lx, 50, 300, -2.1, 0.6, -1.2, 1.2);
         mandelbrot(&lx);
         mlx_key_hook(lx.win, redraw_mandelbrot, &lx);
-		mlx_mouse_hook(lx.win, zoom, &lx);
+		mlx_mouse_hook(lx.win, mouse_hook, &lx);
         mlx_loop(lx.mlx);
     }
     else
