@@ -14,11 +14,11 @@ typedef struct  s_data
 	void	*img;
 	char	*addr;
     int     iterations;
-    float   zoom;
-    float   x1;
-    float   x2;
-    float   y1;
-    float   y2;
+    double	zoom;
+    double	x1;
+    double   x2;
+    double   y1;
+    double   y2;
     int     x_max;
     int     y_max;
 	int		bpp; // bits per pixel

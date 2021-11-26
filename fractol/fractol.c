@@ -20,7 +20,7 @@ void    *window_init(void *mlx)
     return (win);
 }
 
-void    alchemy(t_data *lx, int iterations, int zoom, float x1, float x2, float y1, float y2)
+void    alchemy(t_data *lx, int iterations, int zoom, double x1, double x2, double y1, double y2)
 {
     lx->iterations = iterations;
     lx->zoom = zoom;
@@ -47,13 +47,13 @@ void	pixel_put(t_data *lx, int x, int y, int color)
 
 void    julia(t_data *lx)
 {
-    float   x;
-    float   y;
-    float   c_r;
-    float   c_i;
-    float   z_r;
-    float   z_i;
-    float   tmp;
+    double   x;
+    double   y;
+    double   c_r;
+    double   c_i;
+    double   z_r;
+    double   z_i;
+    double   tmp;
     int     i;
 
 	x = -1;
@@ -86,13 +86,13 @@ void    julia(t_data *lx)
 
 void    mandelbrot(t_data *lx)
 {
-    float   x;
-    float   y;
-    float   c_r;
-    float   c_i;
-    float   z_r;
-    float   z_i;
-    float   tmp;
+    double   x;
+    double   y;
+    double   c_r;
+    double   c_i;
+    double   z_r;
+    double   z_i;
+    double   tmp;
     int     i;
 
 	x = -1;
@@ -126,21 +126,21 @@ void    mandelbrot(t_data *lx)
 int	redraw_julia(int keycode, t_data *lx)
 {
     if (keycode == 123)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.09, lx->x2, lx->y1, lx->y2);
     if (keycode == 126)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.09, lx->y2);
     if (keycode == 124)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.09, lx->x2, lx->y1, lx->y2);
     if (keycode == 125)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.09, lx->y2);
     if (keycode == 18)
         alchemy(lx, lx->iterations * 1.5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 19)
-        alchemy(lx, lx->iterations, lx->zoom * 1.25, lx->x1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom * 1.25, lx->x1 * 0.9, lx->x2 * 0.9, lx->y1 * 0.9, lx->y2 * 0.9);
     if (keycode == 20 && lx->iterations > 5)
         alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 21)
-        alchemy(lx, lx->iterations, lx->zoom * 0.75, lx->x1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom / 1.25, lx->x1 * 1.1, lx->x2 * 1.1, lx->y1 * 1.1, lx->y2 * 1.1);
     if ((keycode >= 123 && keycode <= 126) || (keycode >= 18 && keycode <= 21))
     {
         mlx_clear_window(lx->mlx, lx->win);
@@ -158,21 +158,21 @@ int	redraw_julia(int keycode, t_data *lx)
 int	redraw_mandelbrot(int keycode, t_data *lx)
 {
     if (keycode == 123)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.09, lx->x2, lx->y1, lx->y2);
     if (keycode == 126)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.09, lx->y2);
     if (keycode == 124)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.09, lx->x2, lx->y1, lx->y2);
     if (keycode == 125)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.09, lx->y2);
     if (keycode == 18)
         alchemy(lx, lx->iterations * 1.5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 19)
-        alchemy(lx, lx->iterations, lx->zoom * 1.25, lx->x1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom * 1.25, lx->x1 * 0.9, lx->x2 * 0.9, lx->y1 * 0.9, lx->y2 * 0.9);
     if (keycode == 20 && lx->iterations > 5)
         alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
     if (keycode == 21)
-        alchemy(lx, lx->iterations, lx->zoom * 0.75, lx->x1, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom / 1.25, lx->x1 * 1.1, lx->x2 * 1.1, lx->y1 * 1.1, lx->y2 * 1.1);
     if ((keycode >= 123 && keycode <= 126) || (keycode >= 18 && keycode <= 21))
     {
         mlx_clear_window(lx->mlx, lx->win);
@@ -195,7 +195,7 @@ int main(int ac, char **av)
     lx.win = window_init(lx.mlx);
     if (ac == 2 && *av[1] == 'j')
     {
-        alchemy(&lx, 150, 300, -1.5, 1.5, -1.2, 1.2);
+        alchemy(&lx, 150, 300, -1.5, 1.5, -1.5, 1.5);
         julia(&lx);
         mlx_key_hook(lx.win, redraw_julia, &lx);
         mlx_loop(lx.mlx);
