@@ -187,6 +187,13 @@ int	redraw_mandelbrot(int keycode, t_data *lx)
     return (0);
 }
 
+int	zoom(int button, int x, int y, void *param)
+{
+	printf("%i\n%i\n%i\n", button, x, y);
+	(void)param;
+	return (0);
+}
+
 int main(int ac, char **av)
 {
     t_data   lx;
@@ -205,6 +212,7 @@ int main(int ac, char **av)
         alchemy(&lx, 50, 300, -2.1, 0.6, -1.2, 1.2);
         mandelbrot(&lx);
         mlx_key_hook(lx.win, redraw_mandelbrot, &lx);
+		mlx_mouse_hook(lx.win, zoom, &lx);
         mlx_loop(lx.mlx);
     }
     else
