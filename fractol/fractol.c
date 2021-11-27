@@ -18,7 +18,7 @@ void	pixel_put(t_data *lx, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void    julia(t_data *lx)
+int julia(t_data *lx)
 {
     double   x;
     double   y;
@@ -54,10 +54,11 @@ void    julia(t_data *lx)
         }
 	}
     mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
-    mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Julia"); 
+    mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Julia");
+    return (0);
 }
 
-void    mandelbrot(t_data *lx)
+int mandelbrot(t_data *lx)
 {
     double   x;
     double   y;
@@ -94,63 +95,19 @@ void    mandelbrot(t_data *lx)
 	}
     mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
     mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Mandelbrot");
-}
-
-int	redraw_julia(int keycode, t_data *lx)
-{
-    if (keycode == 123)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.09, lx->x2, lx->y1, lx->y2);
-    if (keycode == 126)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.09, lx->y2);
-    if (keycode == 124)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.09, lx->x2, lx->y1, lx->y2);
-    if (keycode == 125)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.09, lx->y2);
-    if (keycode == 18)
-        alchemy(lx, lx->iterations * 1.5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
-    if (keycode == 19)
-        alchemy(lx, lx->iterations, lx->zoom * 1.25, lx->x1 * 0.9, lx->x2 * 0.9, lx->y1 * 0.9, lx->y2 * 0.9);
-    if (keycode == 20 && lx->iterations > 5)
-        alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
-    if (keycode == 21)
-        alchemy(lx, lx->iterations, lx->zoom / 1.25, lx->x1 * 1.1, lx->x2 * 1.1, lx->y1 * 1.1, lx->y2 * 1.1);
-    if ((keycode >= 123 && keycode <= 126) || (keycode >= 18 && keycode <= 21))
-    {
-        mlx_clear_window(lx->mlx, lx->win);
-        julia(lx);
-    }
-    if (keycode == 53)
-    {
-        mlx_destroy_image(lx->mlx, lx->img);
-        mlx_destroy_window(lx->mlx, lx->win);
-        exit(0);
-    }
     return (0);
 }
 
-int	redraw_mandelbrot(int keycode, t_data *lx)
+int	key_hook(int keycode, t_data *lx)
 {
     if (keycode == 123)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.09, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 - 0.01, lx->x2, lx->y1, lx->y2);
     if (keycode == 126)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.09, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 - 0.01, lx->y2);
     if (keycode == 124)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.09, lx->x2, lx->y1, lx->y2);
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1 + 0.01, lx->x2, lx->y1, lx->y2);
     if (keycode == 125)
-        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.09, lx->y2);
-    if (keycode == 18)
-        alchemy(lx, lx->iterations * 1.5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
-    if (keycode == 19)
-        alchemy(lx, lx->iterations, lx->zoom * 1.25, lx->x1 * 0.9, lx->x2 * 0.9, lx->y1 * 0.9, lx->y2 * 0.9);
-    if (keycode == 20 && lx->iterations > 5)
-        alchemy(lx, lx->iterations - 5, lx->zoom, lx->x1, lx->x2, lx->y1, lx->y2);
-    if (keycode == 21)
-        alchemy(lx, lx->iterations, lx->zoom / 1.25, lx->x1 * 1.1, lx->x2 * 1.1, lx->y1 * 1.1, lx->y2 * 1.1);
-    if ((keycode >= 123 && keycode <= 126) || (keycode >= 18 && keycode <= 21))
-    {
-        mlx_clear_window(lx->mlx, lx->win);
-        mandelbrot(lx);
-    }
+        alchemy(lx, lx->iterations, lx->zoom, lx->x1, lx->x2, lx->y1 + 0.01, lx->y2);
     if (keycode == 53)
     {
         mlx_destroy_image(lx->mlx, lx->img);
@@ -162,7 +119,12 @@ int	redraw_mandelbrot(int keycode, t_data *lx)
 
 int	mouse_hook(int button, int x, int y, t_data *lx)
 {
-	printf("%i\n%i\n%i\n%p\n", button, x, y, lx);
+    if (button == 4)
+        alchemy(lx, lx->iterations + 5, lx->zoom * 1.25, lx->x1 * 0.9, lx->x2 * 0.9, lx->y1 * 0.9, lx->y2 * 0.9);
+    if (button == 5 && lx->iterations > 5)
+        alchemy(lx, lx->iterations - 5, lx->zoom * 0.95, lx->x1, lx->x2, lx->y1, lx->y2);
+    (void)x;
+    (void)y;
 	return (0);
 }
 
@@ -177,16 +139,16 @@ int main(int ac, char **av)
     if (ac == 2 && *av[1] == 'j')
     {
         alchemy(&lx, 150, 300, -1.5, 1.5, -1.5, 1.5);
-        julia(&lx);
-        mlx_key_hook(lx.win, redraw_julia, &lx);
+        mlx_loop_hook(lx.mlx, julia, &lx);
+        mlx_key_hook(lx.win, key_hook, &lx);
         mlx_mouse_hook(lx.win, mouse_hook, &lx);
         mlx_loop(lx.mlx);
     }
     else if (ac == 2 && *av[1] == 'm')
     {
         alchemy(&lx, 50, 300, -2.1, 0.6, -1.2, 1.2);
-        mandelbrot(&lx);
-        mlx_key_hook(lx.win, redraw_mandelbrot, &lx);
+        mlx_loop_hook(lx.mlx, mandelbrot, &lx);
+        mlx_key_hook(lx.win, key_hook, &lx);
 		mlx_mouse_hook(lx.win, mouse_hook, &lx);
         mlx_loop(lx.mlx);
     }

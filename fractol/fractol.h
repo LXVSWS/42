@@ -19,8 +19,8 @@ typedef struct  s_data
     double  x2;
     double  y1;
     double  y2;
-	int		bpp; // bits per pixel
-	int		ll;	// line length
+	int		bpp;
+	int		ll;
 	int		endian;
 }               t_data;
 
