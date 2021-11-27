@@ -120,11 +120,11 @@ int	key_hook(int keycode, t_data *lx)
 int	mouse_hook(int button, int x, int y, t_data *lx)
 {
     if (button == 4)
-        alchemy(lx, lx->iterations + 5, lx->zoom * 1.25, lx->x1 * 0.9, lx->x2 * 0.9, lx->y1 * 0.9, lx->y2 * 0.9);
+        alchemy(lx, lx->iterations + 5, lx->zoom * 1.25, \
+        (x / lx->zoom + lx->x1) - (x / (lx->zoom * 1.25)), lx->x2, (y / lx->zoom + lx->y1) - (y / (lx->zoom * 1.25)), lx->y2);
     if (button == 5 && lx->iterations > 5)
-        alchemy(lx, lx->iterations - 5, lx->zoom * 0.95, lx->x1, lx->x2, lx->y1, lx->y2);
-    (void)x;
-    (void)y;
+        alchemy(lx, lx->iterations - 5, lx->zoom / 1.25, \
+        (x / lx->zoom + lx->x1) - (x / (lx->zoom / 1.25)), lx->x2, (y / lx->zoom + lx->y1) - (y / (lx->zoom / 1.25)), lx->y2);
 	return (0);
 }
 
