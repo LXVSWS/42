@@ -13,6 +13,7 @@ typedef struct  s_data
     void    *win;
 	void	*img;
 	char	*addr;
+	char	type;
     int     iterations;
     double	zoom;
     double	x1;
@@ -22,7 +23,8 @@ typedef struct  s_data
 	int		bpp;
 	int		ll;
 	int		endian;
-	char	type;
+    int		*mouse_x;
+    int		*mouse_y;
 }               t_data;
 
 #endif
