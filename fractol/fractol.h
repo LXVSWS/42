@@ -22,6 +22,7 @@ typedef struct  s_data
 	int		bpp;
 	int		ll;
 	int		endian;
+	char	type;
 }               t_data;
 
 #endif
