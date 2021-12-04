@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "X.h"
 
 typedef struct  s_data
 {
@@ -19,15 +18,15 @@ typedef struct  s_data
     int			iterations;
     long double	zoom;
     long double	x1;
-    long double  x2;
-    long double  y1;
-    long double  y2;
+    long double x2;
+    long double y1;
+    long double y2;
 	int			bpp;
 	int			ll;
 	int			endian;
     int			mouse_x;
     int			mouse_y;
-	int			julia_move;
+    int         toggle;
 }               t_data;
 
 typedef struct	s_rgb
