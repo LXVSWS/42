@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:50:57 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/04 15:49:18 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/04 17:01:50 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ int	fractal(t_data *lx)
 	}
 	mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
 	if (lx->toggle)
-		mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, "Ensemble de Julia");
+		mlx_string_put(lx->mlx, lx->win, 10, 10, 0x000000, "Ensemble de Julia");
 	else
-		mlx_string_put(lx->mlx, lx->win, 10, 10, 0xFFFFFF, \
+		mlx_string_put(lx->mlx, lx->win, 10, 10, 0x000000, \
 		"Ensemble de Mandelbrot");
 	return (0);
 }
