@@ -1,19 +1,19 @@
 NAME	= fractol
 
-SRCS	= fractol.c
+SRCS	= fractol.c utils.c utils2.c
 
 OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 %.o: %.c
-			${CC} ${CFLAGS} -Imlx -c $< -o $@
+			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} -Lmlx -lmlx -framework OpenGL -framework AppKit ${OBJS} -o $@
+			${CC} ${CFLAGS} -lmlx -framework OpenGL -framework AppKit ${OBJS} -o $@
 
 all:	${NAME}
 
