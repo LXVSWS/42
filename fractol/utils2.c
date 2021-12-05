@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 14:28:35 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 14:30:15 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:13:06 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	mouse_hook(int button, int x, int y, t_data *lx)
 		lx->x1 = (x / lx->zoom + lx->x1) - (x / (lx->zoom * 0.75));
 		lx->y1 = (y / lx->zoom + lx->y1) - (y / (lx->zoom * 0.75));
 	}
+	if (button == 1)
+		lx->color++;
 	fractal(lx);
 	return (0);
 }

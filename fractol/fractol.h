@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:51:06 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 16:02:25 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:29:14 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_data
 	int			bpp;
 	int			ll;
 	int			endian;
+	int			color;
 	int			mouse_x;
 	int			mouse_y;
 	char		toggle;

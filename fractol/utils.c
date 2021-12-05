@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:41:55 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 14:15:37 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:32:16 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	draw(t_data *lx, int i, int x, int y)
 	}
 	else
 	{
-		rgb.r = sin(0.4 * i + 2) * 127 + 128;
-		rgb.g = sin(0.2 * i + 2) * 127 + 128;
-		rgb.b = sin(0.2 * i + 3) * 127 + 128;
+		rgb.r = sin(0.4 * i + (lx->color + 2)) * 127 + 128;
+		rgb.g = sin(0.2 * i + (lx->color + 2)) * 127 + 128;
+		rgb.b = sin(0.2 * i + (lx->color + 3)) * 127 + 128;
 		dst = lx->addr + (y * lx->ll + x * (lx->bpp / 8));
 		*(unsigned int *)dst = rgb2int(rgb);
 	}
