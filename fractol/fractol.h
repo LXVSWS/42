@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:51:06 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 15:11:56 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:02:25 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ typedef struct s_rgb
 	unsigned int	b;
 }				t_rgb;
 
-int				fractal(t_data *lx);
+void			fractal(t_data *lx);
 void			julia(t_data *lx, int x, int y);
 void			mandelbrot(t_data *lx, int x, int y);
+int				algo(t_data *lx);
 int				key_hook(int keycode, t_data *lx);
 int				mouse_hook(int button, int x, int y, t_data *lx);
 int				mouse_motion_hook(int x, int y, t_data *lx);

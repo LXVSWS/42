@@ -6,17 +6,16 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:50:57 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 15:10:51 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:04:53 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	fractal(t_data *lx)
+void	fractal(t_data *lx)
 {
-	long double		x;
-	long double		y;
-	int				i;
+	int	x;
+	int	y;
 
 	x = -1;
 	while (++x < W)
@@ -28,20 +27,7 @@ int	fractal(t_data *lx)
 				julia(lx, x, y);
 			else if (lx->toggle == 1)
 				mandelbrot(lx, x, y);
-			i = 0;
-			lx->z_r2 = lx->z_r * lx->z_r;
-			lx->z_i2 = lx->z_i * lx->z_i;
-			while (lx->z_r2 + lx->z_i2 < 4 && i < lx->iterations)
-			{
-				lx->z_i = lx->z_r * lx->z_i;
-				lx->z_i += lx->z_i;
-				lx->z_i += lx->c_i;
-				lx->z_r = lx->z_r2 - lx->z_i2 + lx->c_r;
-				lx->z_r2 = lx->z_r * lx->z_r;
-				lx->z_i2 = lx->z_i * lx->z_i;
-				i++;
-			}
-			draw(lx, i, x, y);
+			draw(lx, algo(lx), x, y);
 		}
 	}
 	mlx_put_image_to_window(lx->mlx, lx->win, lx->img, 0, 0);
@@ -50,7 +36,6 @@ int	fractal(t_data *lx)
 	else if (lx->toggle == 1)
 		mlx_string_put(lx->mlx, lx->win, 10, 10, 0x000000, \
 		"Ensemble de Mandelbrot");
-	return (0);
 }
 
 void	julia(t_data *lx, int x, int y)
@@ -67,6 +52,26 @@ void	mandelbrot(t_data *lx, int x, int y)
 	lx->c_i = y / lx->zoom + lx->y1;
 	lx->z_r = 0;
 	lx->z_i = 0;
+}
+
+int	algo(t_data *lx)
+{
+	int	i;
+
+	i = 0;
+	lx->z_r2 = lx->z_r * lx->z_r;
+	lx->z_i2 = lx->z_i * lx->z_i;
+	while (lx->z_r2 + lx->z_i2 < 4 && i < lx->iterations)
+	{
+		lx->z_i = lx->z_r * lx->z_i;
+		lx->z_i += lx->z_i;
+		lx->z_i += lx->c_i;
+		lx->z_r = lx->z_r2 - lx->z_i2 + lx->c_r;
+		lx->z_r2 = lx->z_r * lx->z_r;
+		lx->z_i2 = lx->z_i * lx->z_i;
+		i++;
+	}
+	return (i);
 }
 
 int	main(int ac, char **av)
