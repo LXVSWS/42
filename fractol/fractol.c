@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:50:57 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 16:04:53 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/05 16:47:17 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,15 @@ int	main(int ac, char **av)
 {
 	t_data	lx;
 
-	if (ac == 2 && (*av[1] == 'j' || *av[1] == 'm'))
+	if (ac == 2 && (*av[1] == 'j' || *av[1] == 'm' || *av[1] == 'b'))
 	{
 		initialisation(&lx);
 		if (*av[1] == 'j')
 			mlx_hook(lx.win, 6, 0, mouse_motion_hook, &lx);
 		if (*av[1] == 'm')
 			lx.toggle = 1;
+		if (*av[1] == 'b')
+			lx.toggle = 2;
 		alchemy(&lx);
 		fractal(&lx);
 		mlx_key_hook(lx.win, key_hook, &lx);
@@ -92,7 +94,7 @@ int	main(int ac, char **av)
 		mlx_loop(lx.mlx);
 	}
 	else
-		printf("------------------------\nParamètres :\nj ->\
-		Ensemble de Julia\nm -> Ensemble de Mandelbrot\n");
+		printf("Paramètres :\nj -> Ensemble de Julia\
+		\nm -> Ensemble de Mandelbrot\nb -> Fractale Burning Ship\n");
 	return (0);
 }
