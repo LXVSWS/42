@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 13:41:55 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 16:32:16 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/06 22:03:01 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@ void	initialisation(t_data *lx)
 
 void	alchemy(t_data *lx)
 {
-	if (!lx->toggle)
+	if (!lx->toggle || lx->toggle == 2)
 	{
 		lx->iterations = 150;
-		lx->zoom = 300;
-		lx->x1 = -1.5;
-		lx->x2 = 1.5;
-		lx->y1 = -1.5;
+		lx->zoom = 200;
+		lx->x1 = -2.5;
+		lx->x2 = 1;
+		lx->y1 = -2.5;
 		lx->y2 = 1.5;
 	}
 	else if (lx->toggle == 1)
 	{
 		lx->iterations = 50;
 		lx->zoom = 300;
-		lx->x1 = -2.1;
+		lx->x1 = -2.3;
 		lx->x2 = 0.6;
 		lx->y1 = -1.6;
 		lx->y2 = 1.2;

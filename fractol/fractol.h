@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 14:51:06 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 16:29:14 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/06 21:53:40 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_data
 	void		*img;
 	char		*addr;
 	int			iterations;
+	int			i;
 	long double	zoom;
 	long double	x1;
 	long double	x2;
@@ -57,7 +58,9 @@ typedef struct s_rgb
 void			fractal(t_data *lx);
 void			julia(t_data *lx, int x, int y);
 void			mandelbrot(t_data *lx, int x, int y);
-int				algo(t_data *lx);
+void			burningship(t_data *lx, int x, int y);
+void			algo(t_data *lx);
+void			algo2(t_data *lx);
 int				key_hook(int keycode, t_data *lx);
 int				mouse_hook(int button, int x, int y, t_data *lx);
 int				mouse_motion_hook(int x, int y, t_data *lx);

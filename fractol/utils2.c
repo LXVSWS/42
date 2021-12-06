@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 14:28:35 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/05 16:13:06 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/06 22:04:07 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,28 @@ int	mouse_motion_hook(int x, int y, t_data *lx)
 	lx->mouse_y = y;
 	fractal(lx);
 	return (0);
+}
+
+void	burningship(t_data *lx, int x, int y)
+{
+	lx->c_r = x / lx->zoom + lx->x1;
+	lx->c_i = y / lx->zoom + lx->y1;
+	lx->z_r = 0;
+	lx->z_i = 0;
+	algo2(lx);
+}
+
+void	algo2(t_data *lx)
+{
+	long double	tmp;
+
+	lx->i = 0;
+	while ((lx->z_r * lx->z_r) + (lx->z_i * lx->z_i) < 4 \
+	&& lx->i < lx->iterations)
+	{
+		tmp = lx->z_r * lx->z_r - lx->z_i * lx->z_i + lx->c_r;
+		lx->z_r = fabsl(2 * (lx->z_r * lx->z_i)) + lx->c_i;
+		lx->z_i = tmp;
+		lx->i++;
+	}
 }
