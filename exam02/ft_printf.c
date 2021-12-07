@@ -18,37 +18,48 @@ int	print_s(char *s)
 	return (write(1, "(null)", 6));
 }
 
-int	putnbr(int nb)
+void	putnbr(long long int nb)
 {
-	static int size = 0;
-
 	if (nb == -2147483648)
-	{
 		write(1, "-2147483648", ft_strlen("-2147483648"));
-		return (ft_strlen("-2147483648"));
-	}
 	if (nb < 0 && nb >= -2147483647)
 	{
-		size += write(1, "-", 1);
+		write(1, "-", 1);
 		nb *= -1;
 	}
-	if (nb > 9)
+	if (nb >= 10)
 		putnbr(nb / 10);
-	size += write(1, &"0123456789"[nb % 10], 1);
+	write(1, &"0123456789"[nb % 10], 1);
+}
+
+int	putsize_nbr(long long int nb)
+{
+	int	size = 0;
+
+	putnbr(nb);
+	if (nb == 0)
+		return (1);
+	if (nb < 0)
+	{
+		nb *= -1;
+		size++;
+	}
+	while (nb)
+	{
+		nb /= 10;
+		size++;
+	}
 	return (size);
 }
 
-
 void	puthex(unsigned long long nb)
 {
-	char *base = "0123456789abcdef";
-
 	if (nb >= 16)
 		puthex(nb / 16);
-	write(1, &base[nb % 16], 1);
+	write(1, &"0123456789abcdef"[nb % 16], 1);
 }
 
-int	putsize(unsigned long long nb)
+int	putsize_hex(unsigned long long nb)
 {
 	int	size = 0;
 
@@ -70,9 +81,9 @@ int	getflag(char c, va_list ap)
 	if (c == 's')
 		return (print_s(va_arg(ap, char *)));
 	else if (c == 'd')
-		return (putnbr(va_arg(ap, int)));
+		return (putsize_nbr(va_arg(ap, int)));
 	else if (c == 'x')
-		return (putsize(va_arg(ap, unsigned int)));
+		return (putsize_hex(va_arg(ap, unsigned int)));
 	else
 		return (write(1, "%", 1));
 	return (size);
