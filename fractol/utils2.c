@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/05 14:28:35 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/07 15:57:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/07 17:55:33 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ int	mouse_hook(int button, int x, int y, t_data *lx)
 {
 	if (button == 4)
 	{
-		lx->iterations += 7;
-		lx->zoom *= 1.25;
 		lx->x1 = (x / lx->zoom + lx->x1) - (x / (lx->zoom * 1.25));
 		lx->y1 = (y / lx->zoom + lx->y1) - (y / (lx->zoom * 1.25));
+		lx->iterations += 7;
+		lx->zoom *= 1.25;
 	}
 	if (button == 5 && lx->iterations > 10)
 	{
-		lx->iterations -= 7;
-		lx->zoom *= 0.75;
 		lx->x1 = (x / lx->zoom + lx->x1) - (x / (lx->zoom * 0.75));
 		lx->y1 = (y / lx->zoom + lx->y1) - (y / (lx->zoom * 0.75));
+		lx->iterations -= 7;
+		lx->zoom *= 0.75;
 	}
 	if (button == 1)
 		lx->color++;
