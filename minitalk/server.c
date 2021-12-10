@@ -15,20 +15,28 @@
 void	handler(int signum)
 {
 	if (signum == SIGUSR1)
-		write(1, "!", 1);
+		write(1, "0", 1);
+    else if (signum == SIGUSR2)
+		write(1, "1", 1);
+    write(1, "\n", 1);
 }
 
-int main(int ac, char **av)
+int main()
 {
 	char	*pid;
-    if (ac == 1)
+    pid = itoa(getpid());
+    write(1, "PID : ", 6);
+    write(1, pid, strlen(pid));
+    write(1, "\nWaiting client...\n", 19);
+    if (signal(SIGUSR1, handler) == SIG_ERR)
     {
-        pid = itoa(getpid());
-        write(1, "PID : ", 6);
-        write(1, pid, strlen(pid));
-        write(1, "\n", 1);
-		signal(SIGUSR1, handler);
-        pause();
+        return (write(1, "Error\n", 6));
+        exit(-1);
     }
-    (void)av;
+    if (signal(SIGUSR2, handler) == SIG_ERR)
+    {
+        return (write(1, "Error\n", 6));
+        exit(-1);
+    }
+    while (1);
 }

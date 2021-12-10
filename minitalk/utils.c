@@ -68,7 +68,7 @@ char	*itoa(int n)
 	return (s);
 }
 
-int	ft_atoi(const char *s)
+int	atoi(const char *s)
 {
 	int	i;
 	int	neg;

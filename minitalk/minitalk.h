@@ -19,6 +19,6 @@
 
 size_t	strlen(char const *s);
 char	*itoa(int n);
-int		ft_atoi(const char *s);
+int		atoi(const char *s);
 
 #endif

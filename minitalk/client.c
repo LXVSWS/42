@@ -14,6 +14,13 @@
 
 int main(int ac, char **av)
 {
-	kill(atoi(av[1]), SIGUSR1);
-	(void)ac;
+	if (ac == 3)
+	{
+		if (*av[2] == '0')
+			kill(atoi(av[1]), SIGUSR1);
+		else if (*av[2] == '1')
+			kill(atoi(av[1]), SIGUSR2);
+	}
+	else
+		write(1, "Error\n", 6);
 }
