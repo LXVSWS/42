@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:11:19 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/10 15:32:53 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/12 17:45:02 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,25 @@ int	atoi(const char *s)
 	if (neg == 1)
 		return (-res);
 	return (res);
+}
+
+void	atob_calc(char *b, char c, int j)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 128;
+	while (i < 8)
+	{
+		if (c >= flag)
+		{
+			b[i + (j * 8)] = '1';
+			c -= flag;
+		}
+		else
+			b[i + (j * 8)] = '0';
+		flag /= 2;
+		i++;
+	}
 }

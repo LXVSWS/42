@@ -1,7 +1,7 @@
 NAME	= client
 NAME2	= server
 
-SRCS	= client.c
+SRCS	= client.c utils.c
 SRCS2	= server.c utils.c
 
 OBJS	= ${SRCS:.c=.o}
