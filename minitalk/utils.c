@@ -96,24 +96,3 @@ int	atoi(const char *s)
 		return (-res);
 	return (res);
 }
-
-void	atob_calc(char *b, char c, int j)
-{
-	int	i;
-	int	flag;
-
-	i = 0;
-	flag = 128;
-	while (i < 8)
-	{
-		if (c >= flag)
-		{
-			b[i + (j * 8)] = '1';
-			c -= flag;
-		}
-		else
-			b[i + (j * 8)] = '0';
-		flag /= 2;
-		i++;
-	}
-}

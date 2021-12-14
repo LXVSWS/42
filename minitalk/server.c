@@ -12,10 +12,10 @@
 
 #include "minitalk.h"
 
+int	flag = 0;
+
 void	handler(int signum)
 {
-	static int	flag = 0;
-
 	if (flag >= 8)
 	{
 		write(1, " ", 1);
@@ -23,12 +23,12 @@ void	handler(int signum)
 	}
 	if (signum == SIGUSR1)
 	{
-		write(1, "0", 1);
+		write(1, "1", 1);
 		flag++;
 	}
 	if (signum == SIGUSR2)
 	{
-		write(1, "1", 1);
+		write(1, "0", 1);
 		flag++;
 	}
 }

@@ -21,6 +21,5 @@ size_t	strlen(char const *s);
 int		intlen(int a);
 char	*itoa(int n);
 int		atoi(const char *s);
-void	atob_calc(char *b, char c, int j);
 
 #endif

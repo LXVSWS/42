@@ -12,42 +12,36 @@
 
 #include "minitalk.h"
 
-char	*atob(char *s)
-{
-	char	*b;
-	int		i;
-	int		len;
-
-	len = strlen(s) * 8;
-	b = malloc(sizeof(char) * len + 1);
-	if (!b)
-		return (NULL);
-	i = -1;
-	while (s[++i])
-		atob_calc(b, s[i], i);
-	b[len] = 0;
-	return (b);
-}
-
 int	main(int ac, char **av)
 {
-	char	*b;
-	int		i;
+	int				pid;
+	int				i;
+	int				j;
+	int				flag;
+	int				c;
 
 	if (ac == 3)
 	{
-		b = atob(av[2]);
-		i = 0;
-		while (b[i])
+		pid = atoi(av[1]);
+		i = -1;
+		while (av[2][++i])
 		{
-			if (b[i] == '0')
-				kill(atoi(av[1]), SIGUSR1);
-			else if (b[i] == '1')
-				kill(atoi(av[1]), SIGUSR2);
-			i++;
-			usleep(10);
+			j = -1;
+			flag = 128;
+			c = av[2][i];
+			while (++j < 8)
+			{
+				if (c >= flag)
+				{
+					kill(pid, SIGUSR1);
+					c -= flag;
+				}
+				else
+					kill(pid, SIGUSR2);
+				flag /= 2;
+				usleep(10);
+			}
 		}
-		free(b);
 	}
 	else
 		write(1, "Error\n", 6);
