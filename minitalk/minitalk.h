@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:10:26 by lwyss             #+#    #+#             */
-/*   Updated: 2021/12/12 17:46:07 by lwyss            ###   ########.fr       */
+/*   Updated: 2021/12/15 15:52:14 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <signal.h>
 
+void	sendbits(char c, int pid);
 size_t	strlen(char const *s);
 int		intlen(int a);
 char	*itoa(int n);
