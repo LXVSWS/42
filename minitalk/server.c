@@ -12,27 +12,26 @@
 
 #include "minitalk.h"
 
-volatile unsigned char	g_count = 0;
-
 void	handler(int signum)
 {
 	static unsigned char	byte = 0;
+	static unsigned char	count = 0;
 
 	if (signum == SIGUSR1)
 	{
 		byte <<= 1;
 		byte++;
-		g_count++;
+		count++;
 	}
 	if (signum == SIGUSR2)
 	{
 		byte <<= 1;
-		g_count++;
+		count++;
 	}
-	if (g_count >= 8)
+	if (count >= 8)
 	{
 		write(1, &byte, 1);
-		g_count = 0;
+		count = 0;
 		byte = 0;
 	}
 }
