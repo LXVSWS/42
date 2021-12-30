@@ -4,4 +4,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+size_t	strlen(char const *s);
+int		intlen(int a);
+char	*itoa(int n);
+int		atoi(const char *s);
+
 #endif

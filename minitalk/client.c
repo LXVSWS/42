@@ -29,7 +29,7 @@ void	sendbits(char c, int pid)
 		else
 			kill(pid, SIGUSR2);
 		flag /= 2;
-		usleep(100);
+		usleep(1000);
 	}
 }
 

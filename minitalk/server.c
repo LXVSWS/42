@@ -39,23 +39,13 @@ void	handler(int signum)
 int	main(void)
 {
 	char				*pid;
-	struct sigaction	sigact;
 
 	pid = itoa(getpid());
 	write(1, "PID : ", 6);
 	write(1, pid, strlen(pid));
 	write(1, "\nWaiting client...\n", 19);
-	sigact.sa_handler = handler;
-	if (sigaction(SIGUSR1, &sigact, NULL) == -1)
-	{
-		return (write(1, "Error\n", 6));
-		exit(-1);
-	}
-	if (sigaction(SIGUSR2, &sigact, NULL) == -1)
-	{
-		return (write(1, "Error\n", 6));
-		exit(-1);
-	}
+	signal(SIGUSR1, handler);
+	signal(SIGUSR2, handler);
 	while (1)
 		;
 	return (0);
