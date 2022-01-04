@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:10:53 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/04 11:38:57 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/04 17:02:07 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	sendbits(char c, int pid)
 		else
 			kill(pid, SIGUSR2);
 		flag /= 2;
-		usleep(100);
+		usleep(500);
 	}
 }
 
