@@ -2,19 +2,12 @@
 
 int main(int ac, char **av)
 {
-    int i;
-    int j;
+	char **set;
 
-    if (ac > 1)
+    if (ac == 2)
     {
-        i = 0;
-        while (av[++i])
-        {
-            j = -1;
-            while (av[i][++j])
-                if (av[i][j] >= '0' && av[i][j] <= '9')
-                    write(1, &av[i][j], 1);
-        }
+		set = split(av[1], ' ');
+		write(1, *set, 2);
     }
     else
         write(2, "Error\n", 6);
