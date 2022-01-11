@@ -11,7 +11,6 @@ typedef struct s_list
 }	t_list;
 
 size_t	ft_strlen(char const *s);
-char	*ft_itoa(int n);
 int		ft_atoi(const char *s);
 char	**ft_split(char const *s, char c);
 t_list	*ft_lstnew(void *content);
