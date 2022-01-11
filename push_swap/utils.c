@@ -6,13 +6,13 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:11:19 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/06 16:45:10 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/11 16:57:57 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-size_t	strlen(char const *s)
+size_t	ft_strlen(char const *s)
 {
 	size_t	i;
 
@@ -42,7 +42,7 @@ int	intlen(int a)
 	return (i + neg);
 }
 
-char	*itoa(int n)
+char	*ft_itoa(int n)
 {
 	int		len;
 	int		neg;
@@ -68,7 +68,7 @@ char	*itoa(int n)
 	return (s);
 }
 
-int	atoi(const char *s)
+int	ft_atoi(const char *s)
 {
 	int	i;
 	int	neg;
@@ -163,7 +163,7 @@ static char	**wordcopy(char **pp, char *s, char c)
 	return (pp);
 }
 
-char	**split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**pp;
 
@@ -174,4 +174,31 @@ char	**split(char const *s, char c)
 		return (NULL);
 	pp = wordcopy(pp, (char *)s, c);
 	return (pp);
+}
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*l;
+
+	l = malloc(sizeof(t_list));
+	if (!l)
+		return (NULL);
+	l->content = content;
+	l->next = NULL;
+	return (l);
+}
+
+void	ft_lstadd_back(t_list **alst, t_list *new)
+{
+	t_list	*tmp;
+
+	tmp = *alst;
+	if (*alst)
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	else
+		*alst = new;
 }

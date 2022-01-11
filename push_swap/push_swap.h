@@ -4,9 +4,17 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-size_t	strlen(char const *s);
-char	*itoa(int n);
-int		atoi(const char *s);
-char	**split(char const *s, char c);
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}	t_list;
+
+size_t	ft_strlen(char const *s);
+char	*ft_itoa(int n);
+int		ft_atoi(const char *s);
+char	**ft_split(char const *s, char c);
+t_list	*ft_lstnew(void *content);
+void	ft_lstadd_back(t_list **alst, t_list *new);
 
 #endif

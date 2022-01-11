@@ -2,18 +2,17 @@
 
 int main(int ac, char **av)
 {
+	t_list	*list;
 	char	**set;
 	int		i;
 
     if (ac == 2)
     {
-		set = split(av[1], ' ');
-		i = -1;
+		set = ft_split(av[1], ' ');
+		i = 0;
+		list = ft_lstnew(set[i]);
 		while (set[++i])
-		{
-			write(1, set[i], strlen(set[i]));
-			write(1, "\n", 1);
-		}
+			ft_lstadd_back(&list, ft_lstnew(set[i]));
     }
     else
         write(2, "Error\n", 6);
