@@ -11,7 +11,7 @@ typedef struct s_list
 }	t_list;
 
 size_t	ft_strlen(char const *s);
-int		ft_atoi(const char *s);
+long	ft_atoi(const char *s);
 char	**ft_split(char const *s, char c);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **alst, t_list *new);
