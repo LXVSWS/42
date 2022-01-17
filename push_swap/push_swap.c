@@ -6,34 +6,12 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/17 18:57:41 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/17 19:06:21 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
-
-static void	free_set(void **set)
-{
-	int	i;
-
-	i = -1;
-	while (set[++i])
-		free(set[i]);
-	free(set);
-}
-
-static void	clean_exit(void **set)
-{
-	int	i;
-
-	write(2, "Error\n", 6);
-	i = -1;
-	while (set[++i])
-		free(set[i]);
-	free(set);
-	exit(1);
-}
 
 static int	**create_setint(int size, char **set)
 {
@@ -50,8 +28,23 @@ static int	**create_setint(int size, char **set)
 		*d = (int)ft_atol(set[i]);
 		a[i] = d;
 	}
-	free_set((void **)set);
+	i = -1;
+	while (set[++i])
+		free(set[i]);
+	free(set);
 	return (a);
+}
+
+static void	clean_exit(void **set)
+{
+	int	i;
+
+	write(2, "Error\n", 6);
+	i = -1;
+	while (set[++i])
+		free(set[i]);
+	free(set);
+	exit(1);
 }
 
 static int	**parsing(char **set)
