@@ -67,7 +67,18 @@ int main(int ac, char **av)
 		}
 		while (list)
 		{
-			printf("%i\n", *(int *)(list->content));
+			if (list->next)
+			{
+				i = *(list->content);
+				y = *(list->next->content);
+			}
+			if (*(list->content) > *(list->next->content))
+			{
+				t = list->next->content;
+				list->next->content = list->content;
+				list->content = t;
+			}
+			printf("%i\n", *(list->content));
 			list = list->next;
 		}
     }
