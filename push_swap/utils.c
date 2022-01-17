@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:11:19 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/12 18:32:30 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/17 14:53:50 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(char const *s)
 	return (i);
 }
 
-long	ft_atoi(const char *s)
+long	ft_atol(const char *s)
 {
 	int			i;
 	int			neg;

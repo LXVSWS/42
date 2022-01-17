@@ -43,6 +43,8 @@ int main(int ac, char **av)
 				if ((set[i][y] < 48 || set[i][y] > 57) && set[i][y] != 45)
 					clean_exit((void **)set);
 			y = -1;
+			if (ft_atol(set[i]) < -2147483648 || ft_atol(set[i]) > 2147483647)
+				clean_exit((void **)set);
 		}
 		a = malloc(sizeof(int *) * i + 1);
 		a[i] = NULL;
@@ -50,8 +52,7 @@ int main(int ac, char **av)
 		while (set[++i])
 		{
 			d = malloc(sizeof(int));
-			printf("%li\n", ft_atoi(set[i]));
-			*d = ft_atoi(set[i]);
+			*d = (int)ft_atol(set[i]);
 			a[i] = d;
 		}
 		free_set((void **)set);
