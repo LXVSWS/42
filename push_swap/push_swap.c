@@ -1,7 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
+/*   Updated: 2022/01/17 18:47:53 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 #include <stdio.h>
 
-void	clean_exit(void **set)
+static void	free_set(void **set)
+{
+	int	i;
+
+	i = -1;
+	while (set[++i])
+		free(set[i]);
+	free(set);
+}
+
+static void	clean_exit(void **set)
 {
 	int	i;
 
@@ -13,49 +35,54 @@ void	clean_exit(void **set)
 	exit(1);
 }
 
-void	free_set(void **set)
+static int	**create_setint(int size, char **set)
 {
+	int	**a;
+	int	*d;
 	int	i;
 
+	a = malloc(sizeof(int *) * size + 1);
+	a[size] = NULL;
 	i = -1;
 	while (set[++i])
-		free(set[i]);
-	free(set);
+	{
+		d = malloc(sizeof(int));
+		*d = (int)ft_atol(set[i]);
+		a[i] = d;
+	}
+	free_set((void **)set);
+	return (a);
 }
 
-int main(int ac, char **av)
+static int	**parsing(char **set)
 {
-	char	**set;
+	int		i;
+	int		y;
+
+	i = -1;
+	y = -1;
+	while (set[++i])
+	{
+		while (set[i][++y])
+			if ((set[i][y] < 48 || set[i][y] > 57) && set[i][y] != 45)
+				clean_exit((void **)set);
+		y = -1;
+		if (ft_atol(set[i]) < -2147483648 || ft_atol(set[i]) > 2147483647)
+			clean_exit((void **)set);
+	}
+	return (create_setint(i, set));
+}
+
+int	main(int ac, char **av)
+{
 	int		**a;
-	int		*d;
 	int		i;
 	int		y;
 	t_list	*list;
 
-    if (ac == 2)
-    {
-		set = ft_split(av[1], ' ');
-		i = -1;
-		y = -1;
-		while (set[++i])
-		{
-			while (set[i][++y])
-				if ((set[i][y] < 48 || set[i][y] > 57) && set[i][y] != 45)
-					clean_exit((void **)set);
-			y = -1;
-			if (ft_atol(set[i]) < -2147483648 || ft_atol(set[i]) > 2147483647)
-				clean_exit((void **)set);
-		}
-		a = malloc(sizeof(int *) * i + 1);
-		a[i] = NULL;
-		i = -1;
-		while (set[++i])
-		{
-			d = malloc(sizeof(int));
-			*d = (int)ft_atol(set[i]);
-			a[i] = d;
-		}
-		free_set((void **)set);
+	if (ac == 2)
+	{
+		a = parsing(ft_split(av[1], ' '));
 		i = -1;
 		while (a[++i])
 		{
@@ -67,21 +94,10 @@ int main(int ac, char **av)
 		}
 		while (list)
 		{
-			if (list->next)
-			{
-				i = *(list->content);
-				y = *(list->next->content);
-			}
-			if (*(list->content) > *(list->next->content))
-			{
-				t = list->next->content;
-				list->next->content = list->content;
-				list->content = t;
-			}
 			printf("%i\n", *(list->content));
 			list = list->next;
 		}
-    }
-    else
-        write(2, "Error\n", 6);
+	}
+	else
+		write(2, "Error\n", 6);
 }
