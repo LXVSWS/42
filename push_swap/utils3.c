@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:24:42 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/18 18:39:16 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 19:34:43 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ t_list	*pa(t_list **list_a, t_list *list_b)
 	return (tmp);
 }
 
-t_list	*ra(t_list *list_a)
+void	ra(t_list **list_a)
 {
-	t_list	*tmp;
+	t_list	*last;
+	t_list	*next;
 
-	tmp = list_a;
-	list_a = list_a->next;
+	last = ft_lstlast(*list_a);
+	next = (*list_a)->next;
 	write(1, "ra\n", 3);
-	return (tmp);
 }
 
 void	print_lists(t_list *list_a, t_list *list_b)

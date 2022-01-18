@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:11:19 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/18 16:01:11 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 19:11:50 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,12 @@ void	ft_lstadd_front(t_list **alst, t_list *new)
 	tmp = *alst;
 	*alst = new;
 	new->next = tmp;
+}
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (lst)
+		while (lst->next)
+			lst = lst->next;
+	return (lst);
 }
