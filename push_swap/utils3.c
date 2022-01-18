@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:24:42 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/18 16:52:40 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 18:39:16 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ t_list	*pb(t_list *list_a, t_list **list_b)
 {
 	t_list	*tmp;
 
-	tmp = list_a->next;
-	ft_lstadd_front(list_b, list_a);
+	tmp = list_a;
+	if (list_a)
+	{
+		tmp = list_a->next;
+		ft_lstadd_front(list_b, list_a);
+	}
 	write(1, "pb\n", 3);
 	return (tmp);
 }
@@ -27,9 +31,23 @@ t_list	*pa(t_list **list_a, t_list *list_b)
 {
 	t_list	*tmp;
 
-	tmp = list_b->next;
-	ft_lstadd_front(list_a, list_b);
+	tmp = list_b;
+	if (list_b)
+	{
+		tmp = list_b->next;
+		ft_lstadd_front(list_a, list_b);
+	}
 	write(1, "pa\n", 3);
+	return (tmp);
+}
+
+t_list	*ra(t_list *list_a)
+{
+	t_list	*tmp;
+
+	tmp = list_a;
+	list_a = list_a->next;
+	write(1, "ra\n", 3);
 	return (tmp);
 }
 

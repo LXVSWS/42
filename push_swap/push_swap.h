@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:22:33 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/18 16:48:04 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 18:34:09 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_lstadd_back(t_list **alst, t_list *new);
 void	ft_lstadd_front(t_list **alst, t_list *new);
 t_list	*pb(t_list *list_a, t_list **list_b);
 t_list	*pa(t_list **list_a, t_list *list_b);
+t_list	*ra(t_list *list_a);
 void	print_lists(t_list *list_a, t_list *list_b);
 
 #endif

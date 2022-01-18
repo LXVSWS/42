@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/18 16:56:01 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 18:39:56 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ int	main(int ac, char **av)
 			ft_lstadd_back(&list_a, ft_lstnew(a[i]));
 		}
 		list_b = NULL;
-		if (list_a)
+		if (*(list_a->content) > *(list_a->next->content))
 			list_a = pb(list_a, &list_b);
-		if (list_b)
-			list_b = pa(&list_a, list_b);
+		list_b = pa(&list_a, list_b);
+		list_a = ra(list_a);
 		print_lists(list_a, list_b);
 	}
 }
