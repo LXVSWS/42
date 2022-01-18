@@ -6,12 +6,11 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/17 19:06:21 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 16:56:01 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 static int	**create_setint(int size, char **set)
 {
@@ -71,7 +70,8 @@ int	main(int ac, char **av)
 	int		**a;
 	int		i;
 	int		y;
-	t_list	*list;
+	t_list	*list_a;
+	t_list	*list_b;
 
 	if (ac == 2)
 	{
@@ -83,12 +83,13 @@ int	main(int ac, char **av)
 			while (a[++y])
 				if (*a[y] == *a[i])
 					clean_exit((void **)a);
-			ft_lstadd_back(&list, ft_lstnew(a[i]));
+			ft_lstadd_back(&list_a, ft_lstnew(a[i]));
 		}
-		while (list)
-		{
-			printf("%i\n", *(list->content));
-			list = list->next;
-		}
+		list_b = NULL;
+		if (list_a)
+			list_a = pb(list_a, &list_b);
+		if (list_b)
+			list_b = pa(&list_a, list_b);
+		print_lists(list_a, list_b);
 	}
 }

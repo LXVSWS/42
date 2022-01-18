@@ -6,21 +6,11 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 15:11:19 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/17 17:24:53 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/18 16:01:11 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-size_t	ft_strlen(char const *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
 
 long	ft_atol(const char *s)
 {
@@ -76,4 +66,13 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 	}
 	else
 		*alst = new;
+}
+
+void	ft_lstadd_front(t_list **alst, t_list *new)
+{
+	t_list	*tmp;
+
+	tmp = *alst;
+	*alst = new;
+	new->next = tmp;
 }
