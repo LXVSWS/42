@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/19 17:58:23 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/19 19:14:44 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,10 @@ static void	sort(t_list	*list_a, t_list	*list_b, int size)
 {
 	if (size == 1)
 		exit(1);
+	while (*(list_a->content) > *(list_a->next->content))
+		ra(&list_a);
 	list_a = pb(list_a, &list_b);
 	list_b = pa(&list_a, list_b);
-	ra(&list_a);
 	print_lists(list_a, list_b);
 }
 
