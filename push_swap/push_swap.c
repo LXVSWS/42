@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/19 17:24:02 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/19 17:46:21 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,24 @@ static int	**parsing(char **set)
 	while (set[++i])
 	{
 		while (set[i][++y])
-			if ((set[i][y] < 48 || set[i][y] > 57) && set[i][y] != 45)
+			if ((set[i][y] < 48 || set[i][y] > 57) && \
+			(set[i][y] == 45 && (set[i][y + 1] < 48 || set[i][y + 1] > 57)))
 				clean_exit((void **)set);
 		y = -1;
 		if (ft_atol(set[i]) < -2147483648 || ft_atol(set[i]) > 2147483647)
 			clean_exit((void **)set);
 	}
 	return (create_setint(i, set));
+}
+
+static void	sort(t_list	*list_a, t_list	*list_b, int size)
+{
+	if (size == 1)
+		exit(1);
+	list_a = pb(list_a, &list_b);
+	list_b = pa(&list_a, list_b);
+	ra(&list_a);
+	print_lists(list_a, list_b);
 }
 
 int	main(int ac, char **av)
@@ -86,9 +97,6 @@ int	main(int ac, char **av)
 			ft_lstadd_back(&list_a, ft_lstnew(a[i]));
 		}
 		list_b = NULL;
-		list_a = pb(list_a, &list_b);
-		list_b = pa(&list_a, list_b);
-		ra(&list_a);
-		print_lists(list_a, list_b);
+		sort(list_a, list_b, i);
 	}
 }
