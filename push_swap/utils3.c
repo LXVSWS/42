@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:24:42 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/18 19:34:43 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/19 17:21:27 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,17 @@ t_list	*pa(t_list **list_a, t_list *list_b)
 
 void	ra(t_list **list_a)
 {
+	t_list	*tmp;
 	t_list	*last;
-	t_list	*next;
 
-	last = ft_lstlast(*list_a);
-	next = (*list_a)->next;
+	if ((*list_a)->next)
+	{
+		tmp = (*list_a)->next;
+		last = ft_lstlast(*list_a);
+		(*list_a)->next = NULL;
+		last->next = *list_a;
+		*list_a = tmp;
+	}
 	write(1, "ra\n", 3);
 }
 
