@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/20 17:28:00 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/20 19:00:50 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,16 @@ static int	**parsing(char **set)
 
 static void	sort(t_list	*list_a, t_list	*list_b, int size)
 {
-
 	if (size == 1)
 		exit(1);
-	else if (size > 1 && size <= 3)
+	else if (size == 2)
 	{
-		while (*(list_a->content) > *(list_a->next->content))
+		if (*(list_a->content) > *(list_a->next->content))
 			ra(&list_a);
-		if (*(list_a->content) < *(list_a->next->next->content))
-			list_a = pb(list_a, &list_b);
-		else
-			ra(&list_a);
-		while (*(list_a->content) > *(list_a->next->content))
-			ra(&list_a);
-		list_b = pa(&list_a, list_b);
 	}
-	else if (size > 3 && size <= 5)
+	else if (size > 2 && size <= 5)
 		;
-	else
+	else if (size > 5)
 		;
 	print_lists(list_a, list_b);
 }

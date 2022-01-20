@@ -6,12 +6,11 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:24:42 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/19 17:21:27 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/20 18:12:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 t_list	*pb(t_list *list_a, t_list **list_b)
 {
