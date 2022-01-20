@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/20 19:00:50 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/20 19:16:57 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ static void	sort(t_list	*list_a, t_list	*list_b, int size)
 			ra(&list_a);
 	}
 	else if (size > 2 && size <= 5)
-		;
-	else if (size > 5)
 		;
 	print_lists(list_a, list_b);
 }
