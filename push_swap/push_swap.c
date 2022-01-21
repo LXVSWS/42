@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/20 19:52:04 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/21 17:54:07 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ static void	sort(t_list	*list_a, t_list	*list_b, int size)
 	}
 	else if (size > 2 && size <= 5)
 	{
-		//list_a = pb(list_a, &list_b);
-		//list_b = pa(&list_a, list_b);
-		//ra(&list_a);
-		rra(&list_a);
+		list_a = pb(list_a, &list_b);
+		list_b = pa(&list_a, list_b);
+		ra(&list_a);
+		rra(&list_a, size);
 	}
 	else if (size > 5)
 		;

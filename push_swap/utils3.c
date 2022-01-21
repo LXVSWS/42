@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:24:42 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/20 18:12:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/21 17:53:38 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,17 @@ void	ra(t_list **list_a)
 	write(1, "ra\n", 3);
 }
 
-void	rra(t_list **list_a)
+void	rra(t_list **list_a, int size)
 {
 	t_list	*tmp;
 	t_list	*last;
+	t_list	*prelast;
 
-	if ((*list_a)->next)
-	{
-		tmp = (*list_a)->next;
-		last = ft_lstlast(*list_a);
-	}
+	tmp = *list_a;
+	last = ft_lstlast(*list_a);
+	prelast = *list_a;
+	while (--size - 1)
+		prelast = prelast->next;
 	write(1, "rra\n", 4);
 }
 

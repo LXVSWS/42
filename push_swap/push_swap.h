@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:22:33 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/20 18:12:34 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/21 17:35:08 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_list	*pb(t_list *list_a, t_list **list_b);
 t_list	*pa(t_list **list_a, t_list *list_b);
 void	sa(t_list **list_a);
 void	ra(t_list **list_a);
-void	rra(t_list **list_a);
+void	rra(t_list **list_a, int size);
 void	print_lists(t_list *list_a, t_list *list_b);
 
 #endif
