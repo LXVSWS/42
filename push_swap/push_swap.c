@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/21 17:54:07 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/21 21:00:49 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,15 @@ static int	**parsing(char **set)
 	while (set[++i])
 	{
 		while (set[i][++y])
-			if ((set[i][y] < 48 || set[i][y] > 57) && \
-			(set[i][y] == 45 && (set[i][y + 1] < 48 || set[i][y + 1] > 57)))
+		{
+			if ((set[i][y] < 48 || set[i][y] > 57) && set[i][y] != 45)
 				clean_exit((void **)set);
+			if ((set[i][y] == 45 && (set[i][y + 1] < 48 || set[i][y + 1] > 57)))
+				clean_exit((void **)set);
+			if (((set[i][y] > 48 || set[i][y] < 57) && set[i][y + 1] == 45 && \
+			(set[i][y + 2] > 48 || set[i][y + 2] < 57)))
+				clean_exit((void **)set);
+		}
 		y = -1;
 		if (ft_atol(set[i]) < -2147483648 || ft_atol(set[i]) > 2147483647)
 			clean_exit((void **)set);
@@ -66,25 +72,31 @@ static int	**parsing(char **set)
 	return (create_setint(i, set));
 }
 
-static void	sort(t_list	*list_a, t_list	*list_b, int size)
+static void	sort(t_list	**list_a, t_list **list_b, int size)
 {
+	t_list	*tmp;
+	int		i;
+
+	tmp = *list_a;
+	i = 0;
 	if (size == 1)
 		exit(1);
 	else if (size == 2)
 	{
-		if (*(list_a->content) > *(list_a->next->content))
-			sa(&list_a);
+		if (*(tmp->content) > *(tmp->next->content))
+			sa(list_a);
 	}
 	else if (size > 2 && size <= 5)
 	{
-		list_a = pb(list_a, &list_b);
-		list_b = pa(&list_a, list_b);
-		ra(&list_a);
-		rra(&list_a, size);
+		while (tmp->next)
+			if (*(tmp->content) < *(tmp->next->content))
+				tmp = tmp->next;
+		else
+			small_sort(list_a, list_b, size);
 	}
 	else if (size > 5)
 		;
-	print_lists(list_a, list_b);
+	print_lists(*list_a, *list_b);
 }
 
 int	main(int ac, char **av)
@@ -107,7 +119,6 @@ int	main(int ac, char **av)
 					clean_exit((void **)a);
 			ft_lstadd_back(&list_a, ft_lstnew(a[i]));
 		}
-		list_b = NULL;
-		sort(list_a, list_b, i);
+		sort(&list_a, &list_b, i);
 	}
 }
