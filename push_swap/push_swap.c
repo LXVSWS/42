@@ -73,12 +73,14 @@ static void	sort(t_list	*list_a, t_list	*list_b, int size)
 	else if (size == 2)
 	{
 		if (*(list_a->content) > *(list_a->next->content))
-			ra(&list_a);
+			sa(&list_a);
 	}
 	else if (size > 2 && size <= 5)
 	{
-		list_a = pb(list_a, &list_b);
-		list_b = pa(&list_a, list_b);
+		//list_a = pb(list_a, &list_b);
+		//list_b = pa(&list_a, list_b);
+		//ra(&list_a);
+		rra(&list_a);
 	}
 	else if (size > 5)
 		;

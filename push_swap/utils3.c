@@ -40,6 +40,22 @@ t_list	*pa(t_list **list_a, t_list *list_b)
 	return (tmp);
 }
 
+void	sa(t_list **list_a)
+{
+	t_list	*tmp;
+	t_list	*tmp2;
+
+	if (*list_a && (*list_a)->next)
+	{
+		tmp = *list_a;
+		tmp2 = (*list_a)->next->next;
+		*list_a = (*list_a)->next;
+		(*list_a)->next = tmp;
+		(*list_a)->next->next = tmp2;
+	}
+	write(1, "sa\n", 3);
+}
+
 void	ra(t_list **list_a)
 {
 	t_list	*tmp;
@@ -54,6 +70,19 @@ void	ra(t_list **list_a)
 		*list_a = tmp;
 	}
 	write(1, "ra\n", 3);
+}
+
+void	rra(t_list **list_a)
+{
+	t_list	*tmp;
+	t_list	*last;
+
+	if ((*list_a)->next)
+	{
+		tmp = (*list_a)->next;
+		last = ft_lstlast(*list_a);
+	}
+	write(1, "rra\n", 4);
 }
 
 void	print_lists(t_list *list_a, t_list *list_b)

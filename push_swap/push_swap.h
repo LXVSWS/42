@@ -32,7 +32,9 @@ void	ft_lstadd_front(t_list **alst, t_list *new);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*pb(t_list *list_a, t_list **list_b);
 t_list	*pa(t_list **list_a, t_list *list_b);
+void	sa(t_list **list_a);
 void	ra(t_list **list_a);
+void	rra(t_list **list_a);
 void	print_lists(t_list *list_a, t_list *list_b);
 
 #endif
