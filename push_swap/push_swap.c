@@ -88,11 +88,10 @@ static void	sort(t_list	**list_a, t_list **list_b, int size)
 	}
 	else if (!test_sort(list_a))
 		exit(1);
-	else if (size > 2 && size <= 5)
-		small_sort(list_a, list_b, size);
-	else if (size > 5)
-		small_sort(list_a, list_b, size);
-	print_lists(*list_a, *list_b);
+	else if (size == 3)
+		small_sort(list_a, size);
+	else if (size > 3)
+		radix(list_a, list_b, size);
 }
 
 int	main(int ac, char **av)
