@@ -36,6 +36,7 @@ void	sa(t_list **list_a);
 void	ra(t_list **list_a);
 void	rra(t_list **list_a, int size);
 void	small_sort(t_list **list_a, t_list **list_b, int size);
+int		test_sort(t_list **list);
 void	print_lists(t_list *list_a, t_list *list_b);
 
 #endif

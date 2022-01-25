@@ -12,20 +12,28 @@
 
 #include "push_swap.h"
 
-void	small_sort(t_list **list_a, t_list **list_b, int size)
+int	test_sort(t_list **list)
 {
 	t_list	*tmp;
 
+	tmp = *list;
+	while (tmp->next)
+		if (*(tmp->content) < *(tmp->next->content))
+			tmp = tmp->next;
+		else
+			return (1);
+	return (0);
+}
+
+void	small_sort(t_list **list_a, t_list **list_b, int size)
+{
 	(void)size;
-	tmp = *list_a;
-	if (*(tmp->content) > *(tmp->next->content))
-		sa(list_a);
+	(void)list_b;
+	sa(list_a);
 	rra(list_a, size);
-	pb(list_a, list_b);
-	pa(list_a, list_b);
-	ra(list_a);
-	print_lists(*list_a, *list_b);
-	exit(0);
+	//ra(list_a);
+	//pb(list_a, list_b);
+	//pa(list_a, list_b);
 }
 
 void	print_lists(t_list *list_a, t_list *list_b)

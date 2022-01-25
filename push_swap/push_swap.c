@@ -86,16 +86,12 @@ static void	sort(t_list	**list_a, t_list **list_b, int size)
 		if (*(tmp->content) > *(tmp->next->content))
 			sa(list_a);
 	}
+	else if (!test_sort(list_a))
+		exit(1);
 	else if (size > 2 && size <= 5)
-	{
-		while (tmp->next)
-			if (*(tmp->content) < *(tmp->next->content))
-				tmp = tmp->next;
-		else
-			small_sort(list_a, list_b, size);
-	}
+		small_sort(list_a, list_b, size);
 	else if (size > 5)
-		;
+		small_sort(list_a, list_b, size);
 	print_lists(*list_a, *list_b);
 }
 
