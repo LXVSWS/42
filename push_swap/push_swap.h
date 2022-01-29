@@ -15,7 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
 
 typedef struct s_list
 {
@@ -37,7 +36,8 @@ void	ra(t_list **list_a);
 void	rra(t_list **list_a, int size);
 int		test_sort(t_list **list);
 void	small_sort(t_list **list_a, int size);
-void	radix(t_list **list_a, t_list **list_b, int size);
-void	print_lists(t_list *list_a, t_list *list_b);
+void	bubble_sort(t_list **list);
+void	simplify(t_list **list_a, int size);
+void	radix_sort(t_list **list_a, t_list **list_b, int size);
 
 #endif

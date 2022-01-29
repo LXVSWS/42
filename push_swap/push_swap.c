@@ -34,16 +34,34 @@ static int	**create_setint(int size, char **set)
 	return (a);
 }
 
-static void	clean_exit(void **set)
+static void	clean_exit(void **set, int flag)
 {
-	int	i;
+	t_list	*tmp;
+	t_list	*tmp2;
+	int		i;
 
-	write(2, "Error\n", 6);
-	i = -1;
-	while (set[++i])
-		free(set[i]);
-	free(set);
-	exit(1);
+	if (flag == 0 || flag == 1)
+	{
+		i = -1;
+		while (set[++i])
+			free(set[i]);
+		free(set);
+	}
+	if (flag == 1)
+	{
+		write(2, "Error\n", 6);
+		exit(1);
+	}
+	if (flag == 2)
+	{
+		tmp = *set;
+		while (tmp)
+		{
+			tmp2 = tmp->next;
+			free(tmp);
+			tmp = tmp2;
+		}
+	}
 }
 
 static int	**parsing(char **set)
@@ -58,16 +76,16 @@ static int	**parsing(char **set)
 		while (set[i][++y])
 		{
 			if ((set[i][y] < 48 || set[i][y] > 57) && set[i][y] != 45)
-				clean_exit((void **)set);
+				clean_exit((void **)set, 1);
 			if ((set[i][y] == 45 && (set[i][y + 1] < 48 || set[i][y + 1] > 57)))
-				clean_exit((void **)set);
+				clean_exit((void **)set, 1);
 			if (((set[i][y] > 48 || set[i][y] < 57) && set[i][y + 1] == 45 && \
 			(set[i][y + 2] > 48 || set[i][y + 2] < 57)))
-				clean_exit((void **)set);
+				clean_exit((void **)set, 1);
 		}
 		y = -1;
 		if (ft_atol(set[i]) < -2147483648 || ft_atol(set[i]) > 2147483647)
-			clean_exit((void **)set);
+			clean_exit((void **)set, 1);
 	}
 	return (create_setint(i, set));
 }
@@ -75,10 +93,8 @@ static int	**parsing(char **set)
 static void	sort(t_list	**list_a, t_list **list_b, int size)
 {
 	t_list	*tmp;
-	int		i;
 
 	tmp = *list_a;
-	i = 0;
 	if (size == 1)
 		exit(1);
 	else if (size == 2)
@@ -91,7 +107,10 @@ static void	sort(t_list	**list_a, t_list **list_b, int size)
 	else if (size == 3)
 		small_sort(list_a, size);
 	else if (size > 3)
-		radix(list_a, list_b, size);
+	{
+		simplify(list_a, size);
+		radix_sort(list_a, list_b, size);
+	}
 }
 
 int	main(int ac, char **av)
@@ -111,9 +130,11 @@ int	main(int ac, char **av)
 			y = i;
 			while (a[++y])
 				if (*a[y] == *a[i])
-					clean_exit((void **)a);
+					clean_exit((void **)a, 1);
 			ft_lstadd_back(&list_a, ft_lstnew(a[i]));
 		}
 		sort(&list_a, &list_b, i);
+		clean_exit((void **)a, 0);
+		clean_exit((void **)&list_a, 3);
 	}
 }

@@ -53,27 +53,81 @@ void	small_sort(t_list **list_a, int size)
 	small_sort(list_a, size);
 }
 
-void	radix(t_list **list_a, t_list **list_b, int size)
+void	bubble_sort(t_list **list)
 {
-	(void)size;
-	print_lists(*list_a, *list_b);
-	//sa(list_a);
-	//ra(list_a);
-	//rra(list_a, size);
-	//pb(list_a, list_b);
-	//pa(list_a, list_b);
+	t_list	*tmp;
+	int		*val;
+
+	tmp = *list;
+	while (test_sort(list))
+	{
+		tmp = *list;
+		while (tmp->next)
+		{
+			if (*(tmp->content) > *(tmp->next->content))
+			{
+				val = tmp->next->content;
+				tmp->next->content = tmp->content;
+				tmp->content = val;
+			}
+			tmp = tmp->next;
+		}
+	}
 }
 
-void	print_lists(t_list *list_a, t_list *list_b)
+void	simplify(t_list **list_a, int size)
 {
-	while (list_a)
+	t_list	*tmp;
+	int		*or[size];
+	int		i;
+
+	tmp = *list_a;
+	i = 0;
+	while (tmp)
 	{
-		printf("A : %i\n", *(list_a->content));
-		list_a = list_a->next;
+		or[i++] = tmp->content;
+		tmp = tmp->next;
 	}
-	while (list_b)
+	bubble_sort(list_a);
+	tmp = *list_a;
+	i = 0;
+	while (tmp)
 	{
-		printf("B : %i\n", *(list_b->content));
-		list_b = list_b->next;
+		*(tmp->content) = i++;
+		tmp = tmp->next;
+	}
+	tmp = *list_a;
+	i = 0;
+	while (tmp)
+	{
+		tmp->content = or[i++];
+		tmp = tmp->next;
+	}
+}
+
+void	radix_sort(t_list **list_a, t_list **list_b, int size)
+{
+	t_list	*tmp;
+	int		i;
+	int		j;
+
+	tmp = *list_a;
+	i = -1;
+	j = 0;
+	while (test_sort(list_a))
+	{
+		while (++i < size)
+		{
+			if (((*(tmp->content) >> j & 1) == 1))
+				ra(list_a);
+			else
+				pb(list_a, list_b);
+			tmp = *list_a;
+		}
+		while ((*list_b))
+			pa(list_a, list_b);
+		tmp = *list_a;
+		i = -1;
+		j++;
 	}
 }
