@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 19:50:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/21 21:39:56 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/29 17:46:39 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ int	test_sort(t_list **list)
 	while (tmp->next)
 		if (*(tmp->content) < *(tmp->next->content))
 			tmp = tmp->next;
-		else
-			return (1);
+	else
+		return (1);
 	return (0);
 }
 
 void	small_sort(t_list **list_a, int size)
 {
 	t_list	*tmp;
-	int	first;
-	int	second;
-	int	third;
+	int		first;
+	int		second;
+	int		third;
 
 	if (!test_sort(list_a))
-		return;
+		return ;
 	tmp = *list_a;
 	first = *(tmp->content);
 	second = *(tmp->next->content);
@@ -75,34 +75,14 @@ void	bubble_sort(t_list **list)
 	}
 }
 
-void	simplify(t_list **list_a, int size)
+void	medium_sort(t_list **list_a, t_list **list_b, int size)
 {
-	t_list	*tmp;
-	int		*or[size];
-	int		i;
-
-	tmp = *list_a;
-	i = 0;
-	while (tmp)
-	{
-		or[i++] = tmp->content;
-		tmp = tmp->next;
-	}
-	bubble_sort(list_a);
-	tmp = *list_a;
-	i = 0;
-	while (tmp)
-	{
-		*(tmp->content) = i++;
-		tmp = tmp->next;
-	}
-	tmp = *list_a;
-	i = 0;
-	while (tmp)
-	{
-		tmp->content = or[i++];
-		tmp = tmp->next;
-	}
+	(void)size;
+	pb(list_a, list_b);
+	pb(list_a, list_b);
+	small_sort(list_a, 3);
+	pa(list_a, list_b);
+	pa(list_a, list_b);
 }
 
 void	radix_sort(t_list **list_a, t_list **list_b, int size)

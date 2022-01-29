@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:18:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/21 21:00:49 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/29 17:27:59 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static int	**create_setint(int size, char **set)
 
 static void	clean_exit(void **set, int flag)
 {
-	t_list	*tmp;
-	t_list	*tmp2;
 	int		i;
 
 	if (flag == 0 || flag == 1)
@@ -51,16 +49,6 @@ static void	clean_exit(void **set, int flag)
 	{
 		write(2, "Error\n", 6);
 		exit(1);
-	}
-	if (flag == 2)
-	{
-		tmp = *set;
-		while (tmp)
-		{
-			tmp2 = tmp->next;
-			free(tmp);
-			tmp = tmp2;
-		}
 	}
 }
 
@@ -106,7 +94,9 @@ static void	sort(t_list	**list_a, t_list **list_b, int size)
 		exit(1);
 	else if (size == 3)
 		small_sort(list_a, size);
-	else if (size > 3)
+	else if (size == 5)
+		medium_sort(list_a, list_b, size);
+	else if (size == 4 || size > 5)
 	{
 		simplify(list_a, size);
 		radix_sort(list_a, list_b, size);
@@ -135,6 +125,6 @@ int	main(int ac, char **av)
 		}
 		sort(&list_a, &list_b, i);
 		clean_exit((void **)a, 0);
-		clean_exit((void **)&list_a, 2);
+		free_list(&list_a);
 	}
 }
