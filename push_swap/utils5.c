@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 15:11:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/29 15:38:23 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/29 18:31:19 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_list(t_list **list)
 	}
 }
 
-static int	**stock(t_list **list_a, int size)
+int	**stock(t_list **list_a, int size)
 {
 	t_list	*tmp;
 	int		**or;

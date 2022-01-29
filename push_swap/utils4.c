@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 19:50:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/29 17:46:39 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/29 20:03:28 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,56 @@ void	bubble_sort(t_list **list)
 	}
 }
 
+#include <stdio.h>
+
 void	medium_sort(t_list **list_a, t_list **list_b, int size)
 {
-	(void)size;
+	t_list	*tmp;
+	int		*min;
+	int		*sec;
+	int		*max;
+	int		i;
+	int		**or;
+
+	(void)list_b;
+	or = stock(list_a, size);
+	bubble_sort(list_a);
+	tmp = *list_a;
+	min = tmp->content;
+	sec = tmp->next->content;
+	while (tmp->next)
+		tmp = tmp->next;
+	max = tmp->content;
+	tmp = *list_a;
+	i = 0;
+	while (tmp)
+	{
+		tmp->content = or[i++];
+		tmp = tmp->next;
+	}
+	free(or);
+	tmp = *list_a;
+	while (tmp->content != min && tmp->content != sec && tmp->content != max)
+	{
+		ra(list_a);
+		tmp = *list_a;
+	}
 	pb(list_a, list_b);
+	tmp = *list_a;
+	while (tmp->content != min && tmp->content != sec && tmp->content != max)
+	{
+		ra(list_a);
+		tmp = *list_a;
+	}
 	pb(list_a, list_b);
 	small_sort(list_a, 3);
 	pa(list_a, list_b);
-	pa(list_a, list_b);
+	tmp = *list_a;
+	while (tmp)
+	{
+		printf("%i\n", *(tmp->content));
+		tmp = tmp->next;
+	}
 }
 
 void	radix_sort(t_list **list_a, t_list **list_b, int size)
