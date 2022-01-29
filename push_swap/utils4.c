@@ -75,8 +75,6 @@ void	bubble_sort(t_list **list)
 	}
 }
 
-#include <stdio.h>
-
 void	medium_sort(t_list **list_a, t_list **list_b, int size)
 {
 	t_list	*tmp;
@@ -86,7 +84,6 @@ void	medium_sort(t_list **list_a, t_list **list_b, int size)
 	int		i;
 	int		**or;
 
-	(void)list_b;
 	or = stock(list_a, size);
 	bubble_sort(list_a);
 	tmp = *list_a;
@@ -103,28 +100,7 @@ void	medium_sort(t_list **list_a, t_list **list_b, int size)
 		tmp = tmp->next;
 	}
 	free(or);
-	tmp = *list_a;
-	while (tmp->content != min && tmp->content != sec && tmp->content != max)
-	{
-		ra(list_a);
-		tmp = *list_a;
-	}
-	pb(list_a, list_b);
-	tmp = *list_a;
-	while (tmp->content != min && tmp->content != sec && tmp->content != max)
-	{
-		ra(list_a);
-		tmp = *list_a;
-	}
-	pb(list_a, list_b);
-	small_sort(list_a, 3);
-	pa(list_a, list_b);
-	tmp = *list_a;
-	while (tmp)
-	{
-		printf("%i\n", *(tmp->content));
-		tmp = tmp->next;
-	}
+	final_sort(list_a, list_b, min, sec, max);
 }
 
 void	radix_sort(t_list **list_a, t_list **list_b, int size)

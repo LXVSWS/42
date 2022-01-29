@@ -67,3 +67,41 @@ void	simplify(t_list **list_a, int size)
 	}
 	free(or);
 }
+
+static void	subfunction(t_list **list_a, t_list **list_b, int *min, int *sec, int *max)
+{
+	t_list	*tmp;
+
+	tmp = *list_a;
+	while (tmp->content != min && tmp->content != sec && tmp->content != max)
+	{
+		ra(list_a);
+		tmp = *list_a;
+	}
+	pb(list_a, list_b);
+}
+
+void	final_sort(t_list **list_a, t_list **list_b, int *min, int *sec, int *max)
+{
+	t_list	*tmp;
+
+	subfunction(list_a, list_b, min, sec, max);
+	subfunction(list_a, list_b, min, sec, max);
+	small_sort(list_a, 3);
+	pa(list_a, list_b);
+	pa(list_a, list_b);
+	tmp = *list_a;
+	while (test_sort(list_a))
+	{
+		if (tmp->content == max)
+			ra(list_a);
+		if (tmp->content == sec)
+			sa(list_a);
+		if (tmp->content == min && tmp->next->content == max)
+		{
+			sa(list_a);
+			ra(list_a);
+		}
+		tmp = *list_a;
+	}
+}
