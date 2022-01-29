@@ -135,6 +135,6 @@ int	main(int ac, char **av)
 		}
 		sort(&list_a, &list_b, i);
 		clean_exit((void **)a, 0);
-		clean_exit((void **)&list_a, 3);
+		clean_exit((void **)&list_a, 2);
 	}
 }
