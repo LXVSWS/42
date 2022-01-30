@@ -34,7 +34,7 @@ static int	**create_setint(int size, char **set)
 	return (a);
 }
 
-static void	clean_exit(void **set, int flag)
+void	clean_exit(void **set, int flag)
 {
 	int		i;
 
@@ -52,7 +52,7 @@ static void	clean_exit(void **set, int flag)
 	}
 }
 
-static int	**parsing(char **set)
+int	**parsing(char **set)
 {
 	int		i;
 	int		y;
@@ -107,20 +107,19 @@ int	main(int ac, char **av)
 {
 	int		**a;
 	int		i;
-	int		y;
 	t_list	*list_a;
 	t_list	*list_b;
 
-	if (ac == 2)
+	if (ac > 1)
 	{
-		a = parsing(ft_split(av[1], ' '));
+		if (ac > 2)
+			a = parsing_multiple_args(av);
+		else
+			a = parsing(ft_split(av[1], ' '));
 		i = -1;
 		while (a[++i])
 		{
-			y = i;
-			while (a[++y])
-				if (*a[y] == *a[i])
-					clean_exit((void **)a, 1);
+			check_double(a, i);
 			ft_lstadd_back(&list_a, ft_lstnew(a[i]));
 		}
 		sort(&list_a, &list_b, i);

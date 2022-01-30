@@ -43,5 +43,9 @@ void	medium_sort(t_list **list_a, t_list **list_b, int size);
 void	radix_sort(t_list **list_a, t_list **list_b, int size);
 void	free_list(t_list **list);
 void	final_sort(t_list **list_a, t_list **list_b, int *min, int *sec, int *max);
+int		**parsing_multiple_args(char **av);
+int		**parsing(char **set);
+void    check_double(int **a, int i);
+void	clean_exit(void **set, int flag);
 
 #endif
