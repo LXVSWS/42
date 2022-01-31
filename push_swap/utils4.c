@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 19:50:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/29 20:03:28 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/31 15:08:05 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,29 +78,21 @@ void	bubble_sort(t_list **list)
 void	medium_sort(t_list **list_a, t_list **list_b, int size)
 {
 	t_list	*tmp;
-	int		*min;
-	int		*sec;
-	int		*max;
-	int		i;
+	int		**val;
 	int		**or;
 
 	or = stock(list_a, size);
 	bubble_sort(list_a);
+	val = malloc(sizeof(int *) * 3);
 	tmp = *list_a;
-	min = tmp->content;
-	sec = tmp->next->content;
+	val[0] = tmp->content;
+	val[1] = tmp->next->content;
 	while (tmp->next)
 		tmp = tmp->next;
-	max = tmp->content;
-	tmp = *list_a;
-	i = 0;
-	while (tmp)
-	{
-		tmp->content = or[i++];
-		tmp = tmp->next;
-	}
+	val[2] = tmp->content;
+	replace_list(list_a, or);
 	free(or);
-	final_sort(list_a, list_b, min, sec, max);
+	final_sort(list_a, list_b, val);
 }
 
 void	radix_sort(t_list **list_a, t_list **list_b, int size)

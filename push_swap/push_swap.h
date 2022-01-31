@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:22:33 by lwyss             #+#    #+#             */
-/*   Updated: 2022/01/29 18:31:42 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/01/31 15:07:17 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ void	simplify(t_list **list_a, int size);
 void	medium_sort(t_list **list_a, t_list **list_b, int size);
 void	radix_sort(t_list **list_a, t_list **list_b, int size);
 void	free_list(t_list **list);
-void	final_sort(t_list **list_a, t_list **list_b, int *min, int *sec, int *max);
+void	final_sort(t_list **list_a, t_list **list_b, int **val);
 int		**parsing_multiple_args(char **av);
 int		**parsing(char **set);
-void    check_double(int **a, int i);
+void	check_double(int **a, int i);
+void	replace_list(t_list **list_a, int **or);
 void	clean_exit(void **set, int flag);
 
 #endif
