@@ -5,4 +5,5 @@
 ## 3) get_next_line (125%)
 ## 4) fractol (125%)
 ## 5) minitalk (100%)
-## 6) push_swap (in progress..)
+## 6) push_swap (finished)
+## 7) philosophers (in progress..)

@@ -1,13 +1,13 @@
-NAME	= push_swap
+NAME	= philo
 
-SRCS	= push_swap.c utils.c utils2.c utils3.c utils4.c utils5.c utils6.c
+SRCS	= philo.c
 
 OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@
