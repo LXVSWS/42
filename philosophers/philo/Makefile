@@ -1,6 +1,6 @@
 NAME	= philo
 
-SRCS	= philo.c
+SRCS	= philo.c utils.c
 
 OBJS	= ${SRCS:.c=.o}
 

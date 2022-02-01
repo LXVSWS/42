@@ -1,35 +1,48 @@
 #include "philo.h"
 
-void    *thinking(void *arg)
+int get_time()
 {
     struct timeval  time;
 
     gettimeofday(&time, NULL);
-    printf("\033[44m%i %s Thinking\033[0m\n", time.tv_usec, (char *)arg);
+    return (time.tv_usec);
+}
+
+void    *philo_thread(void *arg)
+{
+	static int	philo_created = 0;
+	int			philo_number;
+
+	philo_number = ++philo_created;
+	printf("\033[44m%i %i Created\033[0m\n", get_time(), philo_number);
+	sleep(philo_number);
+	printf("\033[41m%i %i Died\033[0m\n", get_time(), philo_number);
     pthread_exit(arg);
 }
 
-void    *eating(void *arg)
+int main(int ac, char **av)
 {
-    struct timeval  time;
+    pthread_t	*philo;
+    data		data;
+	int			i;
 
-    gettimeofday(&time, NULL);
-    printf("\033[43m%i %s Eating\033[0m\n", time.tv_usec, (char *)arg);
-    pthread_exit(arg);
-}
-
-int main()
-{
-    pthread_t       p1;
-    pthread_t       p2;
-    struct timeval  time;
-    
-    gettimeofday(&time, NULL);
-    printf("\033[42m%i Starting\033[0m\n", time.tv_usec);
-    pthread_create(&p1, NULL, thinking, "1");
-    pthread_create(&p2, NULL, eating, "2");
-    pthread_join(p1, NULL);
-    pthread_join(p2, NULL);
+    if (ac == 5 || ac == 6)
+    {
+        data.philo_total = atol(av[1]);
+        data.time_to_die = atol(av[2]);
+        data.time_to_eat = atol(av[3]);
+        data.time_to_sleep = atol(av[4]);
+		if (av[5])
+        	data.meals_needed = atol(av[5]);
+		printf("\033[42m%i Starting\033[0m\n", get_time());
+		philo = malloc(sizeof(pthread_t) * data.philo_total);
+		i = -1;
+		while (++i < data.philo_total)
+			pthread_create(&philo[i], NULL, philo_thread, &data);
+		i = -1;
+		while (++i < data.philo_total)
+			pthread_join(philo[i], NULL);
+    }
     return (0);
 }
 
