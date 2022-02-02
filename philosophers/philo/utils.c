@@ -1,5 +1,22 @@
 #include "philo.h"
 
+double	get_time()
+{
+    struct timeval	time;
+
+    gettimeofday(&time, NULL);
+	return (time.tv_sec + (time.tv_usec * 0.000001));
+	return (0);
+}
+
+long	get_time_ms()
+{
+    struct timeval	time;
+
+    gettimeofday(&time, NULL);
+	return ((time.tv_sec + (time.tv_usec * 0.000001)) * 1000);
+}
+
 long	atol(const char *s)
 {
 	int			i;

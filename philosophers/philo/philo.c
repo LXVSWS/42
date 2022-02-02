@@ -1,23 +1,19 @@
 #include "philo.h"
 
-double	get_time()
-{
-    struct timeval	time;
-
-    gettimeofday(&time, NULL);
-    return (time.tv_sec + (time.tv_usec * 0.000001));
-}
-
 void    *philo_thread(void *arg)
 {
 	static int	philo_created = 0;
 	int			philo_number;
 	data		*data;
+	double		clock;
 
-	data = arg;
 	philo_number = ++philo_created;
-	printf("\033[44m%lf %i is thinking\033[0m\n", get_time(), philo_number);
-	printf("\033[41m%lf %i died\033[0m\n", get_time(), philo_number);
+	data = arg;
+	clock = get_time() + (data->time_to_die * 0.001);
+	printf("\033[44m%li %i is thinking\033[0m\n", get_time_ms(), philo_number);
+	while (get_time() < clock)
+		;
+	printf("\033[41m%li %i died\033[0m\n", get_time_ms(), philo_number);
     pthread_exit(arg);
 }
 
@@ -38,8 +34,10 @@ int main(int ac, char **av)
 		philo = malloc(sizeof(pthread_t) * data.philo_total);
 		i = -1;
 		while (++i < data.philo_total)
+		{
 			pthread_create(&philo[i], NULL, philo_thread, &data);
-		i = -1;
+			usleep(1);
+		}
 		pthread_join(*philo, NULL);
 		free(philo);
     }

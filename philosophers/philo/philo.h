@@ -10,6 +10,8 @@ typedef struct  data
     int     meals_needed;
 }               data;
 
+double  get_time();
+long    get_time_ms();
 long    atol(const char *s);
 
 # include <stdio.h>
