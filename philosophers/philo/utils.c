@@ -1,19 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/03 15:57:45 by lwyss             #+#    #+#             */
+/*   Updated: 2022/02/03 16:33:59 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-double	get_time()
+t_data	init(char **av)
 {
-    struct timeval	time;
+	t_data	data;
 
-    gettimeofday(&time, NULL);
-	return (time.tv_sec + (time.tv_usec * 0.000001));
-	return (0);
+	data.philo_total = atol(av[1]);
+	data.time_to_die = atol(av[2]);
+	data.time_to_eat = atol(av[3]);
+	data.time_to_sleep = atol(av[4]);
+	if (av[5])
+		data.meals_needed = atol(av[5]);
+	return (data);
 }
 
-long	get_time_ms()
+void	clean_exit(t_philo *philo, pthread_t *philo_thread, \
+pthread_mutex_t *fork)
 {
-    struct timeval	time;
+	int	i;
 
-    gettimeofday(&time, NULL);
+	i = -1;
+	while (++i < philo->data.philo_total)
+		pthread_mutex_destroy(&fork[i]);
+	free(philo);
+	free(philo_thread);
+	free(fork);
+}
+
+double	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec + (time.tv_usec * 0.000001));
+}
+
+long	get_time_ms(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
 	return ((time.tv_sec + (time.tv_usec * 0.000001)) * 1000);
 }
 

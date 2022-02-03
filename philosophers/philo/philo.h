@@ -1,5 +1,17 @@
-#ifndef PHILO__H
-# define PHILO__H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/03 15:57:39 by lwyss             #+#    #+#             */
+/*   Updated: 2022/02/03 16:23:30 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -7,25 +19,29 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct	data
+typedef struct data
 {
-    int     philo_total;
-    int     time_to_die;
-    int     time_to_eat;
-    int     time_to_sleep;
-    int     meals_needed;
-}				data_t;
+	int	philo_total;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	meals_needed;
+}	t_data;
 
-typedef struct	philo
+typedef struct philo
 {
-	pthread_t		*philo_thread;
-	pthread_mutex_t	left_fork;
+	int				number;
+	pthread_t		*thread_id;
+	pthread_mutex_t	left_fork;	
 	pthread_mutex_t	right_fork;
-	data_t			data;
-}				philo_t;
+	t_data			data;
+}	t_philo;
 
-double  get_time();
-long    get_time_ms();
-long    atol(const char *s);
+t_data	init(char **av);
+void	clean_exit(t_philo *philo, pthread_t *philo_thread, \
+pthread_mutex_t *fork);
+double	get_time(void);
+long	get_time_ms(void);
+long	atol(const char *s);
 
 #endif
