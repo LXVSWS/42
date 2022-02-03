@@ -15,20 +15,35 @@
 static void	*philo_routine(void *arg)
 {
 	double		time_to_die;
+	double		time_to_eat;
+	double		time_to_sleep;
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
 	time_to_die = get_time() + (philo->data.time_to_die * 0.001);
-	printf("\033[44m%li %i is thinking\033[0m\n", get_time_ms(), philo->number);
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(philo->right_fork);
-	printf("\033[44m%li %i has taken a fork\033[0m\n", get_time_ms(), philo->number);
-	printf("\033[44m%li %i has taken a fork\033[0m\n", get_time_ms(), philo->number);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
 	while (get_time() < time_to_die)
-		;
-	printf("\033[41m%li %i died\033[0m\n", get_time_ms(), philo->number);
+	{
+		printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms(), philo->number);
+		if (philo->left_fork && philo->right_fork)
+		{
+			pthread_mutex_lock(philo->left_fork);
+			pthread_mutex_lock(philo->right_fork);
+			printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms(), philo->number);
+			printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms(), philo->number);
+			time_to_eat = get_time() + (philo->data.time_to_eat * 0.001);
+			printf("\033[92m%li %i is eating\033[0m\n", get_time_ms(), philo->number);
+			while (get_time() < time_to_eat)
+				;
+			pthread_mutex_unlock(philo->left_fork);
+			pthread_mutex_unlock(philo->right_fork);
+			time_to_die = get_time() + (philo->data.time_to_die * 0.001);
+			time_to_sleep = get_time() + (philo->data.time_to_sleep * 0.001);
+			printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms(), philo->number);
+			while (get_time() < time_to_sleep)
+				;
+		}
+	}
+	printf("\033[91m%li %i died\033[0m\n", get_time_ms(), philo->number);
 	return (0);
 }
 
@@ -54,10 +69,12 @@ int	main(int ac, char **av)
 			pthread_create(&philo[i].thread_id, NULL, philo_routine, &philo[i]);
 			pthread_mutex_init(&fork[i], NULL);
 			philo[i].left_fork = &fork[i];
-			if (i != data.philo_total)
-				philo[i].right_fork = &fork[i + 1];
-			else
+			if (data.philo_total == 1)
+				philo[i].right_fork = NULL;
+			else if (i == (data.philo_total - 1))
 				philo[i].right_fork = &fork[0];
+			else
+				philo[i].right_fork = &fork[i + 1];
 			usleep(1);
 		}
 		i = -1;
