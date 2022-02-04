@@ -31,6 +31,8 @@ typedef struct data
 typedef struct philo
 {
 	int				number;
+	double			last_meal;
+	char			dead;
 	pthread_t		thread_id;
 	pthread_mutex_t	*left_fork;	
 	pthread_mutex_t	*right_fork;
@@ -38,8 +40,7 @@ typedef struct philo
 }	t_philo;
 
 t_data	init(char **av);
-void	clean_exit(t_philo *philo, pthread_t *philo_thread, \
-pthread_mutex_t *fork);
+void	clean_exit(t_philo *philo, pthread_mutex_t *fork);
 double	get_time(void);
 long	get_time_ms(void);
 long	atol(const char *s);

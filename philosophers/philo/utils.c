@@ -25,8 +25,7 @@ t_data	init(char **av)
 	return (data);
 }
 
-void	clean_exit(t_philo *philo, pthread_t *philo_thread, \
-pthread_mutex_t *fork)
+void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
 {
 	int	i;
 
@@ -34,7 +33,6 @@ pthread_mutex_t *fork)
 	while (++i < philo->data.philo_total)
 		pthread_mutex_destroy(&fork[i]);
 	free(philo);
-	free(philo_thread);
 	free(fork);
 }
 
