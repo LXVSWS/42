@@ -22,24 +22,28 @@ static void	*philo_routine(void *arg)
 	philo->last_meal = get_time();
 	start_time = get_time_ms();
 	printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - start_time, philo->number);
-	usleep(1000000);
 	while (!philo->dead && philo->left_fork && philo->right_fork)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		pthread_mutex_lock(philo->right_fork);
-		printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - start_time, philo->number);
-		printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - start_time, philo->number);
-		printf("\033[92m%li %i is eating\033[0m\n", get_time_ms() - start_time, philo->number);
+		if (!philo->dead)
+		{
+			printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - start_time, philo->number);
+			printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - start_time, philo->number);
+			printf("\033[92m%li %i is eating\033[0m\n", get_time_ms() - start_time, philo->number);			
+		}
 		tmp = get_time();
 		while (get_time() < tmp + (philo->data.time_to_eat * 0.001))
 			;
+		philo->last_meal = get_time();
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
-		philo->last_meal = get_time();
-		printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms() - start_time, philo->number);
+		if (!philo->dead)
+			printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms() - start_time, philo->number);
 		while (get_time() < philo->last_meal + (philo->data.time_to_sleep * 0.001))
 			;
-		printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - start_time, philo->number);
+		if (!philo->dead)
+			printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - start_time, philo->number);
 	}
 	return (0);
 }
@@ -64,10 +68,8 @@ void	*checker_routine(void *arg)
 				printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
 				philo[i].dead = 1;
 				philo_alive--;
-				i++;
 			}
-			else
-				i++;
+			i++;
 		}
 		i = 0;
 	}
@@ -78,8 +80,8 @@ int	main(int ac, char **av)
 {
 	t_data			data;
 	t_philo			*philo;
-	pthread_t		checker;
 	pthread_mutex_t	*fork;
+	pthread_t		checker;
 	int				i;
 
 	if (ac == 5 || ac == 6)
@@ -103,10 +105,10 @@ int	main(int ac, char **av)
 				philo[i].right_fork = &fork[i + 1];
 		}
 		pthread_create(&checker, NULL, checker_routine, &philo);
-		pthread_join(checker, NULL);
 		i = -1;
 		while (++i < data.philo_total)
 			pthread_join(philo[i].thread_id, NULL);
+		pthread_join(checker, NULL);
 		clean_exit(philo, fork);
 	}
 	return (0);
