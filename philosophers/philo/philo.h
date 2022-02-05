@@ -26,6 +26,7 @@ typedef struct data
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	meals_needed;
+	pthread_mutex_t	access;
 }	t_data;
 
 typedef struct philo
@@ -40,7 +41,7 @@ typedef struct philo
 	t_data			data;
 }	t_philo;
 
-t_data	init(char **av);
+t_data	init(char **av, pthread_mutex_t	writing);
 void	clean_exit(t_philo *philo, pthread_mutex_t *fork);
 double	get_time(void);
 long	get_time_ms(void);

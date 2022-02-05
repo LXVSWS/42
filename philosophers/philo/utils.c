@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-t_data	init(char **av)
+t_data	init(char **av, pthread_mutex_t	access)
 {
 	t_data	data;
 
@@ -22,6 +22,7 @@ t_data	init(char **av)
 	data.time_to_sleep = atol(av[4]);
 	if (av[5])
 		data.meals_needed = atol(av[5]);
+	data.access = access;
 	return (data);
 }
 
