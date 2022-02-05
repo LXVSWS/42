@@ -19,7 +19,6 @@ static void	*philo_routine(void *arg)
 	double		tmp;
 
 	philo = (t_philo *)arg;
-	philo->last_meal = get_time();
 	start_time = get_time_ms();
 	printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - start_time, philo->number);
 	while (!philo->dead && philo->left_fork && philo->right_fork)
@@ -57,21 +56,60 @@ void	*checker_routine(void *arg)
 
 	philo = *(t_philo **)arg;
 	start_time = get_time_ms();
-	philo_alive = philo->data.philo_total;
 	i = 0;
-	while (philo_alive)
+	if (philo->data.philo_total > 3)
 	{
-		while (i < philo->data.philo_total)
+		philo_alive = philo->data.philo_total;
+		while (philo_alive)
 		{
-			if (get_time() > philo[i].last_meal + (philo->data.time_to_die * 0.001) && !philo[i].dead)
+			while (i < philo->data.philo_total)
 			{
-				printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
-				philo[i].dead = 1;
-				philo_alive--;
+				if (get_time() > philo[i].last_meal + (philo->data.time_to_die * 0.001) && !philo[i].dead)
+				{
+					printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
+					philo[i].dead = 1;
+					philo_alive--;
+				}
+				i++;
 			}
-			i++;
+			i = 0;
 		}
-		i = 0;
+	}
+	else if (philo->data.philo_total == 1)
+	{
+		philo[i].dead = 1;
+		while (get_time() < philo[i].last_meal + (philo->data.time_to_die * 0.001))
+			;
+		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
+	}
+	else if (philo->data.philo_total == 2)
+	{
+		philo[i].dead = 1;
+		while (get_time() < philo[i].last_meal + (philo->data.time_to_die * 0.001))
+			;
+		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
+		i++;
+		philo[i].dead = 1;
+		while (get_time() < philo[i].last_meal + (philo->data.time_to_die * 0.001))
+			;
+		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
+	}
+	else if (philo->data.philo_total == 3)
+	{
+		philo[i].dead = 1;
+		while (get_time() < philo[i].last_meal + (philo->data.time_to_die * 0.001))
+			;
+		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
+		i++;
+		philo[i].dead = 1;
+			while (get_time() < philo[i].last_meal + (philo->data.time_to_die * 0.001))
+			;
+		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
+		i++;
+		philo[i].dead = 1;
+		while (get_time() < philo[i].last_meal + (philo->data.time_to_die * 0.001))
+			;
+		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - start_time, philo[i].number);
 	}
 	return (arg);
 }
@@ -94,6 +132,7 @@ int	main(int ac, char **av)
 		{
 			philo[i].number = i + 1;
 			philo[i].data = data;
+			philo[i].last_meal = get_time();
 			pthread_create(&philo[i].thread_id, NULL, philo_routine, &philo[i]);
 			pthread_mutex_init(&fork[i], NULL);
 			philo[i].left_fork = &fork[i];
@@ -105,10 +144,10 @@ int	main(int ac, char **av)
 				philo[i].right_fork = &fork[i + 1];
 		}
 		pthread_create(&checker, NULL, checker_routine, &philo);
+		pthread_join(checker, NULL);
 		i = -1;
 		while (++i < data.philo_total)
 			pthread_join(philo[i].thread_id, NULL);
-		pthread_join(checker, NULL);
 		clean_exit(philo, fork);
 	}
 	return (0);
