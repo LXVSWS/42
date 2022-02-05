@@ -32,7 +32,8 @@ typedef struct philo
 {
 	int				number;
 	double			last_meal;
-	char			dead;
+	long			start_time;
+	int				dead;
 	pthread_t		thread_id;
 	pthread_mutex_t	*left_fork;	
 	pthread_mutex_t	*right_fork;
