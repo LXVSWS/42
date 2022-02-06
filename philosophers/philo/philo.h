@@ -21,11 +21,13 @@
 
 typedef struct data
 {
-	int	philo_total;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	meals_needed;
+	int				philo_total;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_needed;
+	long			start_time;
+	int				dead;
 	pthread_mutex_t	access;
 }	t_data;
 
@@ -33,15 +35,14 @@ typedef struct philo
 {
 	int				number;
 	double			last_meal;
-	long			start_time;
-	int				dead;
 	pthread_t		thread_id;
-	pthread_mutex_t	*left_fork;	
+	pthread_t		checker;
+	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			data;
 }	t_philo;
 
-t_data	init(char **av, pthread_mutex_t	writing);
+t_data	init(char **av);
 void	clean_exit(t_philo *philo, pthread_mutex_t *fork);
 double	get_time(void);
 long	get_time_ms(void);
