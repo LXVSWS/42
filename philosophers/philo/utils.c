@@ -12,21 +12,25 @@
 
 #include "philo.h"
 
-t_data	init(char **av)
+t_data	*init(char **av)
 {
-	t_data			data;
-	pthread_mutex_t	access;
+	t_data			*data;
+	pthread_mutex_t	*access;
 
-	data.philo_total = atol(av[1]);
-	data.time_to_die = atol(av[2]);
-	data.time_to_eat = atol(av[3]);
-	data.time_to_sleep = atol(av[4]);
+	data = malloc(sizeof(t_data) * 1);
+	access = malloc(sizeof(pthread_mutex_t) * 1);
+	data->philo_total = atol(av[1]);
+	data->time_to_die = atol(av[2]);
+	data->time_to_eat = atol(av[3]);
+	data->time_to_sleep = atol(av[4]);
 	if (av[5])
-		data.meals_needed = atol(av[5]);
-	data.start_time = get_time_ms();
-	data.dead = 0;
-	pthread_mutex_init(&access, NULL);
-	data.access = access;
+		data->meals_needed = atol(av[5]);
+	else
+		data->meals_needed = 0;
+	data->start_time = get_time_ms();
+	data->dead = 0;
+	pthread_mutex_init(access, NULL);
+	data->access = access;
 	return (data);
 }
 
@@ -35,9 +39,9 @@ void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
 	int	i;
 
 	i = -1;
-	while (++i < philo->data.philo_total)
+	while (++i < philo->data->philo_total)
 		pthread_mutex_destroy(&fork[i]);
-	pthread_mutex_destroy(&philo->data.access);
+	pthread_mutex_destroy(philo->data->access);
 	free(philo);
 	free(fork);
 }

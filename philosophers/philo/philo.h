@@ -14,7 +14,6 @@
 # define PHILO_H
 
 # include <stdio.h>
-# include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
@@ -28,7 +27,7 @@ typedef struct data
 	int				meals_needed;
 	long			start_time;
 	int				dead;
-	pthread_mutex_t	access;
+	pthread_mutex_t	*access;
 }	t_data;
 
 typedef struct philo
@@ -39,10 +38,10 @@ typedef struct philo
 	pthread_t		checker;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	t_data			data;
+	t_data			*data;
 }	t_philo;
 
-t_data	init(char **av);
+t_data	*init(char **av);
 void	clean_exit(t_philo *philo, pthread_mutex_t *fork);
 double	get_time(void);
 long	get_time_ms(void);
