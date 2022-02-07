@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-t_data	*init(char **av)
+t_data	*data_init(char **av)
 {
 	t_data			*data;
 	pthread_mutex_t	*access;
@@ -34,32 +34,46 @@ t_data	*init(char **av)
 	return (data);
 }
 
+t_philo *philo_init(t_data *data, pthread_mutex_t *fork)
+{
+	t_philo			*philo;
+	int				i;
+
+	philo = malloc(sizeof(t_philo) * data->philo_total);
+	i = -1;
+	while (++i < data->philo_total)
+	{
+		philo[i].number = i + 1;
+		philo[i].last_meal = get_time();
+		philo[i].data = data;
+		pthread_create(&philo[i].thread_id, NULL, philo_routine, &philo[i]);
+		pthread_create(&philo[i].checker, NULL, checker_routine, &philo[i]);
+		pthread_mutex_init(&fork[i], NULL);
+		philo[i].left_fork = &fork[i];
+		if (data->philo_total > 1 && (i != (data->philo_total - 1)))
+			philo[i].right_fork = &fork[i + 1];
+		else if (data->philo_total > 1 && (i == (data->philo_total - 1)))
+			philo[i].right_fork = &fork[0];
+	}
+	return (philo);
+}
+
 void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
 {
-	int	i;
-
-	i = -1;
-	while (++i < philo->data->philo_total)
-		pthread_mutex_destroy(&fork[i]);
 	pthread_mutex_destroy(philo->data->access);
-	free(philo);
+	free(philo->data->access);
+	free(philo->data);
+	pthread_mutex_destroy(philo->left_fork);
+	pthread_mutex_destroy(philo->right_fork);
 	free(fork);
+	free(philo);
 }
 
-double	get_time(void)
+void	taking_fork(t_philo *philo)
 {
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec + (time.tv_usec * 0.000001));
-}
-
-long	get_time_ms(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec + (time.tv_usec * 0.000001)) * 1000);
+	pthread_mutex_lock(philo->data->access);
+	printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+	pthread_mutex_unlock(philo->data->access);
 }
 
 long	atol(const char *s)
