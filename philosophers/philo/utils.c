@@ -60,11 +60,17 @@ t_philo *philo_init(t_data *data, pthread_mutex_t *fork)
 
 void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
 {
+	int				i;
+
 	pthread_mutex_destroy(philo->data->access);
+	i = -1;
+	while (++i < philo->data->philo_total)
+	{
+		pthread_mutex_destroy(philo[i].left_fork);
+		pthread_mutex_destroy(philo[i].right_fork);
+	}
 	free(philo->data->access);
 	free(philo->data);
-	pthread_mutex_destroy(philo->left_fork);
-	pthread_mutex_destroy(philo->right_fork);
 	free(fork);
 	free(philo);
 }

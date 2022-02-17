@@ -68,13 +68,24 @@ void	*checker_routine(void *arg)
 static void	*death_routine(void *arg)
 {
 	t_philo		*philo;
+	long		saved_time;
 
 	philo = (t_philo *)arg;
 	while (!philo->data->dead)
 		;
 	pthread_mutex_lock(philo->data->access);
 	if (!philo->data->meals_needed)
+	{
 		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - philo->data->start_time, philo->data->dead);
+		return (0);
+	}
+	else
+	{
+		saved_time = get_time_ms() - philo->data->start_time;
+		usleep(1000000);
+	}
+	if (philo->data->meals_needed == -1)
+		printf("\033[91m%li %i died\033[0m\n", saved_time, philo->data->dead);
 	return (0);
 }
 

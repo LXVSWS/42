@@ -1,13 +1,13 @@
-NAME	= philo
+NAME	= philo_bonus
 
-SRCS	= philo.c utils.c utils2.c
+SRCS	= philo_bonus.c utils.c
 
 OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@

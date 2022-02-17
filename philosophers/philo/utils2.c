@@ -77,4 +77,6 @@ void	optionnal(t_philo *philo)
 		if (!philo->data->dead && i != philo->data->meals_needed)
 			sleeping(philo);
 	}
+	if (philo->data->dead && i < philo->data->meals_needed)
+		philo->data->meals_needed = -1;
 }
