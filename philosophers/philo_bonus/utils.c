@@ -1,5 +1,39 @@
 #include "philo_bonus.h"
 
+t_data	*data_init(char **av)
+{
+	t_data			*data;
+
+	data = malloc(sizeof(t_data) * 1);
+	data->philo_total = atol(av[1]);
+	data->time_to_die = atol(av[2]);
+	data->time_to_eat = atol(av[3]);
+	data->time_to_sleep = atol(av[4]);
+	if (av[5])
+		data->meals_needed = atol(av[5]);
+	else
+		data->meals_needed = 0;
+	data->start_time = get_time_ms();
+	data->dead = 0;
+	return (data);
+}
+
+t_philo *philo_init(t_data *data)
+{
+	t_philo			*philo;
+	int				i;
+
+	philo = malloc(sizeof(t_philo) * data->philo_total);
+	i = -1;
+	while (++i < data->philo_total)
+	{
+		philo[i].number = i + 1;
+		philo[i].last_meal = get_time();
+		philo[i].data = data;
+	}
+	return (philo);
+}
+
 double	get_time(void)
 {
 	struct timeval	time;
