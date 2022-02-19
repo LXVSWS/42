@@ -1,26 +1,61 @@
 #include "philo_bonus.h"
 
-static void	philo_routine(t_philo *philo)
+static void	*philo_routine(void *arg)
 {
-	double		tmp;
+	t_philo		*philo;
 
+	philo = (t_philo *)arg;
 	while (!philo->data->dead)
 	{
-		eating(philo);
-		tmp = get_time();
-		while (get_time() < tmp + (philo->data->time_to_eat * 0.001))
-			;
 		if (!philo->data->dead)
-			philo->last_meal = get_time();
+		{
+			sem_wait(philo->data->access);
+			printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+			sem_post(philo->data->access);
+		}
 		if (!philo->data->dead)
-			printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
-		tmp = get_time();
-		while (get_time() < tmp + (philo->data->time_to_sleep * 0.001))
-			;
+		{
+			sem_wait(philo->data->forks);
+			sem_wait(philo->data->forks);
+			eating(philo);
+			sem_post(philo->data->forks);
+			sem_post(philo->data->forks);
+		}
+		if (!philo->data->dead)
+			sleeping(philo);
 	}
+	return (0);
 }
 
-static void	*death_routine(void *arg)
+static void	*optionnal_routine(void *arg)
+{
+	t_philo	*philo;
+	int		i;
+
+	philo = (t_philo *)arg;
+	i = 0;
+	while (!philo->data->dead && i < philo->data->meals_needed)
+	{
+		if (!philo->data->dead)
+			printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+		if (!philo->data->dead)
+		{
+			sem_wait(philo->data->forks);
+			sem_wait(philo->data->forks);
+			eating(philo);
+			sem_post(philo->data->forks);
+			sem_post(philo->data->forks);
+		}
+		i++;
+		if (!philo->data->dead && i != philo->data->meals_needed)
+			sleeping(philo);
+	}
+	if (philo->data->dead && i < philo->data->meals_needed)
+		philo->data->meals_needed = -1;
+	return (0);
+}
+
+static void	*checker_routine(void *arg)
 {
 	t_philo		*philo;
 	long		saved_time;
@@ -31,6 +66,7 @@ static void	*death_routine(void *arg)
 		if (get_time() > philo->last_meal + (philo->data->time_to_die * 0.001))
 			philo->data->dead = philo->number;
 	}
+	sem_wait(philo->data->access);
 	if (!philo->data->meals_needed)
 	{
 		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - philo->data->start_time, philo->data->dead);
@@ -46,34 +82,10 @@ static void	*death_routine(void *arg)
 	return (0);
 }
 
-void	optionnal_routine(t_philo *philo)
-{
-	int			i;
-	double		tmp;
-
-	i = 0;
-	while (!philo->data->dead && i < philo->data->meals_needed)
-	{
-		eating(philo);
-		tmp = get_time();
-		while (get_time() < tmp + (philo->data->time_to_eat * 0.001))
-			;
-		if (!philo->data->dead)
-			philo->last_meal = get_time();
-		if (philo->data->dead && i < philo->data->meals_needed)
-			philo->data->meals_needed = -1;
-		i++;
-		if (!philo->data->dead && i != philo->data->meals_needed)
-			printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
-		tmp = get_time();
-		while (get_time() < tmp + (philo->data->time_to_sleep * 0.001))
-			;
-	}
-}
-
 static void philo_forked(t_philo *philo)
 {
-	pthread_t	death;
+	pthread_t	routine;
+	pthread_t	checker;
 
 	if (philo->data->philo_total == 1)
 	{
@@ -84,12 +96,13 @@ static void philo_forked(t_philo *philo)
 	}
 	else
 	{
-		pthread_create(&death, NULL, death_routine, philo);
-		if (philo->data->meals_needed)
-			optionnal_routine(philo);
+		if (!philo->data->meals_needed)
+			pthread_create(&routine, NULL, philo_routine, philo);
 		else
-			philo_routine(philo);
-		pthread_join(death, NULL);
+			pthread_create(&routine, NULL, optionnal_routine, philo);
+		pthread_create(&checker, NULL, checker_routine, philo);
+		pthread_join(routine, NULL);
+		pthread_join(checker, NULL);
 	}
 }
 
@@ -113,7 +126,7 @@ int main(int ac, char **av)
 				philo_forked(&philo[i]);
 		}
 		if (pid)
-			waitpid(-1, NULL, 0);
+			father(philo);
 	}
 	return (0);
 }

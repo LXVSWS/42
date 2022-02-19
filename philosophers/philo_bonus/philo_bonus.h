@@ -1,6 +1,9 @@
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
+# define FORKS "/forks"
+# define ACCESS "/access"
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -18,6 +21,8 @@ typedef struct data
 	int				meals_needed;
 	long			start_time;
 	int				dead;
+	sem_t			*forks;
+	sem_t			*access;
 }	t_data;
 
 typedef struct philo
@@ -33,5 +38,7 @@ double	get_time(void);
 long	get_time_ms(void);
 long	atol(const char *s);
 void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	father(t_philo *philo);
 
 #endif

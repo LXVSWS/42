@@ -15,6 +15,10 @@ t_data	*data_init(char **av)
 		data->meals_needed = 0;
 	data->start_time = get_time_ms();
 	data->dead = 0;
+	sem_unlink(FORKS);
+	data->forks = sem_open(FORKS, O_CREAT | O_EXCL, 0777, data->philo_total);
+	sem_unlink(ACCESS);
+	data->access = sem_open(ACCESS, O_CREAT | O_EXCL, 0777, 1);
 	return (data);
 }
 
