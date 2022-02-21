@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/21 15:41:45 by lwyss             #+#    #+#             */
+/*   Updated: 2022/02/21 15:46:26 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 double	get_time(void)
@@ -27,7 +39,8 @@ void	eating(t_philo *philo)
 	if (!philo->data->dead)
 	{
 		pthread_mutex_lock(philo->data->access);
-		printf("\033[92m%li %i is eating\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+		printf("\033[92m%li %i is eating\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->number);
 		pthread_mutex_unlock(philo->data->access);
 	}
 	tmp = get_time();
@@ -44,7 +57,8 @@ void	sleeping(t_philo *philo)
 	if (!philo->data->dead)
 	{
 		pthread_mutex_lock(philo->data->access);
-		printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+		printf("\033[94m%li %i is sleeping\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->number);
 		pthread_mutex_unlock(philo->data->access);
 	}
 	tmp = get_time();
@@ -54,7 +68,7 @@ void	sleeping(t_philo *philo)
 
 void	optionnal(t_philo *philo)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	while (!philo->data->dead && i < philo->data->meals_needed)
@@ -62,7 +76,8 @@ void	optionnal(t_philo *philo)
 		if (!philo->data->dead)
 		{
 			pthread_mutex_lock(philo->data->access);
-			printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+			printf("\033[95m%li %i is thinking\033[0m\n", \
+			get_time_ms() - philo->data->start_time, philo->number);
 			pthread_mutex_unlock(philo->data->access);
 		}
 		if (!philo->data->dead)
@@ -73,8 +88,7 @@ void	optionnal(t_philo *philo)
 			pthread_mutex_unlock(philo->left_fork);
 			pthread_mutex_unlock(philo->right_fork);
 		}
-		i++;
-		if (!philo->data->dead && i != philo->data->meals_needed)
+		if (!philo->data->dead && ++i != philo->data->meals_needed)
 			sleeping(philo);
 	}
 	if (philo->data->dead && i < philo->data->meals_needed)

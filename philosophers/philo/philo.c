@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:26 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/03 19:36:05 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/21 15:45:32 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->data->philo_total == 1)
 	{
-		printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
-		printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+		printf("\033[95m%li %i is thinking\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->number);
+		printf("\033[93m%li %i has taken a fork\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->number);
 	}
 	else if (philo->data->meals_needed)
 		optionnal(philo);
@@ -36,7 +38,8 @@ void	classical(t_philo *philo)
 		if (!philo->data->dead)
 		{
 			pthread_mutex_lock(philo->data->access);
-			printf("\033[95m%li %i is thinking\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+			printf("\033[95m%li %i is thinking\033[0m\n", \
+			get_time_ms() - philo->data->start_time, philo->number);
 			pthread_mutex_unlock(philo->data->access);
 		}
 		if (!philo->data->dead)
@@ -76,7 +79,8 @@ static void	*death_routine(void *arg)
 	pthread_mutex_lock(philo->data->access);
 	if (!philo->data->meals_needed)
 	{
-		printf("\033[91m%li %i died\033[0m\n", get_time_ms() - philo->data->start_time, philo->data->dead);
+		printf("\033[91m%li %i died\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->data->dead);
 		return (0);
 	}
 	else

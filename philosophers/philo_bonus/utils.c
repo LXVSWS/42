@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/21 15:39:39 by lwyss             #+#    #+#             */
+/*   Updated: 2022/02/21 15:39:50 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
 t_data	*data_init(char **av)
@@ -22,7 +34,7 @@ t_data	*data_init(char **av)
 	return (data);
 }
 
-t_philo *philo_init(t_data *data)
+t_philo	*philo_init(t_data *data)
 {
 	t_philo			*philo;
 	int				i;

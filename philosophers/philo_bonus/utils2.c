@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/21 15:33:24 by lwyss             #+#    #+#             */
+/*   Updated: 2022/02/21 15:38:46 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
-static void taking_fork(t_philo *philo)
+static void	taking_fork(t_philo *philo)
 {
 	sem_wait(philo->data->access);
-	printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+	printf("\033[93m%li %i has taken a fork\033[0m\n", \
+	get_time_ms() - philo->data->start_time, philo->number);
 	sem_post(philo->data->access);
 }
 
@@ -18,7 +31,8 @@ void	eating(t_philo *philo)
 	if (!philo->data->dead)
 	{
 		sem_wait(philo->data->access);
-		printf("\033[92m%li %i is eating\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+		printf("\033[92m%li %i is eating\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->number);
 		sem_post(philo->data->access);
 	}
 	tmp = get_time();
@@ -35,7 +49,8 @@ void	sleeping(t_philo *philo)
 	if (!philo->data->dead)
 	{
 		sem_wait(philo->data->access);
-		printf("\033[94m%li %i is sleeping\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+		printf("\033[94m%li %i is sleeping\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->number);
 		sem_post(philo->data->access);
 	}
 	tmp = get_time();

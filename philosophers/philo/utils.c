@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:45 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/03 16:33:59 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/21 15:44:31 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_data	*data_init(char **av)
 	return (data);
 }
 
-t_philo *philo_init(t_data *data, pthread_mutex_t *fork)
+t_philo	*philo_init(t_data *data, pthread_mutex_t *fork)
 {
 	t_philo			*philo;
 	int				i;
@@ -78,7 +78,8 @@ void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
 void	taking_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->data->access);
-	printf("\033[93m%li %i has taken a fork\033[0m\n", get_time_ms() - philo->data->start_time, philo->number);
+	printf("\033[93m%li %i has taken a fork\033[0m\n", \
+	get_time_ms() - philo->data->start_time, philo->number);
 	pthread_mutex_unlock(philo->data->access);
 }
 

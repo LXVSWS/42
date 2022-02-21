@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/21 15:39:58 by lwyss             #+#    #+#             */
+/*   Updated: 2022/02/21 15:40:10 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
@@ -33,7 +45,7 @@ typedef struct philo
 }	t_philo;
 
 t_data	*data_init(char **av);
-t_philo *philo_init(t_data *data);
+t_philo	*philo_init(t_data *data);
 double	get_time(void);
 long	get_time_ms(void);
 long	atol(const char *s);

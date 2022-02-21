@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:39 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/03 18:48:05 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/21 15:44:46 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct philo
 }	t_philo;
 
 t_data	*data_init(char **av);
-t_philo *philo_init(t_data *data, pthread_mutex_t *fork);
+t_philo	*philo_init(t_data *data, pthread_mutex_t *fork);
 void	clean_exit(t_philo *philo, pthread_mutex_t *fork);
 void	*philo_routine(void *arg);
 void	classical(t_philo *philo);
