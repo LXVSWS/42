@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:45 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 16:36:57 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/21 17:30:45 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ t_philo	*philo_init(t_data *data, pthread_mutex_t *fork)
 		philo[i].number = i + 1;
 		philo[i].last_meal = get_time();
 		philo[i].data = data;
-		pthread_create(&philo[i].thread_id, NULL, philo_routine, &philo[i]);
-		pthread_create(&philo[i].checker, NULL, checker_routine, &philo[i]);
 		pthread_mutex_init(&fork[i], NULL);
 		philo[i].left_fork = &fork[i];
 		if (data->philo_total > 1 && (i != (data->philo_total - 1)))
 			philo[i].right_fork = &fork[i + 1];
 		else if (data->philo_total > 1 && (i == (data->philo_total - 1)))
 			philo[i].right_fork = &fork[0];
+		pthread_create(&philo[i].thread_id, NULL, philo_routine, &philo[i]);
+		pthread_create(&philo[i].checker, NULL, checker_routine, &philo[i]);
 	}
 	return (philo);
 }
