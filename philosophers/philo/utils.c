@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:45 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 15:44:31 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/21 16:36:57 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
 	i = -1;
 	while (++i < philo->data->philo_total)
 	{
-		pthread_mutex_destroy(philo[i].left_fork);
-		pthread_mutex_destroy(philo[i].right_fork);
+		if (philo[i].left_fork)
+			pthread_mutex_destroy(philo[i].left_fork);
+		if (philo[i].right_fork)
+			pthread_mutex_destroy(philo[i].right_fork);
 	}
 	free(philo->data->access);
 	free(philo->data);

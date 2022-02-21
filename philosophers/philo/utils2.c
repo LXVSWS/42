@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 15:41:45 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 15:46:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/21 16:49:31 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	optionnal(t_philo *philo)
 			pthread_mutex_unlock(philo->left_fork);
 			pthread_mutex_unlock(philo->right_fork);
 		}
-		if (!philo->data->dead && ++i != philo->data->meals_needed)
-			sleeping(philo);
+		i++;
+		sleeping(philo);
 	}
 	if (philo->data->dead && i < philo->data->meals_needed)
 		philo->data->meals_needed = -1;
