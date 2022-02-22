@@ -69,13 +69,14 @@ void	sleeping(t_philo *philo)
 		;
 }
 
-void	father(t_philo *philo)
+void	clean_exit(t_data *data, t_philo *philo)
 {
 	waitpid(0, NULL, 0);
-	sem_close(philo->data->forks);
-	sem_close(philo->data->access);
+	sem_close(data->forks);
+	sem_close(data->access);
 	sem_unlink(FORKS);
 	sem_unlink(ACCESS);
-	free(philo->data);
-	free(philo);
+	free(data);
+	if (philo)
+		free(philo);
 }

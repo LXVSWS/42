@@ -79,6 +79,27 @@ static void	philo_forked(t_philo *philo)
 	}
 }
 
+static int	parsing(char **av)
+{
+	int		i;
+	int		y;
+
+	i = 0;
+	y = -1;
+	while (av[++i])
+	{
+		while (av[i][++y])
+		{
+			if (av[i][y] < 48 || av[i][y] > 57)
+				return (1);
+		}
+		y = -1;
+		if (atol(av[i]) < -2147483648 || atol(av[i]) > 2147483647)
+			return (1);
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_data		*data;
@@ -88,6 +109,8 @@ int	main(int ac, char **av)
 
 	if (ac == 5 || ac == 6)
 	{
+		if (parsing(av))
+			return (-1);
 		data = data_init(av);
 		philo = philo_init(data);
 		pid = 1;
@@ -99,7 +122,7 @@ int	main(int ac, char **av)
 				philo_forked(&philo[i]);
 		}
 		if (pid)
-			father(philo);
+			clean_exit(data, philo);
 	}
 	return (0);
 }

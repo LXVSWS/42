@@ -66,23 +66,27 @@ t_philo	*philo_init(t_data *data, pthread_mutex_t *fork)
 	return (philo);
 }
 
-void	clean_exit(t_philo *philo, pthread_mutex_t *fork)
+void	clean_exit(t_data *data, pthread_mutex_t *fork, t_philo *philo)
 {
-	int				i;
+	int	i;
 
-	pthread_mutex_destroy(philo->data->access);
-	i = -1;
-	while (++i < philo->data->philo_total)
+	if (fork)
 	{
-		if (philo[i].left_fork)
-			pthread_mutex_destroy(philo[i].left_fork);
-		if (philo[i].right_fork)
-			pthread_mutex_destroy(philo[i].right_fork);
+		i = -1;
+		while (++i < data->philo_total)
+		{
+			if (philo[i].left_fork)
+				pthread_mutex_destroy(philo[i].left_fork);
+			if (philo[i].right_fork)
+				pthread_mutex_destroy(philo[i].right_fork);
+		}
+		free(fork);
 	}
-	free(philo->data->access);
-	free(philo->data);
-	free(fork);
-	free(philo);
+	pthread_mutex_destroy(data->access);
+	free(data->access);
+	free(data);
+	if (philo)
+		free(philo);
 }
 
 void	taking_fork(t_philo *philo)

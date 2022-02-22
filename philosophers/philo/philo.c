@@ -80,6 +80,27 @@ void	*checker_routine(void *arg)
 	return (0);
 }
 
+static int	parsing(char **av)
+{
+	int		i;
+	int		y;
+
+	i = 0;
+	y = -1;
+	while (av[++i])
+	{
+		while (av[i][++y])
+		{
+			if (av[i][y] < 48 || av[i][y] > 57)
+				return (1);
+		}
+		y = -1;
+		if (atol(av[i]) < -2147483648 || atol(av[i]) > 2147483647)
+			return (1);
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_data			*data;
@@ -89,6 +110,8 @@ int	main(int ac, char **av)
 
 	if (ac == 5 || ac == 6)
 	{
+		if (parsing(av))
+			return (-1);
 		data = data_init(av);
 		fork = malloc(sizeof(pthread_mutex_t) * data->philo_total);
 		philo = philo_init(data, fork);
@@ -98,7 +121,7 @@ int	main(int ac, char **av)
 			pthread_join(philo[i].thread_id, NULL);
 			pthread_join(philo[i].checker, NULL);
 		}
-		clean_exit(philo, fork);
+		clean_exit(data, fork, philo);
 	}
 	return (0);
 }

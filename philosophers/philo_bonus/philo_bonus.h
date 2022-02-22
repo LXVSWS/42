@@ -53,6 +53,6 @@ long	atol(const char *s);
 void	shortcut(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
-void	father(t_philo *philo);
+void	clean_exit(t_data *data, t_philo *philo);
 
 #endif

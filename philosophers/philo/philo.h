@@ -46,7 +46,7 @@ typedef struct philo
 
 t_data	*data_init(char **av);
 t_philo	*philo_init(t_data *data, pthread_mutex_t *fork);
-void	clean_exit(t_philo *philo, pthread_mutex_t *fork);
+void	clean_exit(t_data *data, pthread_mutex_t *fork, t_philo *philo);
 void	*philo_routine(void *arg);
 void	routine(t_philo *philo);
 void	*checker_routine(void *arg);
