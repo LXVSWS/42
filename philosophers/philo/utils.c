@@ -29,6 +29,7 @@ t_data	*data_init(char **av)
 		data->meals_needed = 0;
 	data->start_time = get_time_ms();
 	data->dead = 0;
+	data->printed = 0;
 	pthread_mutex_init(access, NULL);
 	data->access = access;
 	return (data);
@@ -42,9 +43,13 @@ t_philo	*philo_init(t_data *data, pthread_mutex_t *fork)
 	philo = malloc(sizeof(t_philo) * data->philo_total);
 	i = -1;
 	while (++i < data->philo_total)
+		printf("\033[95m0 %i is thinking\033[0m\n", i + 1);
+	i = -1;
+	while (++i < data->philo_total)
 	{
 		philo[i].number = i + 1;
 		philo[i].last_meal = get_time();
+		philo[i].meals = 0;
 		philo[i].data = data;
 		pthread_mutex_init(&fork[i], NULL);
 		philo[i].left_fork = &fork[i];

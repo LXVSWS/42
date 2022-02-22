@@ -42,9 +42,13 @@ t_philo	*philo_init(t_data *data)
 	philo = malloc(sizeof(t_philo) * data->philo_total);
 	i = -1;
 	while (++i < data->philo_total)
+		printf("\033[95m0 %i is thinking\033[0m\n", i + 1);
+	i = -1;
+	while (++i < data->philo_total)
 	{
 		philo[i].number = i + 1;
 		philo[i].last_meal = get_time();
+		philo[i].meals = 0;
 		philo[i].data = data;
 	}
 	return (philo);

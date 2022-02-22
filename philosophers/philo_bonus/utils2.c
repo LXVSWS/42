@@ -12,6 +12,15 @@
 
 #include "philo_bonus.h"
 
+void	shortcut(t_philo *philo)
+{
+	sem_wait(philo->data->forks);
+	sem_wait(philo->data->forks);
+	eating(philo);
+	sem_post(philo->data->forks);
+	sem_post(philo->data->forks);
+}
+
 static void	taking_fork(t_philo *philo)
 {
 	sem_wait(philo->data->access);
@@ -40,6 +49,8 @@ void	eating(t_philo *philo)
 		;
 	if (!philo->data->dead)
 		philo->last_meal = get_time();
+	if (philo->data->meals_needed)
+		philo->meals++;
 }
 
 void	sleeping(t_philo *philo)

@@ -41,6 +41,7 @@ typedef struct philo
 {
 	int				number;
 	double			last_meal;
+	int				meals;
 	t_data			*data;
 }	t_philo;
 
@@ -49,6 +50,7 @@ t_philo	*philo_init(t_data *data);
 double	get_time(void);
 long	get_time_ms(void);
 long	atol(const char *s);
+void	shortcut(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	father(t_philo *philo);
