@@ -54,7 +54,10 @@ t_philo	*philo_init(t_data *data, pthread_mutex_t *fork)
 		pthread_mutex_init(&fork[i], NULL);
 		philo[i].left_fork = &fork[i];
 		if (data->philo_total > 1 && (i != (data->philo_total - 1)))
+		{
+			pthread_mutex_init(&fork[i + 1], NULL);
 			philo[i].right_fork = &fork[i + 1];
+		}
 		else if (data->philo_total > 1 && (i == (data->philo_total - 1)))
 			philo[i].right_fork = &fork[0];
 		pthread_create(&philo[i].thread_id, NULL, philo_routine, &philo[i]);

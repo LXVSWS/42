@@ -24,15 +24,15 @@ void	*philo_routine(void *arg)
 	{
 		if (!philo->data->meals_needed)
 			while (!philo->data->dead)
-				classical(philo);
+				routine(philo);
 		else
 			while (!philo->data->dead && philo->meals < philo->data->meals_needed)
-				classical(philo);
+				routine(philo);
 	}
 	return (0);
 }
 
-void	classical(t_philo *philo)
+void	routine(t_philo *philo)
 {
 	if (!philo->data->dead)
 	{
@@ -42,6 +42,8 @@ void	classical(t_philo *philo)
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 	}
+	if (philo->data->meals_needed && philo->meals == philo->data->meals_needed)
+		return ;
 	if (!philo->data->dead)
 		sleeping(philo);
 	if (!philo->data->dead)
@@ -56,16 +58,12 @@ void	classical(t_philo *philo)
 void	*checker_routine(void *arg)
 {
 	t_philo		*philo;
-	static long		time;
 
 	philo = (t_philo *)arg;
 	while (!philo->data->dead)
 	{
 		if (get_time() > philo->last_meal + (philo->data->time_to_die * 0.001))
-		{
 			philo->data->dead = philo->number;
-			time = get_time_ms() - philo->data->start_time;
-		}
 		if (!philo->data->dead && philo->data->meals_needed \
 		&& philo->meals == philo->data->meals_needed)
 			return (0);
@@ -73,7 +71,8 @@ void	*checker_routine(void *arg)
 	pthread_mutex_lock(philo->data->access);
 	if (!philo->data->printed)
 	{
-		printf("\033[91m%li %i died\033[0m\n", time, philo->data->dead);
+		printf("\033[91m%li %i died\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->data->dead);
 		philo->data->printed = 1;
 	}
 	if (philo->data->printed)

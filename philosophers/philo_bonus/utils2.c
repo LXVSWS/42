@@ -71,7 +71,7 @@ void	sleeping(t_philo *philo)
 
 void	father(t_philo *philo)
 {
-	waitpid(-1, NULL, 0);
+	waitpid(0, NULL, 0);
 	sem_close(philo->data->forks);
 	sem_close(philo->data->access);
 	sem_unlink(FORKS);

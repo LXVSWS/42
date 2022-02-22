@@ -21,8 +21,7 @@ static void	*philo_routine(void *arg)
 	{
 		if (!philo->data->dead)
 			shortcut(philo);
-		if (!philo->data->dead && philo->data->meals_needed \
-		&& philo->meals == philo->data->meals_needed)
+		if (philo->data->meals_needed && philo->meals == philo->data->meals_needed)
 			return (0);
 		if (!philo->data->dead)
 			sleeping(philo);
@@ -49,9 +48,12 @@ static void	*checker_routine(void *arg)
 	}
 	if (philo->data->meals_needed && philo->meals == philo->data->meals_needed)
 		return (0);
-	sem_wait(philo->data->access);
-	printf("\033[91m%li %i died\033[0m\n", get_time_ms() \
-	- philo->data->start_time, philo->data->dead);
+	else
+	{
+		sem_wait(philo->data->access);
+		printf("\033[91m%li %i died\033[0m\n", \
+		get_time_ms() - philo->data->start_time, philo->data->dead);
+	}
 	return (0);
 }
 
@@ -70,10 +72,10 @@ static void	philo_forked(t_philo *philo)
 	}
 	else
 	{
-		pthread_create(&routine, NULL, philo_routine, philo);
 		pthread_create(&checker, NULL, checker_routine, philo);
-		pthread_join(routine, NULL);
+		pthread_create(&routine, NULL, philo_routine, philo);
 		pthread_join(checker, NULL);
+		pthread_join(routine, NULL);
 	}
 }
 
