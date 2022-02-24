@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:39 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 15:44:46 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/24 14:23:36 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ double	get_time(void);
 long	get_time_ms(void);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
+void	thinking(t_data *data);
 
 #endif

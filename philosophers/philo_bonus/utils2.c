@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 15:33:24 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 15:38:46 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/24 14:27:57 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	shortcut(t_philo *philo)
 {
-	sem_wait(philo->data->forks);
-	sem_wait(philo->data->forks);
 	eating(philo);
 	sem_post(philo->data->forks);
 	sem_post(philo->data->forks);
@@ -33,8 +31,10 @@ void	eating(t_philo *philo)
 {
 	double	tmp;
 
+	sem_wait(philo->data->forks);
 	if (!philo->data->dead)
 		taking_fork(philo);
+	sem_wait(philo->data->forks);
 	if (!philo->data->dead)
 		taking_fork(philo);
 	if (!philo->data->dead)

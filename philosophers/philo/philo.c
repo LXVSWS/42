@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:26 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 18:22:04 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/24 14:13:40 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	*philo_routine(void *arg)
 			while (!philo->data->dead)
 				routine(philo);
 		else
-			while (!philo->data->dead && philo->meals < philo->data->meals_needed)
+			while (!philo->data->dead && \
+			philo->meals < philo->data->meals_needed)
 				routine(philo);
 	}
 	return (0);
@@ -36,8 +37,6 @@ void	routine(t_philo *philo)
 {
 	if (!philo->data->dead)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		pthread_mutex_lock(philo->right_fork);
 		eating(philo);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);

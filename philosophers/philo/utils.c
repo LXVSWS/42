@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:57:45 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 17:30:45 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/24 14:34:33 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ t_philo	*philo_init(t_data *data, pthread_mutex_t *fork)
 	int				i;
 
 	philo = malloc(sizeof(t_philo) * data->philo_total);
-	i = -1;
-	while (++i < data->philo_total)
-		printf("\033[95m0 %i is thinking\033[0m\n", i + 1);
+	thinking(data);
 	i = -1;
 	while (++i < data->philo_total)
 	{

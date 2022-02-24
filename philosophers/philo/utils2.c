@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 15:41:45 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 17:37:37 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/24 14:35:01 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	eating(t_philo *philo)
 {
 	double		tmp;
 
+	pthread_mutex_lock(philo->left_fork);
 	if (!philo->data->dead)
 		taking_fork(philo);
+	pthread_mutex_lock(philo->right_fork);
 	if (!philo->data->dead)
 		taking_fork(philo);
 	if (!philo->data->dead)
@@ -45,7 +47,7 @@ void	eating(t_philo *philo)
 	}
 	tmp = get_time();
 	while (get_time() < tmp + (philo->data->time_to_eat * 0.001))
-		;
+		usleep(500);
 	if (!philo->data->dead)
 		philo->last_meal = get_time();
 	if (philo->data->meals_needed)
@@ -65,5 +67,14 @@ void	sleeping(t_philo *philo)
 	}
 	tmp = get_time();
 	while (get_time() < tmp + (philo->data->time_to_sleep * 0.001))
-		;
+		usleep(500);
+}
+
+void	thinking(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->philo_total)
+		printf("\033[95m0 %i is thinking\033[0m\n", i + 1);
 }

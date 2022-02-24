@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 15:40:20 by lwyss             #+#    #+#             */
-/*   Updated: 2022/02/21 15:41:33 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/02/24 14:14:01 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	*philo_routine(void *arg)
 	{
 		if (!philo->data->dead)
 			shortcut(philo);
-		if (philo->data->meals_needed && philo->meals == philo->data->meals_needed)
+		if (philo->data->meals_needed && \
+		philo->meals == philo->data->meals_needed)
 			return (0);
 		if (!philo->data->dead)
 			sleeping(philo);
