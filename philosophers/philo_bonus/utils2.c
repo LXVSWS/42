@@ -14,6 +14,8 @@
 
 void	shortcut(t_philo *philo)
 {
+	sem_wait(philo->data->forks);
+	sem_wait(philo->data->forks);
 	eating(philo);
 	sem_post(philo->data->forks);
 	sem_post(philo->data->forks);
@@ -31,10 +33,8 @@ void	eating(t_philo *philo)
 {
 	double	tmp;
 
-	sem_wait(philo->data->forks);
 	if (!philo->data->dead)
 		taking_fork(philo);
-	sem_wait(philo->data->forks);
 	if (!philo->data->dead)
 		taking_fork(philo);
 	if (!philo->data->dead)
@@ -46,7 +46,7 @@ void	eating(t_philo *philo)
 	}
 	tmp = get_time();
 	while (get_time() < tmp + (philo->data->time_to_eat * 0.001))
-		;
+		usleep(500);
 	if (!philo->data->dead)
 		philo->last_meal = get_time();
 	if (philo->data->meals_needed)
@@ -66,7 +66,7 @@ void	sleeping(t_philo *philo)
 	}
 	tmp = get_time();
 	while (get_time() < tmp + (philo->data->time_to_sleep * 0.001))
-		;
+		usleep(500);
 }
 
 void	clean_exit(t_data *data, t_philo *philo)

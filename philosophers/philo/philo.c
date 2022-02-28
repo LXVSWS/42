@@ -37,6 +37,8 @@ void	routine(t_philo *philo)
 {
 	if (!philo->data->dead)
 	{
+		pthread_mutex_lock(philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
 		eating(philo);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);

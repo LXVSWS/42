@@ -6,5 +6,5 @@
 ## 4) fractol (125%)
 ## 5) minitalk (100%)
 ## 6) push_swap (100%)
-## 7) philosophers (finished)
+## 7) philosophers (125%)
 ## 8) minishell (in progress...)

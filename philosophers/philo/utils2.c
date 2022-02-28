@@ -32,10 +32,8 @@ void	eating(t_philo *philo)
 {
 	double		tmp;
 
-	pthread_mutex_lock(philo->left_fork);
 	if (!philo->data->dead)
 		taking_fork(philo);
-	pthread_mutex_lock(philo->right_fork);
 	if (!philo->data->dead)
 		taking_fork(philo);
 	if (!philo->data->dead)
