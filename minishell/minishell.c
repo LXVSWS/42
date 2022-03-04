@@ -1,26 +1,22 @@
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+void	skip_empty(char **line)
 {
-	char	buffer[1000000];
-	int		bytes;
-	int		pid;
+	while (**line == ' ' || **line == '\t')
+		(*line)++;
+}
 
-	while (ac)
+int	main()
+{
+	char *line;
+
+	while (1)
 	{
-		write(1, "minishell-0.1$ ", 15);
-		bytes = read(0, buffer, 1000000);
-		buffer[bytes - 1] = 0;
-		if (buffer[0] && buffer[0] != ' ')
-		{
-			pid = fork();
-			if (!pid)
-			{
-				if (execve(buffer, av, env) == -1)
-					printf("minishell: %s: command not found\n", buffer);
-			}
-			else
-				waitpid(pid, NULL, 0);
-		}
+		line = readline("minishell-0.1$ ");
+		if (line[0] == 'e' && line[1] == 'x' && line[2] == 'i' && line[3] == 't')
+			break;
+		skip_empty(&line);
+		printf("%s", line);
 	}
+	free(line);
 }

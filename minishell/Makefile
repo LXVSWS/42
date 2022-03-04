@@ -8,12 +8,14 @@ CC		= gcc
 RM		= rm -f
 
 CFLAGS = -Wall -Wextra -Werror -g
+LFLAGS = -lreadline
+# -I/usr/local/opt/readline/include -L/usr/local/opt/readline/lib
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -o $@
+			${CC} ${CFLAGS} ${LFLAGS} ${OBJS} -o $@
 
 all:	${NAME}
 
