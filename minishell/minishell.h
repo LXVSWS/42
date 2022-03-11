@@ -14,9 +14,16 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_token
+{
+	int		type;
+	char	*val;
+}	t_token;
+
 char	**split(char const *s, char c);
 int		ft_strlen(char *s);
 char	*make_fullpath(char *path, char *line);
+int		forked(char *cmd, char **av, char **env);
 void	deep_free(char **path);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **alst, t_list *new);

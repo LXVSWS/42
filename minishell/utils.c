@@ -33,6 +33,28 @@ char	*make_fullpath(char *path, char *line)
 	return (cmd);
 }
 
+int	forked(char *cmd, char **av, char **env)
+{
+	char	**path;
+	char	*absolute;
+	int		i;
+
+	path = split(getenv("PATH"), ':');
+	if (execve(cmd, av, env) == -1)
+	{
+		i = -1;
+		while (path[++i])
+		{
+			absolute = make_fullpath(path[i], cmd);
+			execve(absolute, av, env);
+			free(absolute);
+		}
+	}
+	printf("minishell: %s: command not found\n", cmd);
+	deep_free(path);
+	exit(0);
+}
+
 void	deep_free(char **path)
 {
 	int	i;
