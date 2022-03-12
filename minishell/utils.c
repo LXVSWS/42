@@ -1,66 +1,78 @@
 #include "minishell.h"
 
-int		ft_strlen(char *s)
+void	skip_blank(char **line)
 {
-	int	i;
+	while (**line == ' ' || **line == '\t')
+		(*line)++;
+}
 
+int	check_symbol(char c)
+{
+	if (c == '>' || c == '<' || c == '|')
+		return (1);
+	return (0);
+}
+
+int	extract_symbol(char **line, t_token *token)
+{
+	if (**line == '|')
+		token->type = 1;
+	else if (**line == '<' && *(*line + 1) == '<')
+	{
+		token->type = 2;
+		if (*(*line + 2) == '<')
+			return (0);
+	}
+	else if (**line == '<')
+		token->type = 3;
+	else if (**line == '>' && *(*line + 1) == '>')
+	{
+		token->type = 4;
+		if (*(*line + 2) == '>')
+			return (0);		
+	}
+	else if (**line == '>')
+		token->type = 5;
+	if ((**line == '<' && *(*line + 1) == '<') || (**line == '>' && *(*line + 1) == '>'))
+		*line += 2;
+	else
+		(*line)++;
+	token->val = NULL;
+	return (1);
+}
+
+int	get_word_size(char *line)
+{
+	int		i;
+	char	quote;
+	
 	i = 0;
-	while (s[i])
+	while (line[i] && (line[i] != ' ' && line[i] != '\t') && !check_symbol(line[i]))
+	{
+		if (line[i] == '\'' || line[i] == '"')
+		{
+			quote = line[i++];
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
+				return (-1);
+		}
 		i++;
+	}
 	return (i);
 }
 
-char	*make_fullpath(char *path, char *line)
-{
-	char 	*cmd;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	cmd = malloc(sizeof(char) * ft_strlen(path) + ft_strlen(line) + 2);
-	while (path[i])
-	{
-		cmd[j] = path[i];
-		j++;
-		i++;
-	}
-	cmd[j++] = '/';
-	i = 0;
-	while (line[i])
-		cmd[j++] = line[i++];
-	cmd[j] = 0;
-	return (cmd);
-}
-
-int	forked(char *cmd, char **av, char **env)
-{
-	char	**path;
-	char	*absolute;
-	int		i;
-
-	path = split(getenv("PATH"), ':');
-	if (execve(cmd, av, env) == -1)
-	{
-		i = -1;
-		while (path[++i])
-		{
-			absolute = make_fullpath(path[i], cmd);
-			execve(absolute, av, env);
-			free(absolute);
-		}
-	}
-	printf("minishell: %s: command not found\n", cmd);
-	deep_free(path);
-	exit(0);
-}
-
-void	deep_free(char **path)
+void	ft_strncpy(char *dst, const char *src, int n)
 {
 	int	i;
 
-	i = -1;
-	while (path[++i])
-		free(path[i]);
-	free(path);
+	if (!dst || !src || n < 0)
+		return ;
+	i = 0;
+	while (src[i] && i < n)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = 0;
 }

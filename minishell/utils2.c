@@ -27,11 +27,57 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 		*alst = new;
 }
 
-void	ft_lstadd_front(t_list **alst, t_list *new)
+int	extract_word(char **line, t_token *token)
 {
-	t_list	*tmp;
+	int	size;
 
-	tmp = *alst;
-	*alst = new;
-	new->next = tmp;
+	size = get_word_size(*line);
+	if (size == -1)
+		return (0);
+	token->type = 6;
+	token->val = malloc(sizeof(char) * size + 1);
+	ft_strncpy(token->val, *line, size);
+	*line += size;
+	return (1);
+}
+
+t_token	*get_token(char **line)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (check_symbol(**line))
+	{
+		if (!extract_symbol(line, token))
+		{
+			printf("syntax error : unexpected token\n");
+			free(token);
+			return (NULL);
+		}
+	}
+	else if (!extract_word(line, token))
+	{
+		printf("syntax error : quotes unclosed\n");
+		free(token);
+		return (NULL);
+	}
+	return (token);
+}
+
+t_list	*tokenize(char *line)
+{
+	t_list	*tokens;
+	t_token	*token;
+
+	tokens = NULL;
+	skip_blank(&line);
+	while (*line)
+	{
+		token = get_token(&line);
+		if (!token)
+			return (NULL); // need add lstclear tokens
+		ft_lstadd_back(&tokens, ft_lstnew(token));
+		skip_blank(&line);
+	}
+	return (tokens);
 }
