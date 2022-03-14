@@ -21,16 +21,16 @@ typedef struct s_token
 }	t_token;
 
 char	**split(char const *s, char c);
-void	skip_blank(char **line);
-int		check_symbol(char c);
-int		extract_symbol(char **line, t_token *token);
 int		get_word_size(char *line);
-void	ft_strncpy(char *dst, const char *src, int n);
-t_list	*ft_lstnew(void *content);
-void	ft_lstadd_back(t_list **alst, t_list *new);
 int		extract_word(char **line, t_token *token);
+int		extract_symbol(char **line, t_token *token);
 t_token	*get_token(char **line);
 t_list	*tokenize(char *line);
+void	skip_blank(char **line);
+int		check_symbol(char c);
+t_list	*ft_lstnew(void *content);
+void	ft_lstadd_back(t_list **alst, t_list *new);
+void	ft_strncpy(char *dst, const char *src, int n);
 int		ft_strlen(char *s);
 char	*make_fullpath(char *path, char *line);
 void	deep_free(char **path);

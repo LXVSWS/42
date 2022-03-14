@@ -22,35 +22,54 @@ static int	exec(char *cmd, char **av, char **env)
 	exit(0);
 }
 
-int	main(int ac, char **av, char **env)
+static void	play_with_tokens(t_list	*tokens, char **av, char **env)
 {
-	char	*line;
-	t_list	*tokens;
 	t_token *token;
 	int		pid;
 
-	while (ac)
+	token = tokens->content;
+	if (token->type == 6)
 	{
-		line = readline("minishell-0.1$ ");
-		if (*line && line)
-		{
-			add_history(line);
-			tokens = tokenize(line);
-			while (tokens)
-			{
-				token = tokens->content;
-				if (token->type == 6)
-				{
-					pid = fork();
-					if (!pid)
-						exec(token->val, av, env);
-					else
-						waitpid(pid, NULL, 0);
-				}
-				tokens = tokens->next;
-			}
-		}
-		free(line);
+		pid = fork();
+		if (!pid)
+			exec(token->val, av, env);
+		else
+			waitpid(pid, NULL, 0);
 	}
+}
+
+static int	routine(char **av, char **env)
+{
+	char	*line;
+	t_list	*tokens;
+	int		ret;
+
+	ret = 0;
+	line = readline("minishell-0.1$ ");
+	if (!line)
+	{
+		write(1, " exit\n", 6);
+		ret = -1;
+	}
+	else if (*line && line)
+	{
+		add_history(line);
+		tokens = tokenize(line);
+		while (tokens)
+		{
+			play_with_tokens(tokens, av, env);
+			tokens = tokens->next;
+		} // need add ft_lstclear(&tokens, &free_token);
+	}
+	free(line);
+	return (ret);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	while (ac)
+		if (routine(av, env) == -1)
+			break;
 	clear_history();
+	return (0);
 }

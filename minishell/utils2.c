@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+void	skip_blank(char **line)
+{
+	while (**line == ' ' || **line == '\t')
+		(*line)++;
+}
+
+int	check_symbol(char c)
+{
+	if (c == '>' || c == '<' || c == '|')
+		return (1);
+	return (0);
+}
+
 t_list	*ft_lstnew(void *content)
 {
 	t_list	*l;
@@ -27,57 +40,17 @@ void	ft_lstadd_back(t_list **alst, t_list *new)
 		*alst = new;
 }
 
-int	extract_word(char **line, t_token *token)
+void	ft_strncpy(char *dst, const char *src, int n)
 {
-	int	size;
+	int	i;
 
-	size = get_word_size(*line);
-	if (size == -1)
-		return (0);
-	token->type = 6;
-	token->val = malloc(sizeof(char) * size + 1);
-	ft_strncpy(token->val, *line, size);
-	*line += size;
-	return (1);
-}
-
-t_token	*get_token(char **line)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	if (check_symbol(**line))
+	if (!dst || !src || n < 0)
+		return ;
+	i = 0;
+	while (src[i] && i < n)
 	{
-		if (!extract_symbol(line, token))
-		{
-			printf("syntax error : unexpected token\n");
-			free(token);
-			return (NULL);
-		}
+		dst[i] = src[i];
+		i++;
 	}
-	else if (!extract_word(line, token))
-	{
-		printf("syntax error : quotes unclosed\n");
-		free(token);
-		return (NULL);
-	}
-	return (token);
-}
-
-t_list	*tokenize(char *line)
-{
-	t_list	*tokens;
-	t_token	*token;
-
-	tokens = NULL;
-	skip_blank(&line);
-	while (*line)
-	{
-		token = get_token(&line);
-		if (!token)
-			return (NULL); // need add lstclear tokens
-		ft_lstadd_back(&tokens, ft_lstnew(token));
-		skip_blank(&line);
-	}
-	return (tokens);
+	dst[i] = 0;
 }
