@@ -14,6 +14,10 @@
 # define GET_NEXT_LINE_BONUS_H
 # define FD_MAX 256
 
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 1
+#endif
+
 # include <stdlib.h>
 # include <unistd.h>
 

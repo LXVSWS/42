@@ -1,56 +1,66 @@
 #include "minishell.h"
 
-void	skip_blank(char **line)
+int	exec(char *cmd, char **av, char **env)
 {
-	while (**line == ' ' || **line == '\t')
-		(*line)++;
-}
+	char	**path;
+	char	*absolute;
+	int		i;
 
-int	check_symbol(char c)
-{
-	if (c == '>' || c == '<' || c == '|')
-		return (1);
-	return (0);
-}
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*l;
-
-	l = malloc(sizeof(t_list));
-	if (!l)
-		return (NULL);
-	l->content = content;
-	l->next = NULL;
-	return (l);
-}
-
-void	ft_lstadd_back(t_list **alst, t_list *new)
-{
-	t_list	*tmp;
-
-	tmp = *alst;
-	if (*alst)
+	path = split(getenv("PATH"), ':');
+	if (execve(cmd, av, env) == -1)
 	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
+		i = -1;
+		while (path[++i])
+		{
+			absolute = make_fullpath(path[i], cmd);
+			execve(absolute, av, env);
+			free(absolute);
+		}
 	}
-	else
-		*alst = new;
+	printf("minishell: %s: command not found\n", cmd);
+	deep_free(path);
+	exit(0);
 }
 
-void	ft_strncpy(char *dst, const char *src, int n)
+void	exec_cmds(t_list *cmds, char **av, char **env)
 {
-	int	i;
+	t_token	*cmd;
+	int		pid;
 
-	if (!dst || !src || n < 0)
-		return ;
-	i = 0;
-	while (src[i] && i < n)
+	while (cmds)
 	{
-		dst[i] = src[i];
+		cmd = cmds->content;
+		if (cmd->type == 6)
+		{
+			pid = fork();
+			if (!pid)
+				exec(cmd->val, av, env);
+			else
+				waitpid(pid, NULL, 0);
+		}
+		cmds = cmds->next;
+	}
+}
+
+char	*make_fullpath(char *path, char *line)
+{
+	char 	*cmd;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	cmd = malloc(sizeof(char) * ft_strlen(path) + ft_strlen(line) + 2);
+	while (path[i])
+	{
+		cmd[j] = path[i];
+		j++;
 		i++;
 	}
-	dst[i] = 0;
+	cmd[j++] = '/';
+	i = 0;
+	while (line[i])
+		cmd[j++] = line[i++];
+	cmd[j] = 0;
+	return (cmd);
 }

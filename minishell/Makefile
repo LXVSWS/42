@@ -1,6 +1,6 @@
 NAME	= minishell
 
-SRCS	= minishell.c split.c utils.c utils2.c utils3.c
+SRCS	= minishell.c parsing.c parsing2.c split.c utils.c utils2.c
 
 OBJS	= ${SRCS:.c=.o}
 
