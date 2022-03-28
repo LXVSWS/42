@@ -1,15 +1,18 @@
 // VS Code Settings Configuration File
 {
-    "editor.fontSize": 14,
-    "telemetry.telemetryLevel": "off",
-    "workbench.editor.untitled.hint": "hidden",
-    "explorer.confirmDragAndDrop": false,
-    "explorer.confirmDelete": false,
-    "editor.insertSpaces": false,
-    "search.followSymlinks": false,
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true
+	"editor.fontSize": 14,
+	"telemetry.telemetryLevel": "off",
+	"workbench.editor.untitled.hint": "hidden",
+	"workbench.sideBar.location": "right",
+	"explorer.confirmDragAndDrop": false,
+	"explorer.confirmDelete": false,
+	"editor.insertSpaces": false,
+	"editor.renderWhitespace": "none",
+	"editor.detectIndentation": false,
+	"search.followSymlinks": false,
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true,
+	"files.trimTrailingWhitespace": true
 }
 // macOS path -> ~/Library/Application Support/Code/User/
 // Linux path -> ~/.config/Code/User/
