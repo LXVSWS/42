@@ -4,7 +4,7 @@ int	get_word_size(char *line)
 {
 	int		i;
 	char	quote;
-	
+
 	i = 0;
 	while (line[i] && (line[i] != ' ' && line[i] != '\t') && !check_symbol(line[i]))
 	{
@@ -55,7 +55,6 @@ t_cmd	*get_cmd(t_list **tokens)
 {
 	t_cmd	*cmd;
 
-	(void)tokens;
 	cmd = malloc(sizeof(t_cmd));
 	cmd->cmd_with_args = NULL;
 	return (cmd);
