@@ -24,20 +24,17 @@ int	exec(char *cmd, char **av, char **env)
 
 void	exec_cmds(t_list *cmds, char **av, char **env)
 {
-	t_token	*cmd;
+	t_cmd	*cmd;
 	int		pid;
 
 	while (cmds)
 	{
 		cmd = cmds->content;
-		if (cmd->type == 6)
-		{
-			pid = fork();
-			if (!pid)
-				exec(cmd->val, av, env);
-			else
-				waitpid(pid, NULL, 0);
-		}
+		pid = fork();
+		if (!pid)
+			exec(cmd->cmd_with_args, av, env);
+		else
+			waitpid(pid, NULL, 0);
 		cmds = cmds->next;
 	}
 }

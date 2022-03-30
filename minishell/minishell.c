@@ -18,8 +18,8 @@ static int	routine(char **av, char **env)
 	{
 		add_history(line);
 		tokens = tokenize(line);
-		(void)cmds; // cmds = forge(tokens);
-		exec_cmds(tokens, av, env);
+		cmds = forge(tokens);
+		exec_cmds(cmds, av, env);
 		// need add ft_lstclear(&tokens, &free_token);
 	}
 	free(line);
