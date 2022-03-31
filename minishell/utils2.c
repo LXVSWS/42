@@ -32,7 +32,7 @@ void	exec_cmds(t_list *cmds, char **av, char **env)
 		cmd = cmds->content;
 		pid = fork();
 		if (!pid)
-			exec(cmd->cmd_with_args, av, env);
+			exec(cmd->cmd_with_args[0], av, env);
 		else
 			waitpid(pid, NULL, 0);
 		cmds = cmds->next;

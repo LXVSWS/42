@@ -53,9 +53,15 @@ t_list	*forge(t_list *tokens)
 
 t_cmd	*get_cmd(t_list **tokens)
 {
+	t_token	*token;
 	t_cmd	*cmd;
 
-	cmd = malloc(sizeof(t_cmd));
-	cmd->cmd_with_args = NULL;
+	while (*tokens)
+	{
+		token = (*tokens)->content;
+		printf("%s\n", token->val);
+		cmd = malloc(sizeof(t_cmd));
+		cmd->cmd_with_args = NULL;
+	}
 	return (cmd);
 }

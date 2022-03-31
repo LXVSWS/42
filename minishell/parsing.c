@@ -70,11 +70,12 @@ int	extract_symbol(char **line, t_token *token)
 	{
 		token->type = 4;
 		if (*(*line + 2) == '>' || *(*line + 2) == '<')
-			return (0);		
+			return (0);
 	}
 	else if (**line == '>')
 		token->type = 5;
-	if ((**line == '<' && *(*line + 1) == '<') || (**line == '>' && *(*line + 1) == '>'))
+	if ((**line == '<' && *(*line + 1) == '<')\
+	 || (**line == '>' && *(*line + 1) == '>'))
 		*line += 2;
 	else
 		(*line)++;
