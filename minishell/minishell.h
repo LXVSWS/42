@@ -40,8 +40,8 @@ void	ft_lstadd_back(t_list **alst, t_list *new);
 void	ft_strncpy(char *dst, const char *src, int n);
 int		ft_strlen(char *s);
 void	deep_free(char **path);
-int		exec(char *cmd, char **av, char **env);
-void	exec_cmds(t_list *cmds, char **av, char **env);
+void	exec_cmds(t_list *cmds, char **env);
+int		exec(char **cmd_with_args, char **env);
 char	*make_fullpath(char *path, char *line);
 
 #endif

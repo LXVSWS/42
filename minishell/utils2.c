@@ -1,28 +1,6 @@
 #include "minishell.h"
 
-int	exec(char *cmd, char **av, char **env)
-{
-	char	**path;
-	char	*absolute;
-	int		i;
-
-	path = split(getenv("PATH"), ':');
-	if (execve(cmd, av, env) == -1)
-	{
-		i = -1;
-		while (path[++i])
-		{
-			absolute = make_fullpath(path[i], cmd);
-			execve(absolute, av, env);
-			free(absolute);
-		}
-	}
-	printf("minishell: %s: command not found\n", cmd);
-	deep_free(path);
-	exit(0);
-}
-
-void	exec_cmds(t_list *cmds, char **av, char **env)
+void	exec_cmds(t_list *cmds, char **env)
 {
 	t_cmd	*cmd;
 	int		pid;
@@ -32,11 +10,38 @@ void	exec_cmds(t_list *cmds, char **av, char **env)
 		cmd = cmds->content;
 		pid = fork();
 		if (!pid)
-			exec(cmd->cmd_with_args[0], av, env);
+			exec(cmd->cmd_with_args, env);
 		else
 			waitpid(pid, NULL, 0);
 		cmds = cmds->next;
 	}
+}
+
+int	exec(char **cmd_with_args, char **env)
+{
+	char	**path;
+	//char	*absolute;
+	//int		i;
+
+	(void)env;
+	char *aq[] = {"ls", "-la", NULL};
+	path = split(getenv("PATH"), ':');
+	execve("/bin/ls", aq, NULL);
+	/*
+	if (execve(path, cmd_with_args, env) == -1)
+	{
+		i = -1;
+		while (path[++i])
+		{
+			absolute = make_fullpath(path[i], cmd);
+			execve(absolute, av, env);
+			free(absolute);
+		}
+	}
+	*/
+	printf("minishell: %s: command not found\n", cmd_with_args[0]);
+	deep_free(path);
+	exit(0);
 }
 
 char	*make_fullpath(char *path, char *line)

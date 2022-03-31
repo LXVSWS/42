@@ -55,13 +55,34 @@ t_cmd	*get_cmd(t_list **tokens)
 {
 	t_token	*token;
 	t_cmd	*cmd;
+	void	*save;
+	int		i;
+	int		size;
 
+	i = 0;
+	size = 0;
+	save = *tokens;
+	cmd = malloc(sizeof(t_cmd));
 	while (*tokens)
 	{
 		token = (*tokens)->content;
-		printf("%s\n", token->val);
-		cmd = malloc(sizeof(t_cmd));
-		cmd->cmd_with_args = NULL;
+		if (token->type == 6)
+			size++;
+		*tokens = (*tokens)->next;
+	}
+	cmd->cmd_with_args = malloc(sizeof(char *) * size + 1);
+	cmd->cmd_with_args[size] = 0;
+	*tokens = save;
+	while (*tokens)
+	{
+		token = (*tokens)->content;
+		if (token->type == 6)
+		{
+			size = ft_strlen(token->val);
+			cmd->cmd_with_args[i] = malloc(sizeof(char) * size + 1);
+			ft_strncpy(cmd->cmd_with_args[i++], token->val, size);
+		}
+		*tokens = (*tokens)->next;
 	}
 	return (cmd);
 }
