@@ -20,25 +20,20 @@ void	exec_cmds(t_list *cmds, char **env)
 int	exec(char **cmd_with_args, char **env)
 {
 	char	**path;
-	//char	*absolute;
-	//int		i;
+	char	*absolute;
+	int		i;
 
-	(void)env;
-	char *aq[] = {"ls", "-la", NULL};
 	path = split(getenv("PATH"), ':');
-	execve("/bin/ls", aq, NULL);
-	/*
-	if (execve(path, cmd_with_args, env) == -1)
+	if (execve(cmd_with_args[0], cmd_with_args, env) == -1)
 	{
 		i = -1;
 		while (path[++i])
 		{
-			absolute = make_fullpath(path[i], cmd);
-			execve(absolute, av, env);
+			absolute = make_fullpath(path[i], cmd_with_args[0]);
+			execve(absolute, cmd_with_args, env);
 			free(absolute);
 		}
 	}
-	*/
 	printf("minishell: %s: command not found\n", cmd_with_args[0]);
 	deep_free(path);
 	exit(0);
