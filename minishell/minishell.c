@@ -6,7 +6,7 @@ static int	routine(char **env)
 	t_list	*tokens;
 	t_list	*cmds;
 
-	line = readline("minishell-0.2$ ");
+	line = readline("minishell-0.3$ ");
 	if (!line)
 	{
 		write(1, " exit\n", 6);

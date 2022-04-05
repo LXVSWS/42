@@ -63,26 +63,41 @@ t_cmd	*get_cmd(t_list **tokens)
 	size = 0;
 	save = *tokens;
 	cmd = malloc(sizeof(t_cmd));
-	while (*tokens)
+	cmd->cmd_with_args = NULL;
+	while (*tokens && get_type((*tokens)->content) != 1)
 	{
-		token = (*tokens)->content;
-		if (token->type == 6)
+		if (get_type((*tokens)->content) == 6)
 			size++;
 		*tokens = (*tokens)->next;
 	}
 	cmd->cmd_with_args = malloc(sizeof(char *) * size + 1);
 	cmd->cmd_with_args[size] = 0;
 	*tokens = save;
-	while (*tokens)
+	while (*tokens && get_type((*tokens)->content) != 1)
 	{
-		token = (*tokens)->content;
-		if (token->type == 6)
+		if (get_type((*tokens)->content) == 6)
 		{
+			token = (*tokens)->content;
 			size = ft_strlen(token->val);
 			cmd->cmd_with_args[i] = malloc(sizeof(char) * size + 1);
 			ft_strncpy(cmd->cmd_with_args[i++], token->val, size);
 		}
 		*tokens = (*tokens)->next;
 	}
+	if (*tokens)
+	{
+		*tokens = (*tokens)->next;
+		if (!*tokens || get_type((*tokens)->content) == 1)
+		{
+			printf("syntax error : unexpected token '|'\n");
+			free(cmd);
+			return (NULL);
+		}
+	}
 	return (cmd);
+}
+
+int	get_type(t_token *token)
+{
+	return (token->type);
 }
