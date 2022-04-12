@@ -7,3 +7,6 @@ a.out
 mlx
 */mlx
 */*/mlx
+*.o
+*/*.o
+*/*/*.o
