@@ -5,12 +5,14 @@ static int	routine(char **env)
 	char	*line;
 	t_list	*tokens;
 	t_list	*cmds;
+	int		ret;
 
+	ret = 0;
 	line = readline("minishell-0.3$ ");
 	if (!line)
 	{
 		write(1, " exit\n", 6);
-		return (-1);
+		ret = -1;
 	}
 	else if (*line && line)
 	{
@@ -21,7 +23,7 @@ static int	routine(char **env)
 		// need add ft_lstclear(&tokens, &free_token);
 	}
 	free(line);
-	return (0);
+	return (ret);
 }
 
 int	main(int ac, char **env)

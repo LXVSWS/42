@@ -16,6 +16,8 @@ int	get_word_size(char *line)
 			if (!line[i])
 				return (-1);
 		}
+		else if (line[i] == '$' && getenv(&line[i + 1]))
+			return (ft_strlen(getenv(&line[++i])));
 		i++;
 	}
 	return (i);
@@ -30,8 +32,17 @@ int	extract_word(char **line, t_token *token)
 		return (0);
 	token->type = 6;
 	token->val = malloc(sizeof(char) * size + 1);
-	ft_strncpy(token->val, *line, size);
-	*line += size;
+	if (**line == '$' && getenv(*line + 1))
+	{
+		(*line)++;
+		ft_strncpy(token->val, getenv(*line), size);
+		*line += ft_strlen(*line);
+	}
+	else
+	{
+		ft_strncpy(token->val, *line, size);
+		*line += size;
+	}
 	return (1);
 }
 
