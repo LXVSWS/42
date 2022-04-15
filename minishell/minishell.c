@@ -8,7 +8,7 @@ static int	routine(char **env)
 	int		ret;
 
 	ret = 0;
-	line = readline("minishell-0.3$ ");
+	line = readline("minishell-0.4$ ");
 	if (!line)
 	{
 		write(1, " exit\n", 6);
