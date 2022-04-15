@@ -1,4 +1,3 @@
-// VS Code Settings Configuration File
 {
 	"editor.fontSize": 14,
 	"telemetry.telemetryLevel": "off",
@@ -12,7 +11,8 @@
 	"search.followSymlinks": false,
 	"files.insertFinalNewline": true,
 	"files.trimFinalNewlines": true,
-	"files.trimTrailingWhitespace": true
+	"files.trimTrailingWhitespace": true,
+	"security.workspace.trust.untrustedFiles": "open"
 }
 // macOS path -> ~/Library/Application Support/Code/User/
 // Linux path -> ~/.config/Code/User/

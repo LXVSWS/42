@@ -16,8 +16,6 @@ int	get_word_size(char *line)
 			if (!line[i])
 				return (-1);
 		}
-		else if (line[i] == '$' && getenv(&line[i + 1]))
-			return (ft_strlen(getenv(&line[++i])));
 		i++;
 	}
 	return (i);
@@ -32,17 +30,8 @@ int	extract_word(char **line, t_token *token)
 		return (0);
 	token->type = 6;
 	token->val = malloc(sizeof(char) * size + 1);
-	if (**line == '$' && getenv(*line + 1))
-	{
-		(*line)++;
-		ft_strncpy(token->val, getenv(*line), size);
-		*line += ft_strlen(*line);
-	}
-	else
-	{
-		ft_strncpy(token->val, *line, size);
-		*line += size;
-	}
+	ft_strncpy(token->val, *line, size);
+	*line += size;
 	return (1);
 }
 
@@ -62,28 +51,35 @@ t_list	*forge(t_list *tokens)
 	return (cmds);
 }
 
+t_cmd	*allocate_cmd_size(t_list *tokens)
+{
+	t_cmd	*cmd;
+	int		size;
+
+	size = 0;
+	cmd = malloc(sizeof(t_cmd));
+	cmd->cmd_with_args = NULL;
+	while (tokens && get_type(tokens->content) != 1)
+	{
+		if (get_type(tokens->content) == 6)
+			size++;
+		tokens = tokens->next;
+	}
+	cmd->cmd_with_args = malloc(sizeof(char *) * size + 1);
+	cmd->cmd_with_args[size] = 0;
+	return (cmd);
+}
+
 t_cmd	*get_cmd(t_list **tokens)
 {
 	t_token	*token;
 	t_cmd	*cmd;
-	void	*save;
 	int		i;
 	int		size;
 
 	i = 0;
 	size = 0;
-	save = *tokens;
-	cmd = malloc(sizeof(t_cmd));
-	cmd->cmd_with_args = NULL;
-	while (*tokens && get_type((*tokens)->content) != 1)
-	{
-		if (get_type((*tokens)->content) == 6)
-			size++;
-		*tokens = (*tokens)->next;
-	}
-	cmd->cmd_with_args = malloc(sizeof(char *) * size + 1);
-	cmd->cmd_with_args[size] = 0;
-	*tokens = save;
+	cmd = allocate_cmd_size(*tokens);
 	while (*tokens && get_type((*tokens)->content) != 1)
 	{
 		if (get_type((*tokens)->content) == 6)
@@ -106,9 +102,4 @@ t_cmd	*get_cmd(t_list **tokens)
 		}
 	}
 	return (cmd);
-}
-
-int	get_type(t_token *token)
-{
-	return (token->type);
 }

@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+int	get_type(t_token *token)
+{
+	return (token->type);
+}
+
 void	exec_cmds(t_list *cmds, char **env)
 {
 	t_cmd	*cmd;
