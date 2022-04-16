@@ -54,38 +54,26 @@ int	check_symbol(char c)
 	return (0);
 }
 
-int	get_type(t_token *token)
-{
-	return (token->type);
-}
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
-}
-
 int	extract_symbol(char **line, t_token *token)
 {
 	if (**line == '|')
-		token->type = 1;
+		token->type = PIPE;
 	else if (**line == '<' && *(*line + 1) == '<')
 	{
-		token->type = 2;
+		token->type = REDIR_LL;
 		if (*(*line + 2) == '<' || *(*line + 2) == '>')
 			return (0);
 	}
 	else if (**line == '<')
-		token->type = 3;
+		token->type = REDIR_L;
 	else if (**line == '>' && *(*line + 1) == '>')
 	{
-		token->type = 4;
+		token->type = REDIR_RR;
 		if (*(*line + 2) == '>' || *(*line + 2) == '<')
 			return (0);
 	}
 	else if (**line == '>')
-		token->type = 5;
+		token->type = REDIR_R;
 	if ((**line == '<' && *(*line + 1) == '<')\
 	 || (**line == '>' && *(*line + 1) == '>'))
 		*line += 2;
@@ -118,6 +106,13 @@ int	get_word_size(char *line)
 	return (i);
 }
 
+int	is_whitespace(char c)
+{
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
+}
+
 char	*get_word(char *line)
 {
 	int		i;
@@ -138,7 +133,7 @@ int	extract_word(char **line, t_token *token)
 	size = get_word_size(*line);
 	if (size == -1)
 		return (0);
-	token->type = 6;
+	token->type = WORD;
 	token->val = malloc(sizeof(char) * size + 1);
 	if (**line == '$' && getenv(get_word(*line + 1)))
 	{
@@ -170,6 +165,11 @@ t_list	*forge(t_list *tokens)
 	return (cmds);
 }
 
+int	get_type(t_token *token)
+{
+	return (token->type);
+}
+
 t_cmd	*allocate_cmd_size(t_list *tokens)
 {
 	t_cmd	*cmd;
@@ -178,9 +178,9 @@ t_cmd	*allocate_cmd_size(t_list *tokens)
 	size = 0;
 	cmd = malloc(sizeof(t_cmd));
 	cmd->cmd_with_args = NULL;
-	while (tokens && get_type(tokens->content) != 1)
+	while (tokens && get_type(tokens->content) != PIPE)
 	{
-		if (get_type(tokens->content) == 6)
+		if (get_type(tokens->content) == WORD)
 			size++;
 		tokens = tokens->next;
 	}
@@ -199,9 +199,9 @@ t_cmd	*get_cmd(t_list **tokens)
 	i = 0;
 	size = 0;
 	cmd = allocate_cmd_size(*tokens);
-	while (*tokens && get_type((*tokens)->content) != 1)
+	while (*tokens && get_type((*tokens)->content) != PIPE)
 	{
-		if (get_type((*tokens)->content) == 6)
+		if (get_type((*tokens)->content) == WORD)
 		{
 			token = (*tokens)->content;
 			size = ft_strlen(token->val);
@@ -213,7 +213,7 @@ t_cmd	*get_cmd(t_list **tokens)
 	if (*tokens)
 	{
 		*tokens = (*tokens)->next;
-		if (!*tokens || get_type((*tokens)->content) == 1)
+		if (!*tokens || get_type((*tokens)->content) == PIPE)
 		{
 			printf("syntax error : unexpected token '|'\n");
 			free(cmd);

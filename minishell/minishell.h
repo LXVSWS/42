@@ -25,17 +25,27 @@ typedef struct s_cmd
 	char	**cmd_with_args;
 }	t_cmd;
 
+enum e_types
+{
+	PIPE = 1,
+	REDIR_LL,
+	REDIR_L,
+	REDIR_RR,
+	REDIR_R,
+	WORD,
+};
+
 void	skip_blank(char **line);
 t_list	*tokenize(char *line);
 t_token	*get_token(char **line);
 int		check_symbol(char c);
-int		get_type(t_token *token);
-int		is_whitespace(char c);
 int		extract_symbol(char **line, t_token *token);
 int		get_word_size(char *line);
+int		is_whitespace(char c);
 char	*get_word(char *line);
 int		extract_word(char **line, t_token *token);
 t_list	*forge(t_list *tokens);
+int		get_type(t_token *token);
 t_cmd	*allocate_cmd_size(t_list *tokens);
 t_cmd	*get_cmd(t_list **tokens);
 char	**split(char const *s, char c);
