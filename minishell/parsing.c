@@ -213,9 +213,13 @@ t_cmd	*get_cmd(t_list **tokens)
 	if (*tokens)
 	{
 		*tokens = (*tokens)->next;
-		if (!*tokens || get_type((*tokens)->content) == PIPE)
+		if (!*tokens || get_type((*tokens)->content) == PIPE \
+		|| get_type((*tokens)->content) == REDIR_L \
+		|| get_type((*tokens)->content) == REDIR_LL \
+		|| get_type((*tokens)->content) == REDIR_R \
+		|| get_type((*tokens)->content) == REDIR_RR)
 		{
-			printf("syntax error : unexpected token '|'\n");
+			printf("syntax error near unexpected token '|'\n");
 			free(cmd);
 			return (NULL);
 		}

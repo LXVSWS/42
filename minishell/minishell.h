@@ -35,6 +35,9 @@ enum e_types
 	WORD,
 };
 
+void	exec_cmds(t_list *cmds, char **env);
+int		exec(char **cmd_with_args, char **env);
+char	*make_fullpath(char *path, char *line);
 void	skip_blank(char **line);
 t_list	*tokenize(char *line);
 t_token	*get_token(char **line);
@@ -54,8 +57,5 @@ void	ft_lstadd_back(t_list **alst, t_list *new);
 void	ft_strncpy(char *dst, const char *src, int n);
 int		ft_strlen(char *s);
 void	deep_free(char **path);
-void	exec_cmds(t_list *cmds, char **env);
-int		exec(char **cmd_with_args, char **env);
-char	*make_fullpath(char *path, char *line);
 
 #endif
