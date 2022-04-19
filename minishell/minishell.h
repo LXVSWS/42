@@ -35,6 +35,7 @@ enum e_types
 	WORD,
 };
 
+int		calculate_pipe_number(t_list *cmds);
 void	exec_cmds(t_list *cmds, char **env);
 int		exec(char **cmd_with_args, char **env);
 char	*make_fullpath(char *path, char *line);

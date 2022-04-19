@@ -19,8 +19,8 @@ static int	routine(char **env)
 		add_history(line);
 		tokens = tokenize(line);
 		cmds = forge(tokens);
+		// ft_lstclear(&tokens, &free_token);
 		exec_cmds(cmds, env);
-		// need add ft_lstclear(&tokens, &free_token);
 	}
 	free(line);
 	return (ret);
@@ -35,27 +35,29 @@ int	main(int ac, char **env)
 	return (0);
 }
 
+int	calculate_pipe_number(t_list *cmds)
+{
+	int	i;
+
+	i = -1;
+	while (cmds)
+	{
+		i++;
+		cmds = cmds->next;
+	}
+	return (i);
+}
+
 void	exec_cmds(t_list *cmds, char **env)
 {
 	t_cmd	*cmd;
-	void	*save;
-	int		pipe_needed;
+	int		pipe_number;
 	int		fd[2];
 	int		pid;
 
-	save = cmds;
-	pipe_needed = -1;
-	while (cmds)
-	{
-		pipe_needed++;
-		cmds = cmds->next;
-	}
-	cmds = save;
-	if (pipe_needed > 0)
-	{
-		printf("%i pipe(s) needed\n", pipe_needed);
+	pipe_number = calculate_pipe_number(cmds);
+	if (pipe_number > 0)
 		pipe(fd);
-	}
 	while (cmds)
 	{
 		cmd = cmds->content;

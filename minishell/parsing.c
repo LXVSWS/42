@@ -185,7 +185,7 @@ t_cmd	*allocate_cmd_size(t_list *tokens)
 		tokens = tokens->next;
 	}
 	cmd->cmd_with_args = malloc(sizeof(char *) * size + 1);
-	cmd->cmd_with_args[size] = 0;
+	cmd->cmd_with_args[size] = NULL;
 	return (cmd);
 }
 
