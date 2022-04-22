@@ -6,6 +6,8 @@ alias setcode="cd ~/Library/Application\ Support/Code/User/ && rm settings.json 
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$HOME/.brew/bin:$PATH
 
+# rm -rf $HOME/.brew && gcl --depth=1 https://github.com/Homebrew/brew $HOME/.brew && brew update
+
 ZSH_THEME="eastwood"
 
 COMPLETION_WAITING_DOTS="true"
