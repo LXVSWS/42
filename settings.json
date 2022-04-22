@@ -14,5 +14,5 @@
 	"files.trimTrailingWhitespace": true,
 	"security.workspace.trust.untrustedFiles": "open"
 }
-// macOS path -> ~/Library/Application Support/Code/User/
+// macOS path -> ~/Library/Application\ Support/Code/User/
 // Linux path -> ~/.config/Code/User/
