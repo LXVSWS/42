@@ -24,6 +24,13 @@ t_list	*tokenize(char *line)
 	return (tokens);
 }
 
+int	check_symbol(char c)
+{
+	if (c == '>' || c == '<' || c == '|')
+		return (1);
+	return (0);
+}
+
 t_token	*get_token(char **line)
 {
 	t_token	*token;
@@ -45,13 +52,6 @@ t_token	*get_token(char **line)
 		return (NULL);
 	}
 	return (token);
-}
-
-int	check_symbol(char c)
-{
-	if (c == '>' || c == '<' || c == '|')
-		return (1);
-	return (0);
 }
 
 int	extract_symbol(char **line, t_token *token)
@@ -86,21 +86,25 @@ int	extract_symbol(char **line, t_token *token)
 int	get_word_size(char *line)
 {
 	int		i;
+	int		j;
 	char	quote;
 
 	i = 0;
+	j = 0;
 	while (line[i] && (line[i] != ' ' && line[i] != '\t') && !check_symbol(line[i]))
 	{
 		if (line[i] == '\'' || line[i] == '"')
 		{
-			quote = line[i++];
-			while (line[i] && line[i] != quote)
-				i++;
-			if (!line[i])
+			j = i;
+			quote = line[j++];
+			while (line[j] && line[j] != quote)
+				j++;
+			if (!line[j])
 				return (-1);
+			j = 0;
 		}
-		else if (line[i] == '$' && getenv(get_word(&line[i + 1])))
-			return (ft_strlen(getenv(get_word(&line[i + 1]))));
+		if (line[i] == '$' && getenv(get_word(&line[i + 1])))
+			return (i + ft_strlen(getenv(get_word(&line[i + 1]))));
 		i++;
 	}
 	return (i);
@@ -119,7 +123,7 @@ char	*get_word(char *line)
 	char	*word;
 
 	i = 0;
-	while (line[i] && !is_whitespace(line[i]))
+	while (line[i] && !is_whitespace(line[i]) && line[i] != '$')
 		i++;
 	word = malloc(sizeof(char) * i);
 	ft_strncpy(word, line, i);
@@ -129,22 +133,38 @@ char	*get_word(char *line)
 int	extract_word(char **line, t_token *token)
 {
 	int	size;
+	int i;
+	int j;
+	char *varenv;
 
+	i = 0;
+	j = 0;
 	size = get_word_size(*line);
 	if (size == -1)
 		return (0);
 	token->type = WORD;
 	token->val = malloc(sizeof(char) * size + 1);
-	if (**line == '$' && getenv(get_word(*line + 1)))
+	token->val[size] = 0;
+	while (i < size)
 	{
-		(*line)++;
-		ft_strncpy(token->val, getenv(get_word(*line)), size);
-		*line += ft_strlen(get_word(*line));
-	}
-	else
-	{
-		ft_strncpy(token->val, *line, size);
-		*line += size;
+		if (**line == '$' && getenv(get_word(*line + 1)))
+		{
+			(*line)++;
+			varenv = getenv(get_word(*line));
+			while (varenv[j])
+			{
+				token->val[i] = varenv[j];
+				i++;
+				j++;
+			}
+			*line += ft_strlen(get_word(*line));
+		}
+		else
+		{
+			token->val[i] = **line;
+			(*line)++;
+		}
+		i++;
 	}
 	return (1);
 }
