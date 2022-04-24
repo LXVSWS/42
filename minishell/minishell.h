@@ -44,7 +44,7 @@ t_list	*tokenize(char *line);
 int		check_symbol(char c);
 t_token	*get_token(char **line);
 int		extract_symbol(char **line, t_token *token);
-int		is_whitespace(char c);
+int		ft_iswhitespace(char c);
 char	*get_word(char *line);
 int		get_word_size(char *line);
 int		extract_word(char **line, t_token *token);
