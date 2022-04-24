@@ -83,31 +83,6 @@ int	extract_symbol(char **line, t_token *token)
 	return (1);
 }
 
-int	get_word_size(char *line)
-{
-	int		i;
-	//char	quote;
-
-	i = 0;
-	while (line[i] && (line[i] != ' ' && line[i] != '\t') && !check_symbol(line[i]))
-	{
-		/*
-		if (line[i] == '\'' || line[i] == '"')
-		{
-			quote = line[i++];
-			while (line[i] && line[i] != quote)
-				i++;
-			if (!line[i])
-				return (-1);
-		}
-		*/
-		if (line[i] == '$' && getenv(get_word(&line[i + 1])))
-			return (i + ft_strlen(getenv(get_word(&line[i + 1]))));
-		i++;
-	}
-	return (i);
-}
-
 int	is_whitespace(char c)
 {
 	if (c == ' ' || c == '\t')
@@ -122,11 +97,26 @@ char	*get_word(char *line)
 
 	i = 0;
 	while ((line[i] && !is_whitespace(line[i]) \
-	&& (line[i] >= 65 && line[i] <= 90)) || line[i] == 95)
+	&& (line[i] >= 65 && line[i] <= 90)) || \
+	(line[i] >= 97 && line[i] <= 122) || line[i] == 95)
 		i++;
 	word = malloc(sizeof(char) * i);
 	ft_strncpy(word, line, i);
 	return (word);
+}
+
+int	get_word_size(char *line)
+{
+	int		i;
+
+	i = 0;
+	while (line[i] && (line[i] != ' ' && line[i] != '\t') && !check_symbol(line[i]))
+	{
+		if (line[i] == '$' && getenv(get_word(&line[i + 1])))
+			return (i + ft_strlen(getenv(get_word(&line[i + 1]))));
+		i++;
+	}
+	return (i);
 }
 
 int	extract_word(char **line, t_token *token)
@@ -139,8 +129,6 @@ int	extract_word(char **line, t_token *token)
 	i = 0;
 	j = 0;
 	size = get_word_size(*line);
-	if (size == -1)
-		return (0);
 	token->type = WORD;
 	token->val = malloc(sizeof(char) * size + 1);
 	token->val[size] = 0;
