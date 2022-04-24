@@ -86,23 +86,21 @@ int	extract_symbol(char **line, t_token *token)
 int	get_word_size(char *line)
 {
 	int		i;
-	int		j;
-	char	quote;
+	//char	quote;
 
 	i = 0;
-	j = 0;
 	while (line[i] && (line[i] != ' ' && line[i] != '\t') && !check_symbol(line[i]))
 	{
+		/*
 		if (line[i] == '\'' || line[i] == '"')
 		{
-			j = i;
-			quote = line[j++];
-			while (line[j] && line[j] != quote)
-				j++;
-			if (!line[j])
+			quote = line[i++];
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
 				return (-1);
-			j = 0;
 		}
+		*/
 		if (line[i] == '$' && getenv(get_word(&line[i + 1])))
 			return (i + ft_strlen(getenv(get_word(&line[i + 1]))));
 		i++;
@@ -123,7 +121,8 @@ char	*get_word(char *line)
 	char	*word;
 
 	i = 0;
-	while (line[i] && !is_whitespace(line[i]) && line[i] != '$')
+	while ((line[i] && !is_whitespace(line[i]) \
+	&& (line[i] >= 65 && line[i] <= 90)) || line[i] == 95)
 		i++;
 	word = malloc(sizeof(char) * i);
 	ft_strncpy(word, line, i);
