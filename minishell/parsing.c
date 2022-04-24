@@ -97,7 +97,7 @@ char	*get_word(char *line)
 
 	i = 0;
 	while ((line[i] && !is_whitespace(line[i]) \
-	&& (line[i] >= 65 && line[i] <= 90)) || \
+	&& (line[i] >= 65 && line[i] <= 90) && line[i] != '$') || \
 	(line[i] >= 97 && line[i] <= 122) || line[i] == 95)
 		i++;
 	word = malloc(sizeof(char) * i);

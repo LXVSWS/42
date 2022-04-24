@@ -12,7 +12,8 @@
 	"files.insertFinalNewline": true,
 	"files.trimFinalNewlines": true,
 	"files.trimTrailingWhitespace": true,
-	"security.workspace.trust.untrustedFiles": "open"
+	"security.workspace.trust.untrustedFiles": "open",
+	"editor.minimap.enabled": false
 }
 // macOS path -> ~/Library/Application\ Support/Code/User/
 // Linux path -> ~/.config/Code/User/
