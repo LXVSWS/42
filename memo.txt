@@ -1,0 +1,30 @@
+Raccourcis :
+
+Capture d'ecran : Shift + Command + 4
+
+Lexique :
+
+OS : Operating System (système d'exploitation)
+Debian : OS Linux composé de logiciels libres
+VM : Virtual Machine (émulation d'OS)
+LVM : Logical Volume Manager (gestionnaire de volumes logiques)
+AppArmor : programme qui permet d'associer à chaque programme un profil de sécurité qui restreint ses accès à l'OS
+SELinux : module de sécurité Linux (LSM - Linux Security Module)
+kdump : fonctionnalité du noyau Linux qui génère des crash dumps (compte rendu) lors d'un kernel crash
+APT : Advanced Packaging Tool (gestionnaire de paquets debian)
+Aptitude : interface graphique d'APT
+SSH : Secure Socket Shell (protocole de communication sécurisé)
+OpenSSH : implémentation du protocole SSH (outils)
+UFW : Uncomplicated Firewall (programme pare-feu)
+sudo : commande Unix permettant aux utilisateurs de lancer des commandes en tant qu'administrateur
+TTY : commande Unix qui affiche sur la sortie standard le nom du fichier connecté sur l'entrée standard
+bash : shell Unix interpréteur de commandes qui permet d'accéder aux fonctionnalités internes de l'OS
+wall : commande Unix qui affiche le contenu d'un fichier ou l'entrée standard à tout les utilisateurs actifs
+Adresse MAC : identifiant physique stocké dans une carte/interface réseau (Media Access Control)
+cron : commande Unix qui permet d’exécuter automatiquement des scripts, des commandes ou des logiciels à une date et une heure ou selon un cycle spécifié à l’avance
+lighttpd : logiciel de serveur HTTP (Web) similaire à Apache/NGINX
+MariaDB : système de gestion de base de données similaire à MySQL
+PHP : langage de programmation utilisé pour produire des pages Web dynamiques via un serveur HTTP
+WordPress : système de gestion de contenu (CMS - Content Management System)
+SHA-1 : Secure Hash Algorithm (fonction de hachage cryptographique)
+script shell : fichier texte contenant une suite de commandes/instructions et exécutable par un shell Unix
