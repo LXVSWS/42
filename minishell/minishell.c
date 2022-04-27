@@ -54,11 +54,12 @@ void	exec_cmds(t_list *cmds, char **env)
 	int		pipe_number;
 	int		fd[2];
 	int		pid;
+	int		pid2;
 
 	pipe_number = calculate_pipe_number(cmds);
 	if (pipe_number > 0)
 		pipe(fd);
-	while (cmds)
+	if (!pipe_number)
 	{
 		cmd = cmds->content;
 		pid = fork();
@@ -66,7 +67,48 @@ void	exec_cmds(t_list *cmds, char **env)
 			exec(cmd->cmd_with_args, env);
 		else
 			waitpid(pid, NULL, 0);
+	}
+	else if (pipe_number == 1)
+	{
+		cmd = cmds->content;
+		pid = fork();
+		if (!pid)
+		{
+			dup2(fd[1], 1);
+			close(fd[0]);
+			close(fd[1]);
+			exec(cmd->cmd_with_args, env);
+		}
 		cmds = cmds->next;
+		cmd = cmds->content;
+		pid2 = fork();
+		if (!pid2)
+		{
+			dup2(fd[0], 0);
+			close(fd[0]);
+			close(fd[1]);
+			exec(cmd->cmd_with_args, env);
+		}
+		else
+		{
+			close(fd[0]);
+			close(fd[1]);
+			waitpid(pid, NULL, 0);
+			waitpid(pid2, NULL, 0);
+		}
+	}
+	else
+	{
+		while (cmds)
+		{
+			cmd = cmds->content;
+			pid = fork();
+			if (!pid)
+				exec(cmd->cmd_with_args, env);
+			else
+				waitpid(pid, NULL, 0);
+			cmds = cmds->next;
+		}
 	}
 }
 
