@@ -1,15 +1,14 @@
-#include "mlx/mlx.h"
+#include "cub3d.h"
 
 int main()
 {
-	void *mlx;
-	void *mlx_win;
-	int	x = 0;
+	t_data	data;
+	int		x = 0;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 500, 500, "cub3d");
+	data = init();
 	while (x++ < 500)
-		mlx_pixel_put(mlx, mlx_win, x, x, 0x0025FDE9);
-	mlx_loop(mlx);
+		pixel_put(&data, x, x, rgb(37, 253, 233));
+	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+	mlx_loop(data.mlx);
 	return (0);
 }
