@@ -2,6 +2,9 @@
 # define CUB3D_H
 
 # include "mlx/mlx.h"
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h>
 
 typedef struct	s_data
 {
