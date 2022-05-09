@@ -4,6 +4,8 @@ int main(int ac, char **av)
 {
 	t_data	data;
 	int		map_fd;
+	int		x = 0;
+	int		y = 50;
 	int		bytes_read;
 	char	buf;
 
@@ -24,7 +26,22 @@ int main(int ac, char **av)
 		}
 		if (!bytes_read)
 			write(1, "EOF\n", 4);
-		pixel_put(&data, 250, 250, rgb(33, 253, 233));
+		while (y < 500)
+		{
+			while (x++ < 500)
+				pixel_put(&data, x, y, rgb(255, 255, 255));
+			x = 0;
+			y += 50;
+		}
+		x = 50;
+		y = 0;
+		while (x < 500)
+		{
+			while (y++ < 500)
+				pixel_put(&data, x, y, rgb(255, 255, 255));
+			y = 0;
+			x += 50;
+		}
 		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_loop(data.mlx);
 		close(map_fd);
