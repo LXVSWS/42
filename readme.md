@@ -7,5 +7,5 @@
 ## 5) minitalk (100%)
 ## 6) push_swap (100%)
 ## 7) philosophers (125%)
-## 8) minishell (almost finished...)
+## 8) minishell (101% - with <a href="https://github.com/rahmed42/" target="_blank">[@rahmed42](https://github.com/rahmed42/)</a>)
 ## 9) cub3d (in progress...)
