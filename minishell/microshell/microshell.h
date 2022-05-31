@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   microshell.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 22:22:37 by lwyss             #+#    #+#             */
-/*   Updated: 2022/05/28 00:44:54 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/05/31 18:18:20 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,5 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdio.h>
-
-typedef struct s_list
-{
-	char	**content;
-	void	*next;
-}	t_list;
 
 #endif

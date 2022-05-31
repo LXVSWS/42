@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   microshell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:10:11 by lwyss             #+#    #+#             */
-/*   Updated: 2022/05/30 00:51:25 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/05/31 18:55:43 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char *ft_strdup(char *s)
 	return (str);
 }
 
-int	exec_cmd(char **av, char **env)
+int	exec_cmd(char **av, char **env, int *fd, int flag)
 {
 	int		pid;
 
@@ -54,6 +54,18 @@ int	exec_cmd(char **av, char **env)
 	}
 	if (!pid)
 	{
+		if (flag == 1)
+		{
+			close(fd[0]);
+			dup2(fd[1], 1);
+			close(fd[1]);
+		}
+		else if (flag == 2)
+		{
+			close(fd[1]);
+			dup2(fd[0], 0);
+			close(fd[0]);
+		}
 		if (execve(av[0], av, env) == -1)
 		{
 			write(2, "error: cannot execute ", 22);
@@ -83,48 +95,6 @@ char **get_cmd(char **av)
 	return (cmd);
 }
 
-int	exec_pipe(char **av, char **env, int *fd, int flag)
-{
-	int pid;
-
-	pid = fork();
-	if (pid == -1)
-	{
-		write(2, "error: fatal\n", 13);
-		exit(-1);
-	}
-	if (!pid)
-	{
-		if (flag == 1)
-		{
-			close(fd[0]);
-			dup2(fd[1], 1);
-			close(fd[1]);
-		}
-		else if (flag == 2)
-		{
-			close(fd[1]);
-			dup2(fd[0], 0);
-			close(fd[0]);
-		}
-		else if (flag == 3)
-		{
-			dup2(fd[0], 0);
-			dup2(fd[1], 1);
-			close(fd[0]);
-			close(fd[1]);
-		}
-		if (execve(av[0], av, env) == -1)
-		{
-			write(2, "error: cannot execute ", 22);
-			write(2, av[0], ft_strlen(av[0]));
-			write(2, "\n", 1);
-			return (-1);
-		}
-	}
-	return (0);
-}
-
 int	pipe_entry(char **input_cmd, char **av, char **env, int old_i)
 {
 	int	fd[2];
@@ -137,23 +107,18 @@ int	pipe_entry(char **input_cmd, char **av, char **env, int old_i)
 		return (1);
 	}
 	next_cmd = get_cmd(av);
-	exec_pipe(input_cmd, env, fd, 1);
+	exec_cmd(input_cmd, env, fd, 1);
+	close(fd[1]);
 	while (av[i] && strcmp(";", av[i]) && strcmp("|", av[i]))
 		i++;
 	if (av[i] && !strcmp(";", av[i]) && av[i + 1])
 		i += old_i + 1;
 	else if (av[i] && !strcmp("|", av[i]) && av[i + 1])
-	{
-		exec_pipe(next_cmd, env, fd, 3);
-		next_cmd = get_cmd(&av[++i]);
-		i += old_i;
-	}
+		exit(-1);
 	else
 		i = 0;
-	exec_pipe(next_cmd, env, fd, 2);
-	waitpid(-1, NULL, 0);
+	exec_cmd(next_cmd, env, fd, 2);
 	close(fd[0]);
-	close(fd[1]);
 	return (i);
 }
 
@@ -170,7 +135,7 @@ int	main(int ac, char **av, char **env)
 		if (av[i] && !strcmp(";", av[i]) && av[i + 1])
 		{
 			i++;
-			exec_cmd(cmd, env);
+			exec_cmd(cmd, env, 0, 0);
 		}
 		else if (av[i] && !strcmp("|", av[i]) && av[i + 1])
 		{
@@ -179,7 +144,7 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 		{
-			exec_cmd(cmd, env);
+			exec_cmd(cmd, env, 0, 0);
 			break;
 		}
 	}
