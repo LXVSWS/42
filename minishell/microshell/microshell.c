@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   microshell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:10:11 by lwyss             #+#    #+#             */
-/*   Updated: 2022/05/31 18:55:43 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/02 02:02:15 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ int	exec_cmd(char **av, char **env, int *fd, int flag)
 			write(2, "error: cannot execute ", 22);
 			write(2, av[0], ft_strlen(av[0]));
 			write(2, "\n", 1);
-			return (-1);
+			return (0);
 		}
 	}
-	else
-		waitpid(pid, NULL, 0);
-	return (0);
+	return (1);
 }
 
 char **get_cmd(char **av)
@@ -95,10 +93,43 @@ char **get_cmd(char **av)
 	return (cmd);
 }
 
+int pipeline(char **cmd, char **env, int *fd, int *fdp)
+{
+	int	pid;
+
+	if (pipe(fdp) == -1)
+	{
+		write(2, "error: fatal\n", 13);
+		return (0);
+	}
+	pid = fork();
+	if (!pid)
+	{
+		close(fd[1]);
+		dup2(fd[0], 0);
+		close(fd[0]);
+		close(fdp[0]);
+		dup2(fdp[1], 1);
+		close(fdp[1]);
+		if (execve(cmd[0], cmd, env) == -1)
+		{
+			write(2, "error: cannot execute ", 22);
+			write(2, cmd[0], ft_strlen(cmd[0]));
+			write(2, "\n", 1);
+			return (0);
+		}
+	}
+	else
+		close(fdp[1]);
+	return (1);
+}
+
 int	pipe_entry(char **input_cmd, char **av, char **env, int old_i)
 {
 	int	fd[2];
+	int fdp[2];
 	int	i = 0;
+	int j = 0;
 	char **next_cmd;
 
 	if (pipe(fd) == -1)
@@ -107,17 +138,30 @@ int	pipe_entry(char **input_cmd, char **av, char **env, int old_i)
 		return (1);
 	}
 	next_cmd = get_cmd(av);
-	exec_cmd(input_cmd, env, fd, 1);
+	j += exec_cmd(input_cmd, env, fd, 1);
 	close(fd[1]);
 	while (av[i] && strcmp(";", av[i]) && strcmp("|", av[i]))
 		i++;
 	if (av[i] && !strcmp(";", av[i]) && av[i + 1])
+	{
 		i += old_i + 1;
+		j += exec_cmd(next_cmd, env, fd, 2);
+	}
 	else if (av[i] && !strcmp("|", av[i]) && av[i + 1])
-		exit(-1);
-	else
+	{
+		j += pipeline(next_cmd, env, fd, fdp);
+		next_cmd = get_cmd(&av[++i]);
+		j += exec_cmd(next_cmd, env, fdp, 2);
+		close(fdp[0]);
 		i = 0;
-	exec_cmd(next_cmd, env, fd, 2);
+	}
+	else
+	{
+		i = 0;
+		j += exec_cmd(next_cmd, env, fd, 2);
+	}
+	while (j--)
+		waitpid(-1, NULL, 0);
 	close(fd[0]);
 	return (i);
 }
@@ -148,5 +192,6 @@ int	main(int ac, char **av, char **env)
 			break;
 		}
 	}
+	system("lsof -c a.out | grep PIPE");
 	return (0);
 }
