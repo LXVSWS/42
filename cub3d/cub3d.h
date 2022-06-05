@@ -2,9 +2,13 @@
 # define CUB3D_H
 
 # include "mlx/mlx.h"
+# include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
+
+# define W 500
+# define H 500
 
 typedef struct	s_data
 {
@@ -15,6 +19,8 @@ typedef struct	s_data
 	int	bpp;
 	int	ll;
 	int	endian;
+	int	x;
+	int	y;
 }				t_data;
 
 typedef struct	s_rgb

@@ -5,9 +5,11 @@ t_data	init()
 	t_data data;
 
 	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, 500, 500, "cub3d");
-	data.img = mlx_new_image(data.mlx, 500, 500);
+	data.win = mlx_new_window(data.mlx, W, H, "cub3d");
+	data.img = mlx_new_image(data.mlx, W, H);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.endian);
+	data.x = 50;
+	data.y = 50;
 	return (data);
 }
 
