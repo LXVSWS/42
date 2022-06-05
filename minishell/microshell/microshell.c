@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   microshell.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 11:10:11 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/04 18:05:49 by lwyss            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "microshell.h"
 
 int	ft_strlen(char *s)
@@ -58,10 +46,34 @@ char **get_cmd(char **av)
 	return (cmd);
 }
 
+void	cd(char **av)
+{
+	int i = 0;
+
+	while (av[i])
+		i++;
+	if (i != 2)
+		write(2, "error: cd: bad arguments\n", 25);
+	else
+	{
+		if (chdir(av[--i]) == -1)
+		{
+			write(2, "error: cd: cannot change directory to ", 38);
+			write(2, av[i], ft_strlen(av[i]));
+			write(2, "\n", 1);
+		}
+	}
+}
+
 int	exec_cmd(char **av, char **env)
 {
 	int		pid;
 
+	if (!strcmp("cd", av[0]))
+	{
+		cd(av);
+		return (1);
+	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -101,24 +113,31 @@ int	end_pipe(char **av, char **env, int in)
 			write(2, "error: cannot execute ", 22);
 			write(2, av[0], ft_strlen(av[0]));
 			write(2, "\n", 1);
+			close(0);
+			close(1);
+			exit(-1);
 		}
 	}
 	return (1);
 }
 
-int	pipex(char **cmd, char **av, char **env, int in, int old_i)
+int	pipex(char **cmd, char **av, char **env, int in, int i)
 {
 	int	pid;
 	int	fd[2];
-	int i = 0;
 	static int j = 0;
 
 	if (pipe(fd) == -1)
 	{
 		write(2, "error: fatal\n", 13);
-		return (1);
+		exit(-1);
 	}
 	pid = fork();
+	if (pid == -1)
+	{
+		write(2, "error: fatal\n", 13);
+		exit(-1);
+	}
 	if (!pid)
 	{
 		dup2(in, 0);
@@ -130,6 +149,10 @@ int	pipex(char **cmd, char **av, char **env, int in, int old_i)
 			write(2, "error: cannot execute ", 22);
 			write(2, cmd[0], ft_strlen(cmd[0]));
 			write(2, "\n", 1);
+			close(fd[0]);
+			close(0);
+			close(1);
+			exit(-1);
 		}
 	}
 	else
@@ -138,18 +161,21 @@ int	pipex(char **cmd, char **av, char **env, int in, int old_i)
 		close(fd[1]);
 		if (in)
 			close(in);
-		cmd = get_cmd(av);
+		cmd = get_cmd(&av[i]);
 		while (av[i] && strcmp(";", av[i]) && strcmp("|", av[i]))
 			i++;
 		if (av[i] && !strcmp("|", av[i]) && av[i + 1])
-			return (pipex(cmd, &av[++i], env, fd[0], old_i));
+			return (pipex(cmd, av, env, fd[0], ++i));
+		else if (av[i] && !strcmp(";", av[i]) && av[i + 1])
+			i++;
 		else
-			j += end_pipe(cmd, env, fd[0]);
+			i = 0;
+		j += end_pipe(cmd, env, fd[0]);
 		close(fd[0]);
 		while (j--)
 			waitpid(-1, NULL, 0);
 	}
-	return (old_i + i);
+	return (i);
 }
 
 int	main(int ac, char **av, char **env)
@@ -160,6 +186,8 @@ int	main(int ac, char **av, char **env)
 	while (ac > 1 && i)
 	{
 		cmd = get_cmd(&av[i]);
+		if (!cmd)
+			break;
 		while (av[i] && strcmp(";", av[i]) && strcmp("|", av[i]))
 			i++;
 		if (av[i] && !strcmp(";", av[i]) && av[i + 1])
@@ -168,10 +196,7 @@ int	main(int ac, char **av, char **env)
 			exec_cmd(cmd, env);
 		}
 		else if (av[i] && !strcmp("|", av[i]) && av[i + 1])
-		{
-			i++;
-			i = pipex(cmd, &av[i], env, 0, i);
-		}
+			i = pipex(cmd, av, env, 0, ++i);
 		else
 		{
 			exec_cmd(cmd, env);
