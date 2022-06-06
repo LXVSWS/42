@@ -7,8 +7,8 @@
 # include <unistd.h>
 # include <stdio.h>
 
-# define W 500
-# define H 500
+# define W 800
+# define H 800
 
 typedef struct	s_data
 {
