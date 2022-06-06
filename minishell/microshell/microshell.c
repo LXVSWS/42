@@ -30,6 +30,18 @@ char *ft_strdup(char *s)
 	return (str);
 }
 
+void full_free(char **cmd)
+{
+	int	i = 0;
+
+	while (cmd[i])
+	{
+		free(cmd[i]);
+		i++;
+	}
+	free(cmd);
+}
+
 char **get_cmd(char **av)
 {
 	char	**cmd;
@@ -161,6 +173,7 @@ int	pipex(char **cmd, char **av, char **env, int in, int i)
 		close(fd[1]);
 		if (in)
 			close(in);
+		full_free(cmd);
 		cmd = get_cmd(&av[i]);
 		while (av[i] && strcmp(";", av[i]) && strcmp("|", av[i]))
 			i++;
@@ -174,6 +187,7 @@ int	pipex(char **cmd, char **av, char **env, int in, int i)
 		close(fd[0]);
 		while (j--)
 			waitpid(-1, NULL, 0);
+		full_free(cmd);
 	}
 	return (i);
 }
@@ -192,17 +206,19 @@ int	main(int ac, char **av, char **env)
 			i++;
 		if (av[i] && !strcmp(";", av[i]) && av[i + 1])
 		{
-			i++;
 			exec_cmd(cmd, env);
+			full_free(cmd);
+			i++;
 		}
 		else if (av[i] && !strcmp("|", av[i]) && av[i + 1])
 			i = pipex(cmd, av, env, 0, ++i);
 		else
 		{
 			exec_cmd(cmd, env);
+			full_free(cmd);
 			break;
 		}
 	}
-	system("lsof -c a.out | grep PIPE");
+	//system("lsof -c a.out | grep PIPE");
 	return (0);
 }
