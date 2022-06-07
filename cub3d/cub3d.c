@@ -1,23 +1,16 @@
 #include "cub3d.h"
 
-void	draw(t_data *data)
+void	draw_square(t_data *data, int width, int height, t_rgb rgb)
 {
 	int x;
 	int	y;
 
 	x = -1;
-	while (++x < W)
+	while (++x < width)
 	{
 		y = -1;
-		while (++y < H)
-			pixel_put(data, x, y, rgb(114, 114, 114));
-	}
-	x = -1;
-	while (++x < 50)
-	{
-		y = -1;
-		while (++y < 50)
-			pixel_put(data, data->x + x, data->y + y, rgb(0, 0, 0));
+		while (++y < height)
+			pixel_put(data, x + data->x, y + data->y, rgb);
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
@@ -38,7 +31,7 @@ int	key_hook(int keycode, t_data *data)
 		mlx_destroy_window(data->mlx, data->win);
 		exit(0);
 	}
-	draw(data);
+	draw_square(data, 100, 100, rgb(data->x, data->y, data->x + data->y));
 	return (0);
 }
 
@@ -61,8 +54,8 @@ int main(int ac, char **av)
 			bytes_read = read(map_fd, &buf, 1);
 			if (bytes_read == -1)
 				write(2, "Error\nProblem while reading\n", 28);
-			if (buf == ' ')
-				continue;
+			if (buf == 32)
+				printf(" ");
 			else if (buf == '1')
 				printf("1");
 			else if (buf == '0')
@@ -70,7 +63,7 @@ int main(int ac, char **av)
 			else if (buf == '\n')
 				printf("\n");
 		}
-		draw(&data);
+		draw_square(&data, W, H, rgb(114, 114, 114));
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
 		close(map_fd);
