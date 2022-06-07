@@ -200,7 +200,9 @@ int	main(int ac, char **av, char **env)
 	while (ac > 1 && i)
 	{
 		cmd = get_cmd(&av[i]);
-		if (!cmd)
+		if (!cmd && av[i + 1])
+			continue;
+		else if (!cmd && !av[i + 1])
 			break;
 		while (av[i] && strcmp(";", av[i]) && strcmp("|", av[i]))
 			i++;
