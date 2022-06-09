@@ -31,6 +31,7 @@ int	key_hook(int keycode, t_data *data)
 		mlx_destroy_window(data->mlx, data->win);
 		exit(0);
 	}
+	draw_square(data, W, H, rgb(114, 114, 114));
 	draw_square(data, 100, 100, rgb(data->x, data->y, data->x + data->y));
 	return (0);
 }
@@ -55,7 +56,7 @@ int main(int ac, char **av)
 			if (bytes_read == -1)
 				write(2, "Error\nProblem while reading\n", 28);
 			if (buf == 32)
-				printf(" ");
+				printf("1");
 			else if (buf == '1')
 				printf("1");
 			else if (buf == '0')
