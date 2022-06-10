@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-t_data	init()
+t_data	init(char **av)
 {
 	t_data data;
 
@@ -8,6 +8,7 @@ t_data	init()
 	data.win = mlx_new_window(data.mlx, W, H, "cub3d");
 	data.img = mlx_new_image(data.mlx, W, H);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.endian);
+	data.map = map_copy(map_read(av), map_size(map_read(av)));
 	data.x = 0;
 	data.y = 0;
 	return (data);
