@@ -9,8 +9,9 @@ t_data	init(char **av)
 	data.img = mlx_new_image(data.mlx, W, H);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.endian);
 	data.map = map_copy(map_read(av), map_size(map_read(av)));
-	data.x = 0;
-	data.y = 0;
+	data.block_size = 100;
+	data.player_x = W / 2;
+	data.player_y = H / 2;
 	return (data);
 }
 
@@ -33,6 +34,8 @@ void	pixel_put(t_data *data, int x, int y, t_rgb rgb)
 {
 	char	*dst;
 
+	if (x < 0 || x >= W || y < 0 || y >= H)
+		return ;
 	dst = data->addr + (y * data->ll + x * (data->bpp / 8));
 	*(unsigned int *)dst = rgb2int(rgb);
 }

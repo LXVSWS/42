@@ -7,7 +7,7 @@ OBJS	= ${SRCS:.c=.o}
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@

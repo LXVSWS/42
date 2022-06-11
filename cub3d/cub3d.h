@@ -21,15 +21,16 @@ typedef struct	s_data
 	int	ll;
 	int	endian;
 	char *map;
-	int	x;
-	int	y;
+	int	block_size;
+	int	player_x;
+	int	player_y;
 }				t_data;
 
 typedef struct	s_rgb
 {
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
 }				t_rgb;
 
 int				ft_strlen(char *s);
