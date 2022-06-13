@@ -21,7 +21,10 @@ typedef struct	s_data
 	int	ll;
 	int	endian;
 	char *map;
-	int	block_size;
+	int	max_map_x;
+	int	max_map_y;
+	int	block_size_x;
+	int	block_size_y;
 	int	player_x;
 	int	player_y;
 }				t_data;
@@ -34,7 +37,7 @@ typedef struct	s_rgb
 }				t_rgb;
 
 int				ft_strlen(char *s);
-void			check_map(char **av);
+void			check_map_name(char **av);
 int				map_read(char **av);
 int				map_size(int map_fd);
 char			*map_copy(int map_fd, int size);
@@ -43,5 +46,6 @@ t_data			init(char **av);
 unsigned int	rgb2int(t_rgb rgb);
 t_rgb			rgb(unsigned char r, unsigned char g, unsigned char b);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
+void			check_map_content(t_data *data);
 
 #endif

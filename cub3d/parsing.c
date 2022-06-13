@@ -12,7 +12,7 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
-void	check_map(char **av)
+void	check_map_name(char **av)
 {
 	int size;
 
@@ -52,6 +52,12 @@ int	map_size(int map_fd)
 		if (bytes_read == -1)
 		{
 			write(2, "Error\nProblem while reading\n", 28);
+			exit(-1);
+		};
+		if (buf != '\t' && buf != '\n' && buf != ' ' \
+		&& buf != '0' && buf != '1' && buf != 'N')
+		{
+			printf("Error\nIncorrect character in map\n");
 			exit(-1);
 		}
 		i++;
