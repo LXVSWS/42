@@ -20,6 +20,13 @@ typedef struct	s_data
 	int	bpp;
 	int	ll;
 	int	endian;
+	char *no;
+	char *so;
+	char *we;
+	char *ea;
+	char *f;
+	char *c;
+	char **map;
 	int	max_map_x;
 	int	max_map_y;
 	int	block_size_x;
@@ -34,6 +41,9 @@ typedef struct	s_rgb
 	unsigned char	g;
 	unsigned char	b;
 }				t_rgb;
+
+void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
+void			draw_grill(t_data *data, t_rgb color);
 
 int				file_read(char **av);
 int				file_size(int fd);

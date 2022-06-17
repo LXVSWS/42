@@ -8,6 +8,13 @@ t_data	init(void)
 	data.win = mlx_new_window(data.mlx, W, H, "cub3d");
 	data.img = mlx_new_image(data.mlx, W, H);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.endian);
+	data.no = NULL;
+	data.so = NULL;
+	data.we = NULL;
+	data.ea = NULL;
+	data.f = NULL;
+	data.c = NULL;
+	data.map = NULL;
 	data.max_map_x = 0;
 	data.max_map_y = 0;
 	data.block_size_x = 0;
