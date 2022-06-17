@@ -15,49 +15,6 @@ void	draw_element(t_data *data, int pos_x, int pos_y, t_rgb color)
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 
-void	draw_map(t_data *data, t_rgb color)
-{
-	int	i = 0;
-	int j = 0;
-	int x = 0;
-	int	y = 0;
-
-	while (i < ft_strlen(data->map))
-	{
-		if (data->map[i] == '0')
-			x += data->block_size_x;
-		else if (data->map[i] == '1' || data->map[i] == ' ')
-		{
-			draw_element(data, x, y, color);
-			x += data->block_size_x;
-		}
-		else if (data->map[i] == '\t')
-		{
-			while (j++ < 4)
-			{
-				draw_element(data, x, y, color);
-				x += data->block_size_x;
-			}
-			j = 0;
-		}
-		else if (data->map[i] == '\n')
-		{
-			x = 0;
-			y += data->block_size_y;
-		}
-		else if (data->map[i] == 'N')
-		{
-			if (!data->player_x && !data->player_y)
-			{
-				data->player_x = x;
-				data->player_y = y;
-			}
-			x += data->block_size_x;
-		}
-		i++;
-	}
-}
-
 void	draw_grill(t_data *data, t_rgb color)
 {
 	int x;
@@ -91,6 +48,49 @@ void	draw_grill(t_data *data, t_rgb color)
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 
+void	draw_map(t_data *data, t_rgb color, char *file)
+{
+	int	i = 0;
+	int j = 0;
+	int x = 0;
+	int	y = 0;
+
+	while (i < ft_strlen(file))
+	{
+		if (file[i] == '0')
+			x += data->block_size_x;
+		else if (file[i] == '1' || file[i] == ' ')
+		{
+			draw_element(data, x, y, color);
+			x += data->block_size_x;
+		}
+		else if (file[i] == '\t')
+		{
+			while (j++ < 4)
+			{
+				draw_element(data, x, y, color);
+				x += data->block_size_x;
+			}
+			j = 0;
+		}
+		else if (file[i] == '\n')
+		{
+			x = 0;
+			y += data->block_size_y;
+		}
+		else if (file[i] == 'N')
+		{
+			if (!data->player_x && !data->player_y)
+			{
+				data->player_x = x;
+				data->player_y = y;
+			}
+			x += data->block_size_x;
+		}
+		i++;
+	}
+}
+
 int	key_hook(int keycode, t_data *data)
 {
 	if (keycode == 13)
@@ -116,7 +116,7 @@ int	key_hook(int keycode, t_data *data)
 	if (data->player_y < 0)
 		data->player_y += data->block_size_y;
 	draw_grill(data, rgb(114, 114, 114));
-	draw_map(data, rgb(0, 0, 0));
+	//draw_map(data, rgb(0, 0, 0), file);
 	draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
 	return (0);
 }
@@ -124,21 +124,21 @@ int	key_hook(int keycode, t_data *data)
 int main(int ac, char **av)
 {
 	t_data	data;
+	char	*file;
 
 	if (ac == 2)
 	{
-		check_map_name(av);
-		data = init(av);
-		check_map_content(&data);
-		printf("max map x = %i\nmax map y = %i\nblock size x = %i\nblock size y = %i\n", \
-		data.max_map_x, data.max_map_y, data.block_size_x, data.block_size_y);
+		data = init();
+		file = file_copy(file_read(av), file_size(file_read(av)));
+		check_file(&data, file);
 		draw_grill(&data, rgb(114, 114, 114));
-		draw_map(&data, rgb(0, 0, 0));
+		draw_map(&data, rgb(0, 0, 0), file);
 		draw_element(&data, data.player_x, data.player_y, rgb(255, 255, 255));
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
+		free(file);
 	}
-	if (data.map)
-		free(data.map);
+	else
+		printf("Error\nArgument number invalid\n");
 	return (0);
 }
