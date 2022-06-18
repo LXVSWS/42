@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/18 03:36:08 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/18 17:37:20 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void			draw_grill(t_data *data, t_rgb color);
 int				file_read(char **av);
 int				file_size(int fd);
 char			*file_copy(int fd, int size);
-void			check_incorrect_character(t_data *data, char c);
+void			check_incorrect_input(t_data *data, char c);
 void			check_map(t_data *data, char *file);
 
 t_data			init(void);

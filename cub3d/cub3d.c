@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/18 04:45:19 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/18 17:52:00 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,32 @@ int	key_hook(int keycode, t_data *data)
 char	*strdupmod(char *s)
 {
 	int		i;
+	int		size;
 	char	*str;
 
 	i = 0;
-	while (s[i] && s[i] != '\n')
-		i++;
-	str = malloc(sizeof(char) * i + 1);
-	if (!str)
-		error("Malloc problem");
-	str[i] = 0;
-	i = 0;
+	size = 0;
 	while (s[i] && s[i] != '\n')
 	{
-		str[i] = s[i];
+		if (s[i] != ' ' && s[i] != '\t')
+			size++;
 		i++;
+	}
+	str = malloc(sizeof(char) * size + 1);
+	str[size] = 0;
+	i = 0;
+	size = 0;
+	while (s[i] && s[i] != '\n')
+	{
+		if (s[i] == ' ' || s[i] == '\t')
+			i++;
+		else
+			str[size++] = s[i++];
 	}
 	return (str);
 }
 
-void	check_file(t_data *data, char *file)
+int	check_file(t_data *data, char *file)
 {
 	int	i;
 
@@ -64,24 +71,36 @@ void	check_file(t_data *data, char *file)
 	while (file[i])
 	{
 		if (file[i] == 'N' && file[i + 1] == 'O')
-			data->no = strdupmod(&file[i + 3]);
+			data->no = strdupmod(&file[i + 2]);
 		else if (file[i] == 'S' && file[i + 1] == 'O')
-			data->so = strdupmod(&file[i + 3]);
+			data->so = strdupmod(&file[i + 2]);
 		else if (file[i] == 'W' && file[i + 1] == 'E')
-			data->we = strdupmod(&file[i + 3]);
+			data->we = strdupmod(&file[i + 2]);
 		else if (file[i] == 'E' && file[i + 1] == 'A')
-			data->ea = strdupmod(&file[i + 3]);
+			data->ea = strdupmod(&file[i + 2]);
 		else if (file[i] == 'F')
-			data->f = strdupmod(&file[i + 2]);
+			data->f = strdupmod(&file[i + 1]);
 		else if (file[i] == 'C')
-			data->c = strdupmod(&file[i + 2]);
+			data->c = strdupmod(&file[i + 1]);
 		if (data->no && data->so && data->we && data->ea && data->f && data->c)
 			break ;
 		i++;
 	}
+	if (!data->no || !data->so || !data->we \
+	|| !data->ea || !data->f || !data->c)
+		error("Missing data in file");
+	return (i);
+}
+
+int	detect_map(char *file, int i)
+{
 	while (file[i] && file[i] != '\n')
 		i++;
-	check_map(data, &file[++i]);
+	while (file[i] && file[i] == '\n')
+		i++;
+	if (!file[i])
+		error("No map detected");
+	return (i);
 }
 
 int	main(int ac, char **av)
@@ -93,14 +112,15 @@ int	main(int ac, char **av)
 	{
 		data = init();
 		file = file_copy(file_read(av), file_size(file_read(av)));
-		check_file(&data, file);
+		check_map(&data, &file[detect_map(file, check_file(&data, file))]);
+		if (!data.starting_pos)
+			error("Map has no player");
 		data.block_size_x = W / data.max_map_x;
 		data.block_size_y = H / data.max_map_y;
 		free(file);
-		printf("%s\n%s\n%s\n%s\n%s\n%s\n", \
-		data.no, data.so, data.we, data.ea, data.f, data.c);
-		printf("max x = %i\nmax y = %i\nblocksize x = %i\nblocksize y = %i\n", \
-		data.max_map_x, data.max_map_y, data.block_size_x, data.block_size_y);
+		printf("%s\n%s\n%s\n%s\n%s\n%s\nx=%i\ny=%i\nx1=%i\ny2=%i\n", \
+		data.no, data.so, data.we, data.ea, data.f, data.c, data.max_map_x, \
+		data.max_map_y, data.block_size_x, data.block_size_y);
 		draw_bg(&data, rgb(114, 114, 127));
 		draw_grill(&data, rgb(0, 0, 127));
 		draw_element(&data, data.player_x, data.player_y, rgb(255, 255, 255));

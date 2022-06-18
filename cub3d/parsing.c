@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:43:20 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/18 04:14:30 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/18 17:49:23 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*file_copy(int fd, int size)
 
 	file = malloc(sizeof(char) * size + 1);
 	if (!file)
-		error("Malloc problem");
+		error("Malloc file copy failed");
 	file[size] = 0;
 	size = 0;
 	bytes_read = 1;
@@ -76,12 +76,12 @@ char	*file_copy(int fd, int size)
 	return (file);
 }
 
-void	check_incorrect_character(t_data *data, char c)
+void	check_incorrect_input(t_data *data, char c)
 {
 	if (c != '\t' && c != '\n' && c != ' ' \
 	&& c != '0' && c != '1' && c != 'N' \
 	&& c != 'S' && c != 'E' && c != 'W')
-		error("Incorrect character in map");
+		error("Incorrect character");
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
 		if (!data->starting_pos)
@@ -100,7 +100,7 @@ void	check_map(t_data *data, char *file)
 	x = 0;
 	while (file[i])
 	{
-		check_incorrect_character(data, file[i]);
+		check_incorrect_input(data, file[i]);
 		if (file[i] == '\n')
 		{
 			if (file[i + 1] && file[i + 1] == '\n' && file[i + 2])
