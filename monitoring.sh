@@ -1,4 +1,5 @@
 #!/bin/bash
+
 arch=$(uname -a)
 cpu=$(lscpu | grep 'Socket' | tail -c2)
 cpu0=$(lscpu | grep '(s)' | sed -n '2p' | tail -c2)
