@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
+/*   Updated: 2022/06/18 03:10:14 by lwyss            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 t_data	init(void)
 {
-	t_data data;
+	t_data	data;
 
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, W, H, "cub3d");
@@ -24,11 +36,6 @@ t_data	init(void)
 	return (data);
 }
 
-unsigned int	rgb2int(t_rgb rgb)
-{
-	return (rgb.r << 16 | rgb.g << 8 | rgb.b);
-}
-
 t_rgb	rgb(unsigned char r, unsigned char g, unsigned char b)
 {
 	t_rgb	rgb;
@@ -39,24 +46,33 @@ t_rgb	rgb(unsigned char r, unsigned char g, unsigned char b)
 	return (rgb);
 }
 
-void	pixel_put(t_data *data, int x, int y, t_rgb rgb)
-{
-	char	*dst;
-
-	if (x < 0 || x >= W || y < 0 || y >= H)
-		return ;
-	dst = data->addr + (y * data->ll + x * (data->bpp / 8));
-	*(unsigned int *)dst = rgb2int(rgb);
-}
-
 int	ft_strlen(char *s)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (s)
 	{
 		while (s[i])
 			i++;
 	}
 	return (i);
+}
+
+void	error(char *s)
+{
+	printf("Error\n%s\n", s);
+	exit(-1);
+}
+
+void	check_movement(t_data *data)
+{
+	if (data->player_x + data->block_size_x > W)
+		data->player_x -= data->block_size_x;
+	if (data->player_y + data->block_size_y > H)
+		data->player_y -= data->block_size_y;
+	if (data->player_x < 0)
+		data->player_x += data->block_size_x;
+	if (data->player_y < 0)
+		data->player_y += data->block_size_y;
 }
