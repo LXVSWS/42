@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/18 17:52:00 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 06:39:50 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,58 @@ int	detect_map(char *file, int i)
 	return (i);
 }
 
+void	copy_map(t_data *data, char *file)
+{
+	char	**map;
+	int		i;
+	int		j;
+	int		k;
+
+	map = malloc(sizeof(char *) * data->max_map_y + 1);
+	if (!map)
+		error("Malloc failed");
+	map[data->max_map_y] = NULL;
+	i = 0;
+	while (i < data->max_map_y)
+	{
+		map[i] = malloc(sizeof(char) * data->max_map_x + 1);
+		if (!map[i])
+			error("Malloc failed");
+		map[i++][data->max_map_x] = 0;
+	}
+	i = 0;
+	j = 0;
+	k = 0;
+	while (file[i])
+	{
+		if (file[i] == '\n')
+		{
+			j++;
+			k = 0;
+		}
+		else
+			map[j][k++] = file[i];
+		i++;
+	}
+	data->map = map;
+}
+
 int	main(int ac, char **av)
 {
 	t_data	data;
 	char	*file;
+	int		i;
 
 	if (ac == 2)
 	{
 		data = init();
 		file = file_copy(file_read(av), file_size(file_read(av)));
-		check_map(&data, &file[detect_map(file, check_file(&data, file))]);
+		i = detect_map(file, check_file(&data, file));
+		check_map(&data, &file[i]);
 		if (!data.starting_pos)
 			error("Map has no player");
+		copy_map(&data, &file[i]);
+		printf("%s", data->map[0]);
 		data.block_size_x = W / data.max_map_x;
 		data.block_size_y = H / data.max_map_y;
 		free(file);
