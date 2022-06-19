@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:53:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 20:14:31 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 23:08:25 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,46 +76,3 @@ void	draw_map(t_data *data, t_rgb color_wall, t_rgb color_void)
 		y += data->block_size_y;
 	}
 }
-
-/*
-void	draw_bg(t_data *data, t_rgb color)
-{
-	int	x;
-	int	y;
-
-	x = -1;
-	while (++x < W)
-	{
-		y = -1;
-		while (++y < H)
-			pixel_put(data, x, y, color);
-	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-}
-
-void	draw_grill(t_data *data, t_rgb color)
-{
-	int	x;
-	int	y;
-
-	x = 0;
-	while (x < W)
-	{
-		y = -1;
-		while (++y < H)
-			pixel_put(data, x, y, color);
-		x += data->block_size_x;
-	}
-	x = -1;
-	while (++x < W)
-	{
-		y = 0;
-		while (y < H)
-		{
-			pixel_put(data, x, y, color);
-			y += data->block_size_y;
-		}
-	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-}
-*/

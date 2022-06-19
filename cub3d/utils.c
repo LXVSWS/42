@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 21:18:24 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 23:49:39 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,4 @@ void	error(char *s)
 {
 	printf("Error\n%s\n", s);
 	exit(-1);
-}
-
-void	check_movement(t_data *data)
-{
-	if (data->player_x + data->block_size_x > W)
-		data->player_x -= data->block_size_x;
-	if (data->player_y + data->block_size_y > H)
-		data->player_y -= data->block_size_y;
-	if (data->player_x < 0)
-		data->player_x += data->block_size_x;
-	if (data->player_y < 0)
-		data->player_y += data->block_size_y;
 }

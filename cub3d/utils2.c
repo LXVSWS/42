@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 07:28:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 16:52:08 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 23:19:58 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,13 @@ void	full_free(t_data *data)
 {
 	int	i;
 
-	i = 0;
 	free(data->no);
 	free(data->so);
 	free(data->we);
 	free(data->ea);
 	free(data->f);
 	free(data->c);
+	i = 0;
 	while (data->map[i])
 		free(data->map[i++]);
 	free(data->map);

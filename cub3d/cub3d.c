@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 21:30:20 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 23:48:13 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 int	key_hook(int keycode, t_data *data)
 {
+	draw_element(data, data->player_x, data->player_y, rgb(114, 114, 127));
+	data->x = data->player_x / data->block_size_x;
+	data->y = data->player_y / data->block_size_y;
 	if (keycode == 13)
-		data->player_y -= data->block_size_y;
+		if (data->y > 0 && data->map[data->y - 1][data->x] == '0')
+			data->player_y -= data->block_size_y;
 	if (keycode == 0)
-		data->player_x -= data->block_size_x;
+		if (data->x > 0 && data->map[data->y][data->x - 1] == '0')
+			data->player_x -= data->block_size_x;
 	if (keycode == 1)
-		data->player_y += data->block_size_y;
+		if (data->y < data->max_map_y - 1 && \
+		data->map[data->y + 1][data->x] == '0')
+			data->player_y += data->block_size_y;
 	if (keycode == 2)
-		data->player_x += data->block_size_x;
+		if (data->x < data->max_map_x && data->map[data->y][data->x + 1] == '0')
+			data->player_x += data->block_size_x;
 	if (keycode == 53)
 	{
 		mlx_destroy_image(data->mlx, data->img);
@@ -29,14 +37,7 @@ int	key_hook(int keycode, t_data *data)
 		full_free(data);
 		exit(0);
 	}
-	check_movement(data);
-	data->x = data->player_x / data->block_size_x;
-	data->y = data->player_y / data->block_size_y;
-	printf("x = %i / y = %i\n", data->x, data->y);
-	if (data->map[data->y][data->x] && data->map[data->y][data->x] == '1')
-		draw_element(data, data->player_x, data->player_y, rgb(255, 0, 0));
-	else if (data->map[data->y][data->x] && data->map[data->y][data->x] == '0')
-		draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
+	draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
 	return (0);
 }
 
