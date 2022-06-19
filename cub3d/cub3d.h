@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/18 17:37:20 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 07:31:49 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,10 @@ t_rgb			rgb(unsigned char r, unsigned char g, unsigned char b);
 int				ft_strlen(char *s);
 void			error(char *s);
 void			check_movement(t_data *data);
+
+char			*strdupmod(char *s);
+int				check_file(t_data *data, char *file);
+int				detect_map(char *file, int i);
+void			malloc_map(t_data *data);
 
 #endif
