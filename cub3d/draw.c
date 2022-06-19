@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:53:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 17:31:50 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 20:14:31 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ void	draw_element(t_data *data, int pos_x, int pos_y, t_rgb color)
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 }
 
+void	init_player(t_data *data, int x, int y)
+{
+	data->player_x = x;
+	data->player_y = y;
+}
+
 void	draw_map(t_data *data, t_rgb color_wall, t_rgb color_void)
 {
 	int	i;
@@ -49,25 +55,25 @@ void	draw_map(t_data *data, t_rgb color_wall, t_rgb color_void)
 	int	x;
 	int	y;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	j = -1;
 	x = 0;
 	y = 0;
-	while (data->map[i])
+	while (data->map[++i])
 	{
-		while (data->map[i][j])
+		while (data->map[i][++j])
 		{
-			if (data->map[i][j] == '1')
+			if (&data->map[i][j] == data->starting_pos)
+				init_player(data, x, y);
+			else if (data->map[i][j] == '1')
 				draw_element(data, x, y, color_wall);
 			else
 				draw_element(data, x, y, color_void);
 			x += data->block_size_x;
-			j++;
 		}
-		j = 0;
+		j = -1;
 		x = 0;
 		y += data->block_size_y;
-		i++;
 	}
 }
 

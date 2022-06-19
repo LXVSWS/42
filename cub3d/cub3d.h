@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 17:32:05 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 20:45:38 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <unistd.h>
 # include <stdio.h>
 
-# define W 800
+# define W 750
 # define H 800
 
 typedef struct s_data
@@ -47,6 +47,8 @@ typedef struct s_data
 	int		block_size_y;
 	int		player_x;
 	int		player_y;
+	int		x;
+	int		y;
 }				t_data;
 
 typedef struct s_rgb
@@ -59,6 +61,7 @@ typedef struct s_rgb
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
+void			init_player(t_data *data, int x, int y);
 void			draw_map(t_data *data, t_rgb color_wall, t_rgb color_void);
 
 int				file_read(char **av);

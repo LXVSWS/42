@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 17:33:58 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 21:30:20 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,13 @@ int	key_hook(int keycode, t_data *data)
 		exit(0);
 	}
 	check_movement(data);
-	draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
+	data->x = data->player_x / data->block_size_x;
+	data->y = data->player_y / data->block_size_y;
+	printf("x = %i / y = %i\n", data->x, data->y);
+	if (data->map[data->y][data->x] && data->map[data->y][data->x] == '1')
+		draw_element(data, data->player_x, data->player_y, rgb(255, 0, 0));
+	else if (data->map[data->y][data->x] && data->map[data->y][data->x] == '0')
+		draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
 	return (0);
 }
 
