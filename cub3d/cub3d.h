@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 07:31:49 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 17:32:05 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ typedef struct s_data
 	char	*f;
 	char	*c;
 	char	**map;
+	char	*starting_pos;
+	char	direction;
 	int		max_map_x;
 	int		max_map_y;
 	int		block_size_x;
 	int		block_size_y;
 	int		player_x;
 	int		player_y;
-	char	starting_pos;
 }				t_data;
 
 typedef struct s_rgb
@@ -58,8 +59,7 @@ typedef struct s_rgb
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
-void			draw_bg(t_data *data, t_rgb color);
-void			draw_grill(t_data *data, t_rgb color);
+void			draw_map(t_data *data, t_rgb color_wall, t_rgb color_void);
 
 int				file_read(char **av);
 int				file_size(int fd);
@@ -77,5 +77,6 @@ char			*strdupmod(char *s);
 int				check_file(t_data *data, char *file);
 int				detect_map(char *file, int i);
 void			malloc_map(t_data *data);
+void			full_free(t_data *data);
 
 #endif

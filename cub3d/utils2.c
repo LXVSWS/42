@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 07:28:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 07:40:05 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 16:52:08 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,20 @@ void	malloc_map(t_data *data)
 		i++;
 	}
 	data->map = map;
+}
+
+void	full_free(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	free(data->no);
+	free(data->so);
+	free(data->we);
+	free(data->ea);
+	free(data->f);
+	free(data->c);
+	while (data->map[i])
+		free(data->map[i++]);
+	free(data->map);
 }

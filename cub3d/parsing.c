@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:43:20 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 06:15:45 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 16:09:38 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	check_incorrect_input(t_data *data, char c)
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
 		if (!data->starting_pos)
-			data->starting_pos = c;
+			data->starting_pos = &c;
 		else
 			error("Multiple players detected");
 	}

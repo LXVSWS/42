@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 07:41:19 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/19 17:33:58 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,58 @@ int	key_hook(int keycode, t_data *data)
 	{
 		mlx_destroy_image(data->mlx, data->img);
 		mlx_destroy_window(data->mlx, data->win);
+		full_free(data);
 		exit(0);
 	}
 	check_movement(data);
-	draw_bg(data, rgb(114, 114, 127));
-	draw_grill(data, rgb(0, 0, 127));
 	draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
 	return (0);
+}
+
+void	mapdup(t_data *data, char c, int *j, int *k)
+{
+	if (c == ' ' || c == '1')
+		data->map[*j][(*k)++] = '1';
+	else if (c == '\n')
+	{
+		while (*k < data->max_map_x)
+			data->map[*j][(*k)++] = '1';
+		(*j)++;
+		*k = 0;
+	}
+	else if (c == '\t')
+	{
+		data->map[*j][(*k)++] = '1';
+		data->map[*j][(*k)++] = '1';
+		data->map[*j][(*k)++] = '1';
+		data->map[*j][(*k)++] = '1';
+	}
+	else if (c == 'N' || c == 'S' || \
+	c == 'E' || c == 'W')
+	{
+		data->starting_pos = &data->map[*j][(*k)++];
+		data->direction = c;
+	}
+	else
+		(*k)++;
 }
 
 void	copy_map(t_data *data, char *file)
 {
 	int	i;
+	int	j;
+	int	k;
 
 	i = 0;
-	while (file[i])
-		printf("%c", file[i++]);
-	(void)data;
+	j = 0;
+	k = 0;
+	while (file[i] && data->map[j])
+		mapdup(data, file[i++], &j, &k);
+	printf("%s\n%s\n%s\n%s\n%s\n%s\n", \
+	data->no, data->so, data->we, data->ea, data->f, data->c);
+	i = 0;
+	while (data->map[i])
+		printf("%s\n", data->map[i++]);
 }
 
 int	main(int ac, char **av)
@@ -62,11 +97,11 @@ int	main(int ac, char **av)
 		free(file);
 		data.block_size_x = W / data.max_map_x;
 		data.block_size_y = H / data.max_map_y;
-		draw_bg(&data, rgb(114, 114, 127));
-		draw_grill(&data, rgb(0, 0, 127));
+		draw_map(&data, rgb(0, 0, 0), rgb(114, 114, 127));
 		draw_element(&data, data.player_x, data.player_y, rgb(255, 255, 255));
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
+		full_free(&data);
 	}
 	else
 		printf("Error\nArgument number invalid\n");
