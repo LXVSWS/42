@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 23:48:13 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/22 05:41:46 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	key_hook(int keycode, t_data *data)
 {
-	draw_element(data, data->player_x, data->player_y, rgb(114, 114, 127));
+	int	i;
+
+	draw_map(data, rgb(0, 0, 0), rgb(114, 114, 127));
 	data->x = data->player_x / data->block_size_x;
 	data->y = data->player_y / data->block_size_y;
 	if (keycode == 13)
@@ -37,7 +39,12 @@ int	key_hook(int keycode, t_data *data)
 		full_free(data);
 		exit(0);
 	}
-	draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
+	draw_element(data, data->player_x - (data->block_size_x / 2), \
+	data->player_y - (data->block_size_y / 2), rgb(255, 255, 255));
+	i = 0;
+	while (data->player_y + i > 0)
+		pixel_put(data, data->player_x, data->player_y - i--, rgb(255, 0, 0));
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 
@@ -85,6 +92,8 @@ void	copy_map(t_data *data, char *file)
 	i = 0;
 	while (data->map[i])
 		printf("%s\n", data->map[i++]);
+	data->block_size_x = W / data->max_map_x;
+	data->block_size_y = H / data->max_map_y;
 }
 
 int	main(int ac, char **av)
@@ -102,10 +111,8 @@ int	main(int ac, char **av)
 		malloc_map(&data);
 		copy_map(&data, &file[i]);
 		free(file);
-		data.block_size_x = W / data.max_map_x;
-		data.block_size_y = H / data.max_map_y;
 		draw_map(&data, rgb(0, 0, 0), rgb(114, 114, 127));
-		draw_element(&data, data.player_x, data.player_y, rgb(255, 255, 255));
+		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
 		full_free(&data);

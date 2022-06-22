@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 23:49:23 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/22 04:18:14 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_rgb
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
-void			init_player(t_data *data, int x, int y);
+void			init_player(t_data *data, int x, int y, t_rgb color_void);
 void			draw_map(t_data *data, t_rgb color_wall, t_rgb color_void);
 
 int				file_read(char **av);
