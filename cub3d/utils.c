@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 23:49:39 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/30 22:28:53 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ t_data	init(void)
 	data.direction = 0;
 	data.max_map_x = 0;
 	data.max_map_y = 0;
+	data.player_map_x = 0;
+	data.player_map_y = 0;
 	data.block_size_x = 0;
 	data.block_size_y = 0;
 	data.player_x = 0;
 	data.player_y = 0;
-	data.x = 0;
-	data.y = 0;
+	data.player_delta_x = 0;
+	data.player_delta_y = 0;
+	data.player_angle = 0;
 	return (data);
 }
 

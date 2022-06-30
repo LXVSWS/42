@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:53:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/22 05:40:25 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/30 22:35:28 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,19 @@ void	draw_element(t_data *data, int pos_x, int pos_y, t_rgb color)
 	int	x;
 	int	y;
 
-	x = 0;
+	x = -1;
 	while (++x < data->block_size_x)
 	{
-		y = 0;
+		y = -1;
 		while (++y < data->block_size_y)
 			pixel_put(data, x + pos_x, y + pos_y, color);
 	}
 }
 
-void	init_player(t_data *data, int x, int y, t_rgb color)
+void	init_player(t_data *data, int x, int y)
 {
-	data->player_x = x + (data->block_size_x / 2);
-	data->player_y = y + (data->block_size_y / 2);
-	draw_element(data, x, y, color);
-	pixel_put(data, data->player_x, data->player_y, rgb(255, 0, 0));
+	data->player_x = x;
+	data->player_y = y;
 }
 
 void	draw_map(t_data *data, t_rgb color_wall, t_rgb color_void)
@@ -65,7 +63,7 @@ void	draw_map(t_data *data, t_rgb color_wall, t_rgb color_void)
 		while (data->map[i][++j])
 		{
 			if (!data->player_x && &data->map[i][j] == data->starting_pos)
-				init_player(data, x, y, rgb(255, 255, 255));
+				init_player(data, x, y);
 			else if (data->map[i][j] == '1')
 				draw_element(data, x, y, color_wall);
 			else

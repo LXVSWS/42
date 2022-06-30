@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/22 04:18:14 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/06/29 15:47:03 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <math.h>
 
-# define W 750
+# define W 800
 # define H 800
+# define PI 3.1415926535
 
 typedef struct s_data
 {
@@ -43,12 +45,15 @@ typedef struct s_data
 	char	direction;
 	int		max_map_x;
 	int		max_map_y;
-	int		block_size_x;
-	int		block_size_y;
-	int		player_x;
-	int		player_y;
-	int		x;
-	int		y;
+	int		player_map_x;
+	int		player_map_y;
+	float	block_size_x;
+	float	block_size_y;
+	float	player_x;
+	float	player_y;
+	float	player_delta_x;
+	float	player_delta_y;
+	float	player_angle;
 }				t_data;
 
 typedef struct s_rgb
@@ -61,7 +66,7 @@ typedef struct s_rgb
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
-void			init_player(t_data *data, int x, int y, t_rgb color_void);
+void			init_player(t_data *data, int x, int y);
 void			draw_map(t_data *data, t_rgb color_wall, t_rgb color_void);
 
 int				file_read(char **av);
