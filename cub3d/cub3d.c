@@ -6,33 +6,44 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/30 22:37:47 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/05 03:42:31 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	draw_ray(t_data *data)
+{
+	int	rx;
+	int	ry;
+	float i;
+
+	rx = (data->player_x + data->player_delta_x) / data->block_size_x;
+	ry = (data->player_y + data->player_delta_y) / data->block_size_y;
+	if (data->map[ry][rx] == '0')
+	{
+		i = 0;
+		while (i < 100)
+		{
+			pixel_put(data, data->player_x + data->player_delta_x * i, \
+			data->player_y + data->player_delta_y * i, rgb(0, 0, 255));
+			i += 0.1;
+		}
+	}
+}
+
 void	draw_player(t_data *data, int pos_x, int pos_y, t_rgb color)
 {
 	int	x;
 	int	y;
-	int	i;
 
 	draw_element(data, pos_x, pos_y, rgb(255, 255, 255));
-	pos_x += data->block_size_x / 2 - 2;
-	pos_y += data->block_size_y / 2 - 2;
-	x = 0;
+	x = -1;
 	while (++x < 5)
 	{
-		y = 0;
+		y = -1;
 		while (++y < 5)
-		{
-			pixel_put(data, x + pos_x, y + pos_y, color);
-			i = 0;
-			while (++i <= 5)
-				pixel_put(data, x + pos_x + data->player_delta_x * i, \
-				y + pos_y + data->player_delta_y * i, color);
-		}
+			pixel_put(data, pos_x + x, pos_y + y, color);
 	}
 }
 
@@ -81,6 +92,7 @@ int	key_hook(int keycode, t_data *data)
 	}
 	draw_map(data, rgb(0, 0, 0), rgb(114, 114, 127));
 	draw_player(data, data->player_x, data->player_y, rgb(255, 0, 0));
+	draw_ray(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
@@ -157,6 +169,7 @@ int	main(int ac, char **av)
 		data.player_delta_x = cos(data.player_angle) * 5;
 		data.player_delta_y = sin(data.player_angle) * 5;
 		draw_player(&data, data.player_x, data.player_y, rgb(255, 0, 0));
+		draw_ray(&data);
 		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
