@@ -6,36 +6,61 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/05 03:42:31 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/06 02:45:53 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_ray(t_data *data)
+void	draw_3d(t_data *data, float *fov)
 {
-	int	rx;
-	int	ry;
-	float i;
+	int	x;
+	int	y;
+	int i = 0;
 
-	rx = (data->player_x + data->player_delta_x) / data->block_size_x;
-	ry = (data->player_y + data->player_delta_y) / data->block_size_y;
-	if (data->map[ry][rx] == '0')
+	x = -1;
+	while (++x < W)
 	{
-		i = 0;
-		while (i < 100)
-		{
-			pixel_put(data, data->player_x + data->player_delta_x * i, \
-			data->player_y + data->player_delta_y * i, rgb(0, 0, 255));
-			i += 0.1;
-		}
+		y = -1;
+		while (++y < fov[i])
+			pixel_put(data, x, y, rgb(255, 0, 0));
+		if (x % 8 == 0)
+			i++;
 	}
+}
+
+float	draw_ray(t_data *data, float angle)
+{
+	float	rx;
+	float	ry;
+	int		mx;
+	int		my;
+	float	hptn;
+
+	rx = data->player_x;
+	ry = data->player_y;
+	mx = rx / data->block_size_x;
+	my = ry / data->block_size_y;
+	while (data->map[my][mx] == '0')
+	{
+		pixel_put(data, rx, ry, rgb(0, 0, 255));
+		mx = (rx += cos(angle)) / data->block_size_x;
+		my = (ry += sin(angle)) / data->block_size_y;
+	}
+	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + (ry - data->player_y) * (ry - data->player_y));
+	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
+	if (rx > H)
+		rx = H;
+	return (rx);
 }
 
 void	draw_player(t_data *data, int pos_x, int pos_y, t_rgb color)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	float	i;
+	int		j;
+	float	fov[101];
 
 	draw_element(data, pos_x, pos_y, rgb(255, 255, 255));
 	x = -1;
@@ -45,6 +70,16 @@ void	draw_player(t_data *data, int pos_x, int pos_y, t_rgb color)
 		while (++y < 5)
 			pixel_put(data, pos_x + x, pos_y + y, color);
 	}
+	i = data->player_angle - 0.5;
+	j = 0;
+	while (i < data->player_angle + 0.5)
+	{
+		fov[j] = (draw_ray(data, i));
+		i += 0.01;
+		j++;
+	}
+	fov[j] = '\0';
+	draw_3d(data, fov);
 }
 
 int	key_hook(int keycode, t_data *data)
@@ -72,16 +107,16 @@ int	key_hook(int keycode, t_data *data)
 		data->player_angle -= 0.1;
 		if (data->player_angle < 0)
 			data->player_angle += 2 * PI;
-		data->player_delta_x = cos(data->player_angle) * 5;
-		data->player_delta_y = sin(data->player_angle) * 5;
+		data->player_delta_x = cos(data->player_angle);
+		data->player_delta_y = sin(data->player_angle);
 	}
 	if (keycode == 124)
 	{
 		data->player_angle += 0.1;
 		if (data->player_angle > 2 * PI)
 			data->player_angle -= 2 * PI;
-		data->player_delta_x = cos(data->player_angle) * 5;
-		data->player_delta_y = sin(data->player_angle) * 5;
+		data->player_delta_x = cos(data->player_angle);
+		data->player_delta_y = sin(data->player_angle);
 	}
 	if (keycode == 53)
 	{
@@ -92,7 +127,6 @@ int	key_hook(int keycode, t_data *data)
 	}
 	draw_map(data, rgb(0, 0, 0), rgb(114, 114, 127));
 	draw_player(data, data->player_x, data->player_y, rgb(255, 0, 0));
-	draw_ray(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
@@ -166,10 +200,9 @@ int	main(int ac, char **av)
 		copy_map(&data, &file[i]);
 		free(file);
 		draw_map(&data, rgb(0, 0, 0), rgb(114, 114, 127));
-		data.player_delta_x = cos(data.player_angle) * 5;
-		data.player_delta_y = sin(data.player_angle) * 5;
+		data.player_delta_x = cos(data.player_angle);
+		data.player_delta_y = sin(data.player_angle);
 		draw_player(&data, data.player_x, data.player_y, rgb(255, 0, 0));
-		draw_ray(&data);
 		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
