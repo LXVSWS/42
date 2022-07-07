@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/06 02:45:53 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/07 20:29:02 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 void	draw_3d(t_data *data, float *fov)
 {
-	int	x;
-	int	y;
-	int i = 0;
+	int		x = -1;
+	int		y;
+	int		i = 0;
+	float	offset;
 
-	x = -1;
-	while (++x < W)
+	while (++x < W && fov[i])
 	{
+		offset = H - fov[i] / 2;
+		//printf("%f - %f\n", fov[i], offset);
 		y = -1;
 		while (++y < fov[i])
-			pixel_put(data, x, y, rgb(255, 0, 0));
-		if (x % 8 == 0)
+			pixel_put(data, x, y, rgb(0, 0, 255));
+		if (x % (W / 60) == 0)
 			i++;
 	}
 }
@@ -36,6 +38,7 @@ float	draw_ray(t_data *data, float angle)
 	int		mx;
 	int		my;
 	float	hptn;
+	float	fish_eye;
 
 	rx = data->player_x;
 	ry = data->player_y;
@@ -48,6 +51,12 @@ float	draw_ray(t_data *data, float angle)
 		my = (ry += sin(angle)) / data->block_size_y;
 	}
 	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + (ry - data->player_y) * (ry - data->player_y));
+	fish_eye = data->player_angle - angle;
+	if (fish_eye < 0)
+		fish_eye += 2 * PI;
+	if (fish_eye > 2 * PI)
+		fish_eye -= 2 * PI;
+	hptn *= cos(fish_eye);
 	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
 	if (rx > H)
 		rx = H;
@@ -58,9 +67,9 @@ void	draw_player(t_data *data, int pos_x, int pos_y, t_rgb color)
 {
 	int		x;
 	int		y;
-	float	i;
-	int		j;
-	float	fov[101];
+	int		i;
+	float	ray_angle;
+	float	fov[60];
 
 	draw_element(data, pos_x, pos_y, rgb(255, 255, 255));
 	x = -1;
@@ -70,15 +79,22 @@ void	draw_player(t_data *data, int pos_x, int pos_y, t_rgb color)
 		while (++y < 5)
 			pixel_put(data, pos_x + x, pos_y + y, color);
 	}
-	i = data->player_angle - 0.5;
-	j = 0;
-	while (i < data->player_angle + 0.5)
+	ray_angle = data->player_angle - DR * 30;
+	if (ray_angle < 0)
+		ray_angle += 2 * PI;
+	if (ray_angle > 2 * PI)
+		ray_angle -= 2 * PI;
+	i = -1;
+	while (++i < 60)
 	{
-		fov[j] = (draw_ray(data, i));
-		i += 0.01;
-		j++;
+		fov[i] = draw_ray(data, ray_angle);
+		ray_angle += DR;
+		if (ray_angle < 0)
+			ray_angle += 2 * PI;
+		if (ray_angle > 2 * PI)
+			ray_angle -= 2 * PI;
 	}
-	fov[j] = '\0';
+	fov[i] = '\0';
 	draw_3d(data, fov);
 }
 
