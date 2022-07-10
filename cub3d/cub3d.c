@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/07 20:29:02 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/10 18:24:56 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,56 @@
 
 void	draw_3d(t_data *data, float *fov)
 {
-	int		x = -1;
+	int		x;
 	int		y;
-	int		i = 0;
+	int		i;
+	int		j;
 	float	offset;
 
+	x = -1;
+	i = 0;
 	while (++x < W && fov[i])
 	{
-		offset = H - fov[i] / 2;
-		//printf("%f - %f\n", fov[i], offset);
-		y = -1;
-		while (++y < fov[i])
-			pixel_put(data, x, y, rgb(0, 0, 255));
+		offset = H - fov[i];
+		y = 0;
+		j = -1;
+		if (fov[i] < offset)
+		{
+			while (++j < H)
+			{
+				if (j < fov[i])
+				{
+					pixel_put(data, x, y, rgb(0, 0, 255));
+					j++;
+				}
+				else if (j > fov[i] && j < offset)
+				{
+					pixel_put(data, x, y, rgb(0, 0, 255));
+					j++;
+				}
+				else
+					pixel_put(data, x, y, rgb(255, 0, 0));
+				y++;
+			}
+			while (y < H)
+				pixel_put(data, x, y++, rgb(0, 255, 0));
+		}
+		else
+		{
+			while (++j < H)
+			{
+				if (j < offset)
+				{
+					pixel_put(data, x, y, rgb(0, 0, 255));
+					j++;
+				}
+				else
+					pixel_put(data, x, y, rgb(255, 0, 0));
+				y++;
+			}
+			while (y < H)
+				pixel_put(data, x, y++, rgb(0, 255, 0));
+		}
 		if (x % (W / 60) == 0)
 			i++;
 	}
