@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 15:10:41 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/11 17:22:48 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ t_data	init(void)
 	data.c = NULL;
 	data.map = NULL;
 	data.starting_pos = NULL;
+	data = init2(data);
+	return (data);
+}
+
+t_data	init2(t_data data)
+{
 	data.direction = 0;
 	data.print_map = 0;
 	data.max_map_x = 0;

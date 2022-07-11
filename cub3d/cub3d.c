@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 15:24:44 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/11 19:07:56 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ float	raycasting(t_data *data, float angle)
 	int		mx;
 	int		my;
 	float	hptn;
-	float	fish_eye;
 
 	rx = data->player_x;
 	ry = data->player_y;
@@ -27,43 +26,22 @@ float	raycasting(t_data *data, float angle)
 	my = ry / data->block_size_y;
 	while (data->map[my][mx] == '0')
 	{
-		mx = (rx += cos(angle)) / data->block_size_x;
-		my = (ry += sin(angle)) / data->block_size_y;
+		rx += cos(angle);
+		ry += sin(angle);
+		mx = rx / data->block_size_x;
+		my = ry / data->block_size_y;
 	}
 	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + \
 	(ry - data->player_y) * (ry - data->player_y));
-	fish_eye = data->player_angle - angle;
-	hptn *= cos(fish_eye);
+	hptn = fix_fish_eye(data, angle, hptn);
 	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
 	if (rx > H)
 		rx = H;
 	return (rx);
 }
 
-void	draw(t_data *data)
+void	movement(int keycode, t_data *data)
 {
-	int		i;
-	float	ray_angle;
-	float	fov[60];
-
-	ray_angle = data->player_angle - DR * 30;
-	i = -1;
-	while (++i < 60)
-	{
-		fov[i] = raycasting(data, ray_angle);
-		ray_angle += DR;
-	}
-	fov[i] = '\0';
-	if (data->print_map)
-		draw_map(data);
-	else
-		draw_3d(data, fov);
-}
-
-int	key_hook(int keycode, t_data *data)
-{
-	data->player_map_x = data->player_x / data->block_size_x;
-	data->player_map_y = data->player_y / data->block_size_y;
 	if (keycode == 13)
 		if (data->player_map_y > 0 && \
 		data->map[data->player_map_y - 1][data->player_map_x] == '0')
@@ -80,6 +58,10 @@ int	key_hook(int keycode, t_data *data)
 		if (data->player_map_x < data->max_map_x && \
 		data->map[data->player_map_y][data->player_map_x + 1] == '0')
 			data->player_x += data->block_size_x;
+}
+
+void	rotation(int keycode, t_data *data)
+{
 	if (keycode == 123)
 	{
 		data->player_angle -= 0.1;
@@ -96,6 +78,16 @@ int	key_hook(int keycode, t_data *data)
 		data->player_delta_x = cos(data->player_angle);
 		data->player_delta_y = sin(data->player_angle);
 	}
+}
+
+int	key_hook(int keycode, t_data *data)
+{
+	data->player_map_x = data->player_x / data->block_size_x;
+	data->player_map_y = data->player_y / data->block_size_y;
+	if (keycode == 13 || keycode == 0 || keycode == 1 || keycode == 2)
+		movement(keycode, data);
+	if (keycode == 123 || keycode == 124)
+		rotation(keycode, data);
 	if (keycode == 41)
 	{
 		if (!data->print_map)
@@ -113,92 +105,6 @@ int	key_hook(int keycode, t_data *data)
 	draw(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
-}
-
-void	mapdup(t_data *data, char c, int *j, int *k)
-{
-	if (c == ' ' || c == '1')
-		data->map[*j][(*k)++] = '1';
-	else if (c == '\n')
-	{
-		while (*k < data->max_map_x)
-			data->map[*j][(*k)++] = '1';
-		(*j)++;
-		*k = 0;
-	}
-	else if (c == '\t')
-	{
-		data->map[*j][(*k)++] = '1';
-		data->map[*j][(*k)++] = '1';
-		data->map[*j][(*k)++] = '1';
-		data->map[*j][(*k)++] = '1';
-	}
-	else if (c == 'N' || c == 'S' || \
-	c == 'E' || c == 'W')
-	{
-		data->starting_pos = &data->map[*j][(*k)++];
-		data->direction = c;
-	}
-	else
-		(*k)++;
-}
-
-void	copy_map(t_data *data, char *file)
-{
-	int	i;
-	int	j;
-	int	k;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	while (file[i] && data->map[j])
-		mapdup(data, file[i++], &j, &k);
-	printf("%s\n%s\n%s\n%s\n%s\n%s\n", \
-	data->no, data->so, data->we, data->ea, data->f, data->c);
-	i = 0;
-	while (data->map[i])
-	{
-		if (data->map[i][0] == '0' || \
-		data->map[i][ft_strlen(data->map[i])] == '0')
-			error("Map not closed");
-		printf("%s\n", data->map[i++]);
-	}
-	data->block_size_x = W / data->max_map_x;
-	data->block_size_y = H / data->max_map_y;
-}
-
-void	init_player(t_data *data, int x, int y)
-{
-	data->player_x = x;
-	data->player_y = y;
-	data->player_delta_x = cos(data->player_angle);
-	data->player_delta_y = sin(data->player_angle);
-}
-
-void	detect_player(t_data *data)
-{
-	int	i;
-	int	j;
-	int	x;
-	int	y;
-
-	i = -1;
-	j = -1;
-	x = 0;
-	y = 0;
-	while (data->map[++i])
-	{
-		while (data->map[i][++j])
-		{
-			if (!data->player_x && &data->map[i][j] == data->starting_pos)
-				init_player(data, x, y);
-			x += data->block_size_x;
-		}
-		j = -1;
-		x = 0;
-		y += data->block_size_y;
-	}
 }
 
 int	main(int ac, char **av)

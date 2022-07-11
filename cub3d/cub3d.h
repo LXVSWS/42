@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 15:10:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/11 18:48:46 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,22 @@ typedef struct s_rgb
 	unsigned char	b;
 }	t_rgb;
 
+float			raycasting(t_data *data, float angle);
+void			movement(int keycode, t_data *data);
+void			rotation(int keycode, t_data *data);
+int				key_hook(int keycode, t_data *data);
+int				main(int ac, char **av);
+
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
+void			draw_player(t_data *data);
+void			draw_rays(t_data *data, float angle);
+
+void			draw(t_data *data);
 void			draw_map(t_data *data);
+void			normal_view(t_data *data, float fov, float offset, int *x);
+void			close_view(t_data *data, float offset, int *x);
 void			draw_3d(t_data *data, float *fov);
 
 int				file_read(char **av);
@@ -78,6 +90,7 @@ void			check_incorrect_input(t_data *data, char c);
 void			check_map(t_data *data, char *file);
 
 t_data			init(void);
+t_data			init2(t_data data);
 t_rgb			rgb(unsigned char r, unsigned char g, unsigned char b);
 int				ft_strlen(char *s);
 void			error(char *s);
@@ -87,5 +100,11 @@ int				check_file(t_data *data, char *file);
 int				detect_map(char *file, int i);
 void			malloc_map(t_data *data);
 void			full_free(t_data *data);
+
+void			mapdup(t_data *data, char c, int *j, int *k);
+void			copy_map(t_data *data, char *file);
+void			init_player(t_data *data, int x, int y);
+void			detect_player(t_data *data);
+float			fix_fish_eye(t_data *data, float angle, float hptn);
 
 #endif

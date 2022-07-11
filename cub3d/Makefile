@@ -1,6 +1,6 @@
 NAME	= cub3D
 
-SRCS	= cub3d.c draw.c parsing.c utils.c utils2.c
+SRCS	= cub3d.c draw.c draw2.c parsing.c utils.c utils2.c utils3.c
 
 OBJS	= ${SRCS:.c=.o}
 
