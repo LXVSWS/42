@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/06 02:48:40 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/11 15:10:41 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_data	init(void)
 	data.map = NULL;
 	data.starting_pos = NULL;
 	data.direction = 0;
+	data.print_map = 0;
 	data.max_map_x = 0;
 	data.max_map_y = 0;
 	data.player_map_x = 0;

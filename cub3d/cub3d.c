@@ -6,70 +6,13 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/10 18:24:56 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/11 15:24:44 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_3d(t_data *data, float *fov)
-{
-	int		x;
-	int		y;
-	int		i;
-	int		j;
-	float	offset;
-
-	x = -1;
-	i = 0;
-	while (++x < W && fov[i])
-	{
-		offset = H - fov[i];
-		y = 0;
-		j = -1;
-		if (fov[i] < offset)
-		{
-			while (++j < H)
-			{
-				if (j < fov[i])
-				{
-					pixel_put(data, x, y, rgb(0, 0, 255));
-					j++;
-				}
-				else if (j > fov[i] && j < offset)
-				{
-					pixel_put(data, x, y, rgb(0, 0, 255));
-					j++;
-				}
-				else
-					pixel_put(data, x, y, rgb(255, 0, 0));
-				y++;
-			}
-			while (y < H)
-				pixel_put(data, x, y++, rgb(0, 255, 0));
-		}
-		else
-		{
-			while (++j < H)
-			{
-				if (j < offset)
-				{
-					pixel_put(data, x, y, rgb(0, 0, 255));
-					j++;
-				}
-				else
-					pixel_put(data, x, y, rgb(255, 0, 0));
-				y++;
-			}
-			while (y < H)
-				pixel_put(data, x, y++, rgb(0, 255, 0));
-		}
-		if (x % (W / 60) == 0)
-			i++;
-	}
-}
-
-float	draw_ray(t_data *data, float angle)
+float	raycasting(t_data *data, float angle)
 {
 	float	rx;
 	float	ry;
@@ -84,16 +27,12 @@ float	draw_ray(t_data *data, float angle)
 	my = ry / data->block_size_y;
 	while (data->map[my][mx] == '0')
 	{
-		pixel_put(data, rx, ry, rgb(0, 0, 255));
 		mx = (rx += cos(angle)) / data->block_size_x;
 		my = (ry += sin(angle)) / data->block_size_y;
 	}
-	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + (ry - data->player_y) * (ry - data->player_y));
+	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + \
+	(ry - data->player_y) * (ry - data->player_y));
 	fish_eye = data->player_angle - angle;
-	if (fish_eye < 0)
-		fish_eye += 2 * PI;
-	if (fish_eye > 2 * PI)
-		fish_eye -= 2 * PI;
 	hptn *= cos(fish_eye);
 	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
 	if (rx > H)
@@ -101,39 +40,24 @@ float	draw_ray(t_data *data, float angle)
 	return (rx);
 }
 
-void	draw_player(t_data *data, int pos_x, int pos_y, t_rgb color)
+void	draw(t_data *data)
 {
-	int		x;
-	int		y;
 	int		i;
 	float	ray_angle;
 	float	fov[60];
 
-	draw_element(data, pos_x, pos_y, rgb(255, 255, 255));
-	x = -1;
-	while (++x < 5)
-	{
-		y = -1;
-		while (++y < 5)
-			pixel_put(data, pos_x + x, pos_y + y, color);
-	}
 	ray_angle = data->player_angle - DR * 30;
-	if (ray_angle < 0)
-		ray_angle += 2 * PI;
-	if (ray_angle > 2 * PI)
-		ray_angle -= 2 * PI;
 	i = -1;
 	while (++i < 60)
 	{
-		fov[i] = draw_ray(data, ray_angle);
+		fov[i] = raycasting(data, ray_angle);
 		ray_angle += DR;
-		if (ray_angle < 0)
-			ray_angle += 2 * PI;
-		if (ray_angle > 2 * PI)
-			ray_angle -= 2 * PI;
 	}
 	fov[i] = '\0';
-	draw_3d(data, fov);
+	if (data->print_map)
+		draw_map(data);
+	else
+		draw_3d(data, fov);
 }
 
 int	key_hook(int keycode, t_data *data)
@@ -172,6 +96,13 @@ int	key_hook(int keycode, t_data *data)
 		data->player_delta_x = cos(data->player_angle);
 		data->player_delta_y = sin(data->player_angle);
 	}
+	if (keycode == 41)
+	{
+		if (!data->print_map)
+			data->print_map = 1;
+		else
+			data->print_map = 0;
+	}
 	if (keycode == 53)
 	{
 		mlx_destroy_image(data->mlx, data->img);
@@ -179,8 +110,7 @@ int	key_hook(int keycode, t_data *data)
 		full_free(data);
 		exit(0);
 	}
-	draw_map(data, rgb(0, 0, 0), rgb(114, 114, 127));
-	draw_player(data, data->player_x, data->player_y, rgb(255, 0, 0));
+	draw(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
@@ -238,6 +168,39 @@ void	copy_map(t_data *data, char *file)
 	data->block_size_y = H / data->max_map_y;
 }
 
+void	init_player(t_data *data, int x, int y)
+{
+	data->player_x = x;
+	data->player_y = y;
+	data->player_delta_x = cos(data->player_angle);
+	data->player_delta_y = sin(data->player_angle);
+}
+
+void	detect_player(t_data *data)
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+
+	i = -1;
+	j = -1;
+	x = 0;
+	y = 0;
+	while (data->map[++i])
+	{
+		while (data->map[i][++j])
+		{
+			if (!data->player_x && &data->map[i][j] == data->starting_pos)
+				init_player(data, x, y);
+			x += data->block_size_x;
+		}
+		j = -1;
+		x = 0;
+		y += data->block_size_y;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_data	data;
@@ -253,10 +216,8 @@ int	main(int ac, char **av)
 		malloc_map(&data);
 		copy_map(&data, &file[i]);
 		free(file);
-		draw_map(&data, rgb(0, 0, 0), rgb(114, 114, 127));
-		data.player_delta_x = cos(data.player_angle);
-		data.player_delta_y = sin(data.player_angle);
-		draw_player(&data, data.player_x, data.player_y, rgb(255, 0, 0));
+		detect_player(&data);
+		draw(&data);
 		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);

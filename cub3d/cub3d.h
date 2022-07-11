@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/08 22:26:12 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/11 15:10:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_data
 	char	**map;
 	char	*starting_pos;
 	char	direction;
+	char	print_map;
 	int		max_map_x;
 	int		max_map_y;
 	int		player_map_x;
@@ -67,8 +68,8 @@ typedef struct s_rgb
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
-void			init_player(t_data *data, int x, int y);
-void			draw_map(t_data *data, t_rgb color_wall, t_rgb color_void);
+void			draw_map(t_data *data);
+void			draw_3d(t_data *data, float *fov);
 
 int				file_read(char **av);
 int				file_size(int fd);
