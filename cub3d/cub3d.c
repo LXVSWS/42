@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 19:07:56 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/12 03:55:55 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ float	raycasting(t_data *data, float angle)
 	return (rx);
 }
 
-void	movement(int keycode, t_data *data)
+static void	movement(int keycode, t_data *data)
 {
 	if (keycode == 13)
 		if (data->player_map_y > 0 && \
@@ -60,7 +60,7 @@ void	movement(int keycode, t_data *data)
 			data->player_x += data->block_size_x;
 }
 
-void	rotation(int keycode, t_data *data)
+static void	rotation(int keycode, t_data *data)
 {
 	if (keycode == 123)
 	{
@@ -80,7 +80,7 @@ void	rotation(int keycode, t_data *data)
 	}
 }
 
-int	key_hook(int keycode, t_data *data)
+static int	key_hook(int keycode, t_data *data)
 {
 	data->player_map_x = data->player_x / data->block_size_x;
 	data->player_map_y = data->player_y / data->block_size_y;
@@ -127,9 +127,9 @@ int	main(int ac, char **av)
 		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
-		full_free(&data);
 	}
 	else
 		printf("Error\nArgument number invalid\n");
+	full_free(&data);
 	return (0);
 }

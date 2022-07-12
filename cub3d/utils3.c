@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:55:04 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 18:22:06 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/12 03:23:41 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,12 @@ void	init_player(t_data *data, int x, int y)
 {
 	data->player_x = x;
 	data->player_y = y;
+	if (data->direction == 'N')
+		data->player_angle = PI * 1.5;
+	if (data->direction == 'S')
+		data->player_angle = PI * 0.5;
+	if (data->direction == 'E')
+		data->player_angle = PI;
 	data->player_delta_x = cos(data->player_angle);
 	data->player_delta_y = sin(data->player_angle);
 }

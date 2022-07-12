@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 17:22:48 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/12 03:19:33 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_data	init2(t_data data)
 	data.player_y = 0;
 	data.player_delta_x = 0;
 	data.player_delta_y = 0;
-	data.player_angle = PI * 1.5;
+	data.player_angle = 0;
 	return (data);
 }
 

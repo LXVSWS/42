@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 18:44:22 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/12 04:30:15 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	draw(t_data *data)
 {
 	int		i;
 	float	ray_angle;
-	float	fov[60];
+	float	fov[61];
 
 	ray_angle = data->player_angle - DR * 30;
 	i = -1;
@@ -71,20 +71,22 @@ void	normal_view(t_data *data, float fov, float offset, int *x)
 	{
 		if (j < fov)
 		{
-			pixel_put(data, *x, y, rgb(0, 0, 255));
+			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
+			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
 			j++;
 		}
 		else if (j > fov && j < offset)
 		{
-			pixel_put(data, *x, y, rgb(0, 0, 255));
+			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
+			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
 			j++;
 		}
 		else
-			pixel_put(data, *x, y, rgb(255, 0, 0));
-		y++;
+			pixel_put(data, *x, y++, rgb(255, 0, 0));
 	}
 	while (y < H)
-		pixel_put(data, *x, y++, rgb(0, 255, 0));
+		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
+		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
 }
 
 void	close_view(t_data *data, float offset, int *x)
@@ -98,7 +100,8 @@ void	close_view(t_data *data, float offset, int *x)
 	{
 		if (j < offset)
 		{
-			pixel_put(data, *x, y, rgb(0, 0, 255));
+			pixel_put(data, *x, y, rgb(ft_atoi(data->c[0]), \
+			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
 			j++;
 		}
 		else
@@ -106,7 +109,8 @@ void	close_view(t_data *data, float offset, int *x)
 		y++;
 	}
 	while (y < H)
-		pixel_put(data, *x, y++, rgb(0, 255, 0));
+		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
+		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
 }
 
 void	draw_3d(t_data *data, float *fov)

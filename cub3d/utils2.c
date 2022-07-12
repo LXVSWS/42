@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 07:28:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 19:06:55 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/12 04:07:05 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	check_file(t_data *data, char *file)
 		else if (file[i] == 'E' && file[i + 1] == 'A')
 			data->ea = strdupmod(&file[i + 2]);
 		else if (file[i] == 'F')
-			data->f = strdupmod(&file[i + 1]);
+			data->f = ft_split(strdupmod(&file[i + 1]), ',');
 		else if (file[i] == 'C')
-			data->c = strdupmod(&file[i + 1]);
+			data->c = ft_split(strdupmod(&file[i + 1]), ',');
 		if (data->no && data->so && data->we && data->ea && data->f && data->c)
 			break ;
 		i++;
@@ -82,30 +82,28 @@ int	detect_map(char *file, int i)
 
 void	malloc_map(t_data *data)
 {
-	char	**map;
 	int		i;
 	int		j;
 
 	if (!data->starting_pos)
 		error("Map has no player");
-	map = malloc(sizeof(char *) * data->max_map_y + 1);
-	if (!map)
+	data->map = malloc(sizeof(char *) * (data->max_map_y + 1));
+	if (!data->map)
 		error("Malloc failed");
-	map[data->max_map_y] = NULL;
+	data->map[data->max_map_y] = NULL;
 	i = 0;
 	j = 0;
 	while (i < data->max_map_y)
 	{
-		map[i] = malloc(sizeof(char) * data->max_map_x + 1);
-		if (!map[i])
+		data->map[i] = malloc(sizeof(char) * data->max_map_x + 1);
+		if (!data->map[i])
 			error("Malloc failed");
-		map[i][data->max_map_x] = 0;
+		data->map[i][data->max_map_x] = 0;
 		while (j < data->max_map_x)
-			map[i][j++] = '0';
+			data->map[i][j++] = '0';
 		j = 0;
 		i++;
 	}
-	data->map = map;
 }
 
 void	full_free(t_data *data)
@@ -116,7 +114,13 @@ void	full_free(t_data *data)
 	free(data->so);
 	free(data->we);
 	free(data->ea);
+	i = 0;
+	while (data->f[i])
+		free(data->f[i++]);
 	free(data->f);
+	i = 0;
+	while (data->c[i])
+		free(data->c[i++]);
 	free(data->c);
 	i = 0;
 	while (data->map[i])

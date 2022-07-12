@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/11 18:48:46 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/12 04:17:20 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef struct s_data
 	char	*so;
 	char	*we;
 	char	*ea;
-	char	*f;
-	char	*c;
+	char	**f;
+	char	**c;
 	char	**map;
 	char	*starting_pos;
 	char	direction;
@@ -66,10 +66,6 @@ typedef struct s_rgb
 }	t_rgb;
 
 float			raycasting(t_data *data, float angle);
-void			movement(int keycode, t_data *data);
-void			rotation(int keycode, t_data *data);
-int				key_hook(int keycode, t_data *data);
-int				main(int ac, char **av);
 
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
@@ -89,6 +85,8 @@ char			*file_copy(int fd, int size);
 void			check_incorrect_input(t_data *data, char c);
 void			check_map(t_data *data, char *file);
 
+char			**ft_split(char *s, char c);
+
 t_data			init(void);
 t_data			init2(t_data data);
 t_rgb			rgb(unsigned char r, unsigned char g, unsigned char b);
@@ -106,5 +104,7 @@ void			copy_map(t_data *data, char *file);
 void			init_player(t_data *data, int x, int y);
 void			detect_player(t_data *data);
 float			fix_fish_eye(t_data *data, float angle, float hptn);
+
+int				ft_atoi(const char *s);
 
 #endif

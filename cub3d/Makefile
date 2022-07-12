@@ -1,13 +1,13 @@
 NAME	= cub3D
 
-SRCS	= cub3d.c draw.c draw2.c parsing.c utils.c utils2.c utils3.c
+SRCS	= cub3d.c draw.c draw2.c parsing.c split.c utils.c utils2.c utils3.c utils4.c
 
 OBJS	= ${SRCS:.c=.o}
 
 CC		= gcc
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g#-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror#-g -fsanitize=address
 
 %.o: %.c
 			${CC} ${CFLAGS} -c $< -o $@
