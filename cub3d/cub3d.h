@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/14 11:18:29 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/14 11:25:40 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <math.h>
 
-# define W 800
+# define W -800
 # define H 800
 # define PI 3.14159265
 # define DR 0.01745329
