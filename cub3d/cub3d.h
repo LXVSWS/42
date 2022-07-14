@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 04:17:20 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/14 11:18:29 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ typedef struct s_rgb
 	unsigned char	b;
 }	t_rgb;
 
-float			raycasting(t_data *data, float angle);
-
 unsigned int	rgb2int(t_rgb rgb);
 void			pixel_put(t_data *data, int x, int y, t_rgb rgb);
 void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
@@ -105,6 +103,9 @@ void			init_player(t_data *data, int x, int y);
 void			detect_player(t_data *data);
 float			fix_fish_eye(t_data *data, float angle, float hptn);
 
+float			raycasting(t_data *data, float angle);
+void			strafing(t_data *data, int keycode);
+void			texturing(t_data *data, int *x, int *y);
 int				ft_atoi(const char *s);
 
 #endif

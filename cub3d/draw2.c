@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 04:30:15 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/14 11:20:53 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	normal_view(t_data *data, float fov, float offset, int *x)
 			j++;
 		}
 		else
-			pixel_put(data, *x, y++, rgb(255, 0, 0));
+			texturing(data, x, &y);
 	}
 	while (y < H)
 		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
@@ -100,13 +100,12 @@ void	close_view(t_data *data, float offset, int *x)
 	{
 		if (j < offset)
 		{
-			pixel_put(data, *x, y, rgb(ft_atoi(data->c[0]), \
+			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
 			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
 			j++;
 		}
 		else
-			pixel_put(data, *x, y, rgb(255, 0, 0));
-		y++;
+			texturing(data, x, &y);
 	}
 	while (y < H)
 		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \

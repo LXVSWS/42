@@ -6,11 +6,70 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 04:17:11 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/14 11:22:19 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+float	raycasting(t_data *data, float angle)
+{
+	float	rx;
+	float	ry;
+	int		mx;
+	int		my;
+	float	hptn;
+
+	rx = data->player_x;
+	ry = data->player_y;
+	mx = rx / data->block_size_x;
+	my = ry / data->block_size_y;
+	while (data->map[my][mx] == '0')
+	{
+		rx += cos(angle);
+		ry += sin(angle);
+		mx = rx / data->block_size_x;
+		my = ry / data->block_size_y;
+	}
+	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + \
+	(ry - data->player_y) * (ry - data->player_y));
+	hptn = fix_fish_eye(data, angle, hptn);
+	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
+	if (rx > H)
+		rx = H;
+	return (rx);
+}
+
+void	strafing(t_data *data, int keycode)
+{
+	if (keycode == 0)
+	{
+		if (data->player_angle >= 4 && data->player_angle <= 6)
+			data->player_x -= 5;
+		else if (data->player_angle >= 2 && data->player_angle < 4)
+			data->player_y += 5;
+		else if (data->player_angle > 6 || data->player_angle < 1)
+			data->player_y -= 5;
+		else
+			data->player_x += 5;
+	}
+	if (keycode == 2)
+	{
+		if (data->player_angle >= 4 && data->player_angle <= 6)
+			data->player_x += 5;
+		else if (data->player_angle >= 2 && data->player_angle < 4)
+			data->player_y -= 5;
+		else if (data->player_angle > 6 || data->player_angle < 1)
+			data->player_y += 5;
+		else
+			data->player_x -= 5;
+	}
+}
+
+void	texturing(t_data *data, int *x, int *y)
+{
+	pixel_put(data, *x, (*y)++, rgb(255, 0, 0));
+}
 
 int	ft_atoi(const char *s)
 {

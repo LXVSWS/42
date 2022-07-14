@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:53:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 03:37:51 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/13 18:42:49 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,25 @@ void	draw_element(t_data *data, int pos_x, int pos_y, t_rgb color)
 
 void	draw_player(t_data *data)
 {
+	int		x;
+	int		y;
 	float	ray_angle;
 	int		i;
 
-	draw_element(data, data->player_x, data->player_y, rgb(255, 255, 255));
 	ray_angle = data->player_angle - DR * 30;
 	i = -1;
 	while (++i < 60)
 	{
 		draw_rays(data, ray_angle);
 		ray_angle += DR;
+	}
+	x = -1;
+	while (++x < 3)
+	{
+		y = -1;
+		while (++y < 3)
+			pixel_put(data, x + data->player_x, y + \
+			data->player_y, rgb(255, 0, 0));
 	}
 }
 

@@ -6,58 +6,38 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 03:55:55 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/14 10:41:10 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-float	raycasting(t_data *data, float angle)
-{
-	float	rx;
-	float	ry;
-	int		mx;
-	int		my;
-	float	hptn;
-
-	rx = data->player_x;
-	ry = data->player_y;
-	mx = rx / data->block_size_x;
-	my = ry / data->block_size_y;
-	while (data->map[my][mx] == '0')
-	{
-		rx += cos(angle);
-		ry += sin(angle);
-		mx = rx / data->block_size_x;
-		my = ry / data->block_size_y;
-	}
-	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + \
-	(ry - data->player_y) * (ry - data->player_y));
-	hptn = fix_fish_eye(data, angle, hptn);
-	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
-	if (rx > H)
-		rx = H;
-	return (rx);
-}
-
 static void	movement(int keycode, t_data *data)
 {
+	float	previous_pos_x;
+	float	previous_pos_y;
+
+	previous_pos_x = data->player_x;
+	previous_pos_y = data->player_y;
 	if (keycode == 13)
-		if (data->player_map_y > 0 && \
-		data->map[data->player_map_y - 1][data->player_map_x] == '0')
-			data->player_y -= data->block_size_y;
-	if (keycode == 0)
-		if (data->player_map_x > 0 && \
-		data->map[data->player_map_y][data->player_map_x - 1] == '0')
-			data->player_x -= data->block_size_x;
+	{
+		data->player_x += data->player_delta_x * 5;
+		data->player_y += data->player_delta_y * 5;
+	}
 	if (keycode == 1)
-		if (data->player_map_y < data->max_map_y - 1 && \
-		data->map[data->player_map_y + 1][data->player_map_x] == '0')
-			data->player_y += data->block_size_y;
-	if (keycode == 2)
-		if (data->player_map_x < data->max_map_x && \
-		data->map[data->player_map_y][data->player_map_x + 1] == '0')
-			data->player_x += data->block_size_x;
+	{
+		data->player_x -= data->player_delta_x * 5;
+		data->player_y -= data->player_delta_y * 5;
+	}
+	if (keycode == 0 || keycode == 2)
+		strafing(data, keycode);
+	data->player_map_x = data->player_x / data->block_size_x;
+	data->player_map_y = data->player_y / data->block_size_y;
+	if (data->map[data->player_map_y][data->player_map_x] == '1')
+	{
+		data->player_x = previous_pos_x;
+		data->player_y = previous_pos_y;
+	}
 }
 
 static void	rotation(int keycode, t_data *data)
@@ -80,20 +60,27 @@ static void	rotation(int keycode, t_data *data)
 	}
 }
 
-static int	key_hook(int keycode, t_data *data)
+static int	hook(int keycode, t_data *data)
 {
-	data->player_map_x = data->player_x / data->block_size_x;
-	data->player_map_y = data->player_y / data->block_size_y;
 	if (keycode == 13 || keycode == 0 || keycode == 1 || keycode == 2)
 		movement(keycode, data);
 	if (keycode == 123 || keycode == 124)
 		rotation(keycode, data);
+	draw(data);
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	return (0);
+}
+
+static int	key_hook(int keycode, t_data *data)
+{
 	if (keycode == 41)
 	{
 		if (!data->print_map)
 			data->print_map = 1;
 		else
 			data->print_map = 0;
+		draw(data);
+		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	}
 	if (keycode == 53)
 	{
@@ -102,8 +89,6 @@ static int	key_hook(int keycode, t_data *data)
 		full_free(data);
 		exit(0);
 	}
-	draw(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 
@@ -125,6 +110,7 @@ int	main(int ac, char **av)
 		detect_player(&data);
 		draw(&data);
 		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
+		mlx_hook(data.win, 2, 1L << 0, hook, &data);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
 	}
