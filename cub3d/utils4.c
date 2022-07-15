@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/14 11:22:19 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/15 23:02:45 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,25 @@ void	strafing(t_data *data, int keycode)
 	}
 }
 
-void	texturing(t_data *data, int *x, int *y)
+void	texturing(t_data *data, int x, int y)
 {
-	pixel_put(data, *x, (*y)++, rgb(255, 0, 0));
+	pixel_put(data, x, y, rgb(255, 0, 0));
+}
+
+void	rgb_check(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->c[i])
+		i++;
+	if (i != 3)
+		error("RGB Sky data incorrect");
+	i = 0;
+	while (data->f[i])
+		i++;
+	if (i != 3)
+		error("RGB Floor data incorrect");
 }
 
 int	ft_atoi(const char *s)

@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:43:20 by lwyss             #+#    #+#             */
-/*   Updated: 2022/06/19 16:09:38 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/15 14:18:20 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	file_read(char **av)
 		error("Wrong file extension");
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
-	{
-		printf("Error\nCannot open file\n");
-		exit(-1);
-	}
+		error("Cannot open file");
 	return (fd);
 }
 
@@ -42,10 +39,7 @@ int	file_size(int fd)
 	{
 		bytes_read = read(fd, &buf, 1);
 		if (bytes_read == -1)
-		{
-			printf("Error\nProblem while reading file\n");
-			exit(-1);
-		}
+			error("Problem while reading file");
 		i++;
 	}
 	close(fd);

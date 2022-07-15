@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/14 10:41:10 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/15 22:29:04 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static int	hook(int keycode, t_data *data)
 	if (keycode == 123 || keycode == 124)
 		rotation(keycode, data);
 	draw(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 
@@ -80,7 +79,6 @@ static int	key_hook(int keycode, t_data *data)
 		else
 			data->print_map = 0;
 		draw(data);
-		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	}
 	if (keycode == 53)
 	{
@@ -109,7 +107,6 @@ int	main(int ac, char **av)
 		free(file);
 		detect_player(&data);
 		draw(&data);
-		mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
 		mlx_hook(data.win, 2, 1L << 0, hook, &data);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);

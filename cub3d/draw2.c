@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/14 11:20:53 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/15 22:58:27 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@ void	draw(t_data *data)
 	int		i;
 	float	ray_angle;
 	float	fov[61];
+	int		width;
+	int		height;
 
+	data->no_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	data->so_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	data->we_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	data->ea_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
 	ray_angle = data->player_angle - DR * 30;
 	i = -1;
 	while (++i < 60)
@@ -30,6 +36,84 @@ void	draw(t_data *data)
 		draw_map(data);
 	else
 		draw_3d(data, fov);
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->no_img, 455, 0);
+}
+
+void	draw_3d(t_data *data, float *fov)
+{
+	int		x;
+	int		y;
+	int		i;
+	int		j;
+	float	offset;
+
+	x = -1;
+	i = 0;
+	while (++x < W && fov[i])
+	{
+		offset = H - fov[i];
+		y = 0;
+		j = -1;
+		if (fov[i] < offset)
+			normal_view(data, fov[i], offset, &x);
+		else
+			close_view(data, offset, &x);
+		if (x % (W / 60) == 0)
+			i++;
+	}
+}
+
+void	normal_view(t_data *data, float fov, float offset, int *x)
+{
+	int	y;
+	int	j;
+
+	y = 0;
+	j = -1;
+	while (++j < H)
+	{
+		if (j < fov)
+		{
+			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
+			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
+			j++;
+		}
+		else if (j > fov && j < offset)
+		{
+			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
+			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
+			j++;
+		}
+		else
+			texturing(data, *x, y++);
+	}
+	while (y < H)
+		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
+		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
+}
+
+void	close_view(t_data *data, float offset, int *x)
+{
+	int	y;
+	int	j;
+
+	y = 0;
+	j = -1;
+	while (++j < H)
+	{
+		if (j < offset)
+		{
+			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
+			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
+			j++;
+		}
+		else
+			texturing(data, *x, y++);
+	}
+	while (y < H)
+		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
+		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
 }
 
 void	draw_map(t_data *data)
@@ -58,80 +142,4 @@ void	draw_map(t_data *data)
 		y += data->block_size_y;
 	}
 	draw_player(data);
-}
-
-void	normal_view(t_data *data, float fov, float offset, int *x)
-{
-	int	y;
-	int	j;
-
-	y = 0;
-	j = -1;
-	while (++j < H)
-	{
-		if (j < fov)
-		{
-			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
-			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
-			j++;
-		}
-		else if (j > fov && j < offset)
-		{
-			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
-			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
-			j++;
-		}
-		else
-			texturing(data, x, &y);
-	}
-	while (y < H)
-		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
-		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
-}
-
-void	close_view(t_data *data, float offset, int *x)
-{
-	int	y;
-	int	j;
-
-	y = 0;
-	j = -1;
-	while (++j < H)
-	{
-		if (j < offset)
-		{
-			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
-			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
-			j++;
-		}
-		else
-			texturing(data, x, &y);
-	}
-	while (y < H)
-		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
-		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
-}
-
-void	draw_3d(t_data *data, float *fov)
-{
-	int		x;
-	int		y;
-	int		i;
-	int		j;
-	float	offset;
-
-	x = -1;
-	i = 0;
-	while (++x < W && fov[i])
-	{
-		offset = H - fov[i];
-		y = 0;
-		j = -1;
-		if (fov[i] < offset)
-			normal_view(data, fov[i], offset, &x);
-		else
-			close_view(data, offset, &x);
-		if (x % (W / 60) == 0)
-			i++;
-	}
 }

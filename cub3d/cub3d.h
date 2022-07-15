@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/14 11:26:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/15 22:54:57 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,13 @@ typedef struct s_data
 	int		ll;
 	int		endian;
 	char	*no;
+	void	*no_img;
 	char	*so;
+	void	*so_img;
 	char	*we;
+	void	*we_img;
 	char	*ea;
+	void	*ea_img;
 	char	**f;
 	char	**c;
 	char	**map;
@@ -72,10 +76,10 @@ void			draw_player(t_data *data);
 void			draw_rays(t_data *data, float angle);
 
 void			draw(t_data *data);
-void			draw_map(t_data *data);
+void			draw_3d(t_data *data, float *fov);
 void			normal_view(t_data *data, float fov, float offset, int *x);
 void			close_view(t_data *data, float offset, int *x);
-void			draw_3d(t_data *data, float *fov);
+void			draw_map(t_data *data);
 
 int				file_read(char **av);
 int				file_size(int fd);
@@ -105,7 +109,8 @@ float			fix_fish_eye(t_data *data, float angle, float hptn);
 
 float			raycasting(t_data *data, float angle);
 void			strafing(t_data *data, int keycode);
-void			texturing(t_data *data, int *x, int *y);
+void			texturing(t_data *data, int x, int y);
+void			rgb_check(t_data *data);
 int				ft_atoi(const char *s);
 
 #endif
