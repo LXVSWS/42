@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/15 22:29:04 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/16 03:54:17 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,7 @@ static int	key_hook(int keycode, t_data *data)
 		draw(data);
 	}
 	if (keycode == 53)
-	{
-		mlx_destroy_image(data->mlx, data->img);
-		mlx_destroy_window(data->mlx, data->win);
-		full_free(data);
-		exit(0);
-	}
+		clean_exit(data);
 	return (0);
 }
 
@@ -106,8 +101,10 @@ int	main(int ac, char **av)
 		copy_map(&data, &file[i]);
 		free(file);
 		detect_player(&data);
+		init_textures(&data);
 		draw(&data);
 		mlx_hook(data.win, 2, 1L << 0, hook, &data);
+		mlx_hook(data.win, 17, 0L, clean_exit, &data);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
 	}

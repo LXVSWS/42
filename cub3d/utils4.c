@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/15 23:02:45 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/16 03:57:31 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,13 @@ void	strafing(t_data *data, int keycode)
 
 void	texturing(t_data *data, int x, int y)
 {
+	char	*addr;
+	int		bpp;
+	int		ll;
+	int		endian;
+
+	addr = mlx_get_data_addr(data->no_img, &bpp, &ll, &endian);
+	data->addr[y * ll / 4 + x] = addr[y * ll / 4 + x];
 	pixel_put(data, x, y, rgb(255, 0, 0));
 }
 
