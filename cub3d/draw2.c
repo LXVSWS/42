@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/16 03:53:41 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/17 20:06:00 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	draw_3d(t_data *data, float *fov)
 		if (fov[i] < offset)
 			normal_view(data, fov[i], offset, &x);
 		else
-			close_view(data, offset, &x);
+			close_view(data, fov[i], offset, &x);
 		if (x % (W / 60) == 0)
 			i++;
 	}
@@ -79,14 +79,14 @@ void	normal_view(t_data *data, float fov, float offset, int *x)
 			j++;
 		}
 		else
-			texturing(data, *x, y++);
+			texturing(data, fov, *x, y++);
 	}
 	while (y < H)
 		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
 		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
 }
 
-void	close_view(t_data *data, float offset, int *x)
+void	close_view(t_data *data, float fov, float offset, int *x)
 {
 	int	y;
 	int	j;
@@ -102,7 +102,7 @@ void	close_view(t_data *data, float offset, int *x)
 			j++;
 		}
 		else
-			texturing(data, *x, y++);
+			texturing(data, fov, *x, y++);
 	}
 	while (y < H)
 		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \

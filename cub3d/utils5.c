@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:19:17 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 04:13:42 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/17 21:38:34 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,17 @@ void	init_textures(t_data *data)
 	int		height;
 
 	data->no_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	if (!data->no_img)
+		error("North path invalid");
 	data->so_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	if (!data->no_img)
+		error("South path invalid");
 	data->we_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	if (!data->no_img)
+		error("West path invalid");
 	data->ea_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+	if (!data->no_img)
+		error("East path invalid");
 }
 
 t_rgb	uinttorgb(unsigned int i)

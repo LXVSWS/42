@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 04:14:12 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/17 22:03:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,28 @@ void	strafing(t_data *data, int keycode)
 	}
 }
 
-void	texturing(t_data *data, int x, int y)
+/*
+		h_txtr (px)		= h_wall (px)
+		y (txtr) (px)	= y (wall) (px)
+
+		w_txtr (px)		= w_wall (1)
+		x_txtr (px)		= x_wall (ray hit)
+*/
+
+void	texturing(t_data *data, float fov, int x, int y)
 {
 	char			*addr;
 	int				bpp;
 	int				ll;
 	int				endian;
 	unsigned int	color;
+	int				x_texture;
+	int				y_texture;
 
 	addr = mlx_get_data_addr(data->no_img, &bpp, &ll, &endian);
-	color = *(unsigned int *)(addr + y * ll + x);
+	x_texture = x * data->block_size_x / fov;
+	y_texture = y * data->block_size_y / fov;
+	color = *(unsigned int *)(addr + y_texture * ll + x_texture);
 	pixel_put(data, x, y, uinttorgb(color));
 }
 

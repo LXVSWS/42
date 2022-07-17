@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 04:09:41 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/17 20:52:54 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-//# include <mlx.h>
-# include "mlx/mlx.h"
+# include <mlx.h>
+//# include "mlx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -78,7 +78,7 @@ void			draw_rays(t_data *data, float angle);
 void			draw(t_data *data);
 void			draw_3d(t_data *data, float *fov);
 void			normal_view(t_data *data, float fov, float offset, int *x);
-void			close_view(t_data *data, float offset, int *x);
+void			close_view(t_data *data, float fov, float offset, int *x);
 void			draw_map(t_data *data);
 
 int				file_read(char **av);
@@ -109,7 +109,7 @@ float			fix_fish_eye(t_data *data, float angle, float hptn);
 
 float			raycasting(t_data *data, float angle);
 void			strafing(t_data *data, int keycode);
-void			texturing(t_data *data, int x, int y);
+void			texturing(t_data *data, float fov, int x, int y);
 void			rgb_check(t_data *data);
 int				ft_atoi(const char *s);
 
