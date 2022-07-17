@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:19:17 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/16 03:54:37 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/17 04:13:42 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ void	init_textures(t_data *data)
 	data->so_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
 	data->we_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
 	data->ea_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
+}
+
+t_rgb	uinttorgb(unsigned int i)
+{
+	t_rgb	rgb;
+
+	rgb.r = (i >> 16) & 0xFF;
+	rgb.g = (i >> 8) & 0xFF;
+	rgb.b = i & 0xFF;
+	return (rgb);
 }
 
 int	clean_exit(t_data *data)

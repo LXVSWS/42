@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/16 03:54:50 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/17 04:09:41 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void			rgb_check(t_data *data);
 int				ft_atoi(const char *s);
 
 void			init_textures(t_data *data);
+t_rgb			uinttorgb(unsigned int i);
 int				clean_exit(t_data *data);
 
 #endif
