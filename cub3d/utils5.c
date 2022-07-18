@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:19:17 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 21:38:34 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/18 19:02:15 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void	init_textures(t_data *data)
 {
-	int		width;
-	int		height;
+	t_tex	tex;
 
-	data->no_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
-	if (!data->no_img)
-		error("North path invalid");
-	data->so_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
-	if (!data->no_img)
-		error("South path invalid");
-	data->we_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
-	if (!data->no_img)
-		error("West path invalid");
-	data->ea_img = mlx_xpm_file_to_image(data->mlx, data->no, &width, &height);
-	if (!data->no_img)
-		error("East path invalid");
+	tex.no = mlx_xpm_file_to_image(data->mlx, data->no, &tex.no_w, &tex.no_h);
+	if (!tex.no)
+		error("North texture invalid");
+	tex.so = mlx_xpm_file_to_image(data->mlx, data->so, &tex.so_w, &tex.so_h);
+	if (!tex.so)
+		error("South tex invalid");
+	tex.we = mlx_xpm_file_to_image(data->mlx, data->we, &tex.we_w, &tex.we_h);
+	if (!tex.we)
+		error("West tex invalid");
+	tex.ea = mlx_xpm_file_to_image(data->mlx, data->ea, &tex.ea_w, &tex.ea_h);
+	if (!tex.ea)
+		error("East tex invalid");
+	data->tex = tex;
 }
 
 t_rgb	uinttorgb(unsigned int i)

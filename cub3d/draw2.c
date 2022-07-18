@@ -3,37 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   draw2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 20:06:00 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/18 19:22:47 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw(t_data *data)
+int	draw(t_data *data)
 {
 	int		i;
 	float	ray_angle;
-	float	fov[61];
+	t_ray	ray[FOV];
 
 	ray_angle = data->player_angle - DR * 30;
 	i = -1;
-	while (++i < 60)
+	while (++i < FOV)
 	{
-		fov[i] = raycasting(data, ray_angle);
+		ray[i] = raycasting(data, ray_angle);
 		ray_angle += DR;
 	}
-	fov[i] = '\0';
 	if (data->print_map)
 		draw_map(data);
 	else
-		draw_3d(data, fov);
+		draw_3d(data, ray);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	return (0);
 }
 
-void	draw_3d(t_data *data, float *fov)
+void	draw_3d(t_data *data, t_ray *ray)
 {
 	int		x;
 	int		y;
@@ -43,21 +43,21 @@ void	draw_3d(t_data *data, float *fov)
 
 	x = -1;
 	i = 0;
-	while (++x < W && fov[i])
+	while (++x < W && i < FOV)
 	{
-		offset = H - fov[i];
+		offset = H - ray[i].wall_h;
 		y = 0;
 		j = -1;
-		if (fov[i] < offset)
-			normal_view(data, fov[i], offset, &x);
+		if (ray[i].wall_h < offset)
+			normal_view(data, ray[i], offset, &x);
 		else
-			close_view(data, fov[i], offset, &x);
-		if (x % (W / 60) == 0)
+			close_view(data, ray[i], offset, &x);
+		if (x % (W / FOV) == 0)
 			i++;
 	}
 }
 
-void	normal_view(t_data *data, float fov, float offset, int *x)
+void	normal_view(t_data *data, t_ray ray, float offset, int *x)
 {
 	int	y;
 	int	j;
@@ -66,27 +66,27 @@ void	normal_view(t_data *data, float fov, float offset, int *x)
 	j = -1;
 	while (++j < H)
 	{
-		if (j < fov)
+		if (j < ray.wall_h)
 		{
 			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
 			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
 			j++;
 		}
-		else if (j > fov && j < offset)
+		else if (j > ray.wall_h && j < offset)
 		{
 			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
 			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
 			j++;
 		}
 		else
-			texturing(data, fov, *x, y++);
+			texturing(data, ray, *x, y++);
 	}
 	while (y < H)
 		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
 		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
 }
 
-void	close_view(t_data *data, float fov, float offset, int *x)
+void	close_view(t_data *data, t_ray ray, float offset, int *x)
 {
 	int	y;
 	int	j;
@@ -102,7 +102,7 @@ void	close_view(t_data *data, float fov, float offset, int *x)
 			j++;
 		}
 		else
-			texturing(data, fov, *x, y++);
+			texturing(data, ray, *x, y++);
 	}
 	while (y < H)
 		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \

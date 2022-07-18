@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 04:02:55 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/18 18:48:34 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ static int	key_hook(int keycode, t_data *data)
 
 int	main(int ac, char **av)
 {
-	t_data	data;
-	char	*file;
-	int		i;
+	t_data		data;
+	char		*file;
+	int			i;
 
 	if (ac == 2)
 	{

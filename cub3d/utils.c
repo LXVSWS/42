@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/15 22:55:28 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/18 18:40:02 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,9 @@ t_data	init(void)
 	data.img = mlx_new_image(data.mlx, W, H);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.ll, &data.endian);
 	data.no = NULL;
-	data.no_img = NULL;
 	data.so = NULL;
-	data.so_img = NULL;
 	data.we = NULL;
-	data.we_img = NULL;
 	data.ea = NULL;
-	data.ea_img = NULL;
 	data.f = NULL;
 	data.c = NULL;
 	data.map = NULL;

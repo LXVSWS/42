@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/17 20:52:54 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/18 19:17:56 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include <mlx.h>
-//# include "mlx/mlx.h"
+//# include <mlx.h>
+# include "mlx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -25,6 +25,39 @@
 # define H 800
 # define PI 3.14159265
 # define DR 0.01745329
+# define FOV 60
+
+typedef struct	s_tex
+{
+	void	*no;
+	int		no_w;
+	int		no_h;
+	char	*no_addr;
+	int		no_bpp;
+	int		no_ll;
+	int		no_endian;
+	void	*so;
+	int		so_w;
+	int		so_h;
+	char	*so_addr;
+	int		so_bpp;
+	int		so_ll;
+	int		so_endian;
+	void	*we;
+	int		we_w;
+	int		we_h;
+	char	*we_addr;
+	int		we_bpp;
+	int		we_ll;
+	int		we_endian;
+	void	*ea;
+	int		ea_w;
+	int		ea_h;
+	char	*ea_addr;
+	int		ea_bpp;
+	int		ea_ll;
+	int		ea_endian;
+}	t_tex;
 
 typedef struct s_data
 {
@@ -36,13 +69,10 @@ typedef struct s_data
 	int		ll;
 	int		endian;
 	char	*no;
-	void	*no_img;
 	char	*so;
-	void	*so_img;
 	char	*we;
-	void	*we_img;
 	char	*ea;
-	void	*ea_img;
+	t_tex	tex;
 	char	**f;
 	char	**c;
 	char	**map;
@@ -62,6 +92,14 @@ typedef struct s_data
 	float	player_angle;
 }				t_data;
 
+typedef struct s_ray
+{
+	float	wall_h;
+	float	angle;
+	float	hit_x;
+	float	hit_y;
+}	t_ray;
+
 typedef struct s_rgb
 {
 	unsigned char	r;
@@ -75,10 +113,10 @@ void			draw_element(t_data *data, int pos_x, int pos_y, t_rgb color);
 void			draw_player(t_data *data);
 void			draw_rays(t_data *data, float angle);
 
-void			draw(t_data *data);
-void			draw_3d(t_data *data, float *fov);
-void			normal_view(t_data *data, float fov, float offset, int *x);
-void			close_view(t_data *data, float fov, float offset, int *x);
+int				draw(t_data *data);
+void			draw_3d(t_data *data, t_ray *ray);
+void			normal_view(t_data *data, t_ray ray, float offset, int *x);
+void			close_view(t_data *data, t_ray ray, float offset, int *x);
 void			draw_map(t_data *data);
 
 int				file_read(char **av);
@@ -107,9 +145,9 @@ void			init_player(t_data *data, int x, int y);
 void			detect_player(t_data *data);
 float			fix_fish_eye(t_data *data, float angle, float hptn);
 
-float			raycasting(t_data *data, float angle);
+t_ray 			raycasting(t_data *data, float angle);
+void			texturing(t_data *data, t_ray ray, int x, int y);
 void			strafing(t_data *data, int keycode);
-void			texturing(t_data *data, float fov, int x, int y);
 void			rgb_check(t_data *data);
 int				ft_atoi(const char *s);
 
