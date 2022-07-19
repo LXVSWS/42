@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/19 04:46:09 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 01:55:35 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_ray	raycasting(t_data *data, float angle)
 		ray.side = 'W';
 	ray.hit_x = rx / data->block_size_x - mx;
 	ray.hit_y = ry / data->block_size_y - my;
+	ray.y_offset = 0;
 	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + \
 	(ry - data->player_y) * (ry - data->player_y));
 	hptn = fix_fish_eye(data, angle, hptn);
@@ -58,45 +59,43 @@ t_ray	raycasting(t_data *data, float angle)
 
 		w_txtr (px)		= w_wall (1)
 		x_txtr (px)		= x_wall (ray hit)
-
-		if (x_tex >= data->tex.no_w || y_tex >= data->tex.no_h)
-			error("Texture overflow");
 */
 
 void	texturing(t_data *data, t_ray ray, int x, int y)
 {
-	int				x_tex;
-	int				y_tex;
+	int				x_tex = 0;
+	int				y_tex = 0;
 	unsigned int	color = 0;
 
 	if (ray.side == 'N')
 	{
 		x_tex = x * data->tex.no_w / FOV;
-		y_tex = y * data->tex.no_h / ray.wall_h;
+		y_tex = (y - ray.y_offset) * data->tex.no_h / ray.wall_h;
 		data->tex.no_addr = mlx_get_data_addr(data->tex.no, &data->tex.no_bpp, &data->tex.no_ll, &data->tex.no_endian);
 		color = *(unsigned int *)(data->tex.no_addr + y_tex * data->tex.no_ll + x_tex);
 	}
 	else if (ray.side == 'S')
 	{
 		x_tex = x * data->tex.so_w / FOV;
-		y_tex = y * data->tex.so_h / ray.wall_h;
+		y_tex = (y - ray.y_offset) * data->tex.so_h / ray.wall_h;
 		data->tex.so_addr = mlx_get_data_addr(data->tex.so, &data->tex.so_bpp, &data->tex.so_ll, &data->tex.so_endian);
 		color = *(unsigned int *)(data->tex.so_addr + y_tex * data->tex.so_ll + x_tex);
 	}
 	else if (ray.side == 'E')
 	{
 		x_tex = x * data->tex.ea_w / FOV;
-		y_tex = y * data->tex.ea_h / ray.wall_h;
+		y_tex = (y - ray.y_offset) * data->tex.ea_h / ray.wall_h;
 		data->tex.ea_addr = mlx_get_data_addr(data->tex.ea, &data->tex.ea_bpp, &data->tex.ea_ll, &data->tex.ea_endian);
 		color = *(unsigned int *)(data->tex.ea_addr + y_tex * data->tex.ea_ll + x_tex);
 	}
 	else if (ray.side == 'W')
 	{
 		x_tex = x * data->tex.we_w / FOV;
-		y_tex = y * data->tex.we_h / ray.wall_h;
+		y_tex = (y - ray.y_offset) * data->tex.we_h / ray.wall_h;
 		data->tex.we_addr = mlx_get_data_addr(data->tex.we, &data->tex.we_bpp, &data->tex.we_ll, &data->tex.we_endian);
 		color = *(unsigned int *)(data->tex.we_addr + y_tex * data->tex.we_ll + x_tex);
 	}
+	//printf("x_tex : %i / y_tex : %i / hit_x : %f / hit_y : %f\n", x_tex, y_tex, ray.hit_x, ray.hit_y);
 	pixel_put(data, x, y, uinttorgb(color));
 }
 

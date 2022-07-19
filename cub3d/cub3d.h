@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/19 03:52:02 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 01:41:13 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_ray
 	char	side;
 	float	hit_x;
 	float	hit_y;
+	int		y_offset;
 }	t_ray;
 
 typedef struct s_rgb
