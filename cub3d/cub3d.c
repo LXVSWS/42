@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/18 18:48:34 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/19 03:13:23 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,9 @@ int	main(int ac, char **av)
 		mlx_hook(data.win, 17, 0L, clean_exit, &data);
 		mlx_key_hook(data.win, key_hook, &data);
 		mlx_loop(data.mlx);
+		full_free(&data);
 	}
 	else
 		printf("Error\nArgument number invalid\n");
-	full_free(&data);
 	return (0);
 }

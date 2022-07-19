@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/18 19:17:56 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/19 03:52:02 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ typedef struct s_data
 typedef struct s_ray
 {
 	float	wall_h;
-	float	angle;
+	char	side;
 	float	hit_x;
 	float	hit_y;
 }	t_ray;

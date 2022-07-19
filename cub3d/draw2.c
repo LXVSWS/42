@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/18 19:22:47 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/19 04:13:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ void	draw_3d(t_data *data, t_ray *ray)
 		else
 			close_view(data, ray[i], offset, &x);
 		if (x % (W / FOV) == 0)
+		{
+			printf("wall_h : %f / side : %c / hit x : %f / hit y : %f\n", \
+			ray[i].wall_h, ray[i].side, ray[i].hit_x, ray[i].hit_y);
 			i++;
+		}
 	}
 }
 

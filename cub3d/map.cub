@@ -1,12 +1,12 @@
-NO              ./img.xpm
+NO              ./img_no.xpm
 
-WE ./img.xpm
-
-
-SO        		 ./img.xpm
+WE ./img_we.xpm
 
 
-EA ./img.xpm
+SO        		 ./img_so.xpm
+
+
+EA ./img_ea.xpm
 
 
 F                                   0,200,0
