@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 16:27:57 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 20:27:05 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ t_ray	raycasting(t_data *data, float angle)
 		ray.my = ray.ry / data->block_size_y;
 	}
 	init_textures_sides(data, &ray, angle);
-	ray.hit_x = ray.rx / data->block_size_x;
-	ray.hit_y = ray.ry / data->block_size_y;
-	ray.x_offset = 0;
+	ray.hit_x = ray.rx / data->block_size_x - ray.mx;
+	ray.hit_y = ray.ry / data->block_size_y - ray.my;
 	ray.y_offset = 0;
 	ray.wall_h = pythagore(data, ray.rx, ray.ry, angle);
 	return (ray);

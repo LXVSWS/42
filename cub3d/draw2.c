@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 16:30:54 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 20:14:10 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	draw_3d(t_data *data, t_ray *ray)
 			normal_view(data, ray[i], offset, &x);
 		else
 			close_view(data, ray[i], offset, &x);
-		ray[i].x_offset++;
 		if (x % (W / FOV) == 0)
 			i++;
 	}
