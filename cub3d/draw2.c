@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 01:41:20 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 16:30:54 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	draw_3d(t_data *data, t_ray *ray)
 			normal_view(data, ray[i], offset, &x);
 		else
 			close_view(data, ray[i], offset, &x);
+		ray[i].x_offset++;
 		if (x % (W / FOV) == 0)
 			i++;
 	}
@@ -70,22 +71,20 @@ void	normal_view(t_data *data, t_ray ray, float offset, int *x)
 		{
 			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
 			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
-			j++;
 			ray.y_offset++;
+			j++;
 		}
 		else if (j > ray.wall_h && j < offset)
 		{
 			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
 			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
-			j++;
 			ray.y_offset++;
+			j++;
 		}
 		else
 			texturing(data, ray, *x, y++);
 	}
-	while (y < H)
-		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
-		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
+	draw_floor(data, *x, y);
 }
 
 void	close_view(t_data *data, t_ray ray, float offset, int *x)
@@ -107,9 +106,7 @@ void	close_view(t_data *data, t_ray ray, float offset, int *x)
 		else
 			texturing(data, ray, *x, y++);
 	}
-	while (y < H)
-		pixel_put(data, *x, y++, rgb(ft_atoi(data->f[0]), \
-		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
+	draw_floor(data, *x, y);
 }
 
 void	draw_map(t_data *data)

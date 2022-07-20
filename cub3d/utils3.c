@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:55:04 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 03:23:41 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 14:50:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,17 @@ void	detect_player(t_data *data)
 	}
 }
 
-float	fix_fish_eye(t_data *data, float angle, float hptn)
+float	pythagore(t_data *data, float rx, float ry, float angle)
 {
-	float	fish_eye;
+	float	hptn;
+	float	fix_fish_eye;
 
-	fish_eye = data->player_angle - angle;
-	hptn *= cos(fish_eye);
-	return (hptn);
+	hptn = sqrt((rx - data->player_x) * (rx - data->player_x) + \
+	(ry - data->player_y) * (ry - data->player_y));
+	fix_fish_eye = data->player_angle - angle;
+	hptn *= cos(fix_fish_eye);
+	rx = sqrt(data->block_size_y * data->block_size_y) * H / hptn;
+	if (rx > H)
+		rx = H;
+	return (rx);
 }

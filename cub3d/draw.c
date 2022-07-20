@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:53:31 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/13 18:42:49 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 15:25:23 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	draw_player(t_data *data)
 {
 	int		x;
 	int		y;
-	float	ray_angle;
 	int		i;
+	float	ray_angle;
 
 	ray_angle = data->player_angle - DR * 30;
 	i = -1;

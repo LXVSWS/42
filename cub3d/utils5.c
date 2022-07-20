@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:19:17 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/19 18:54:37 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/20 16:07:54 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@ t_rgb	uinttorgb(unsigned int i)
 	rgb.g = (i >> 8) & 0xFF;
 	rgb.b = i & 0xFF;
 	return (rgb);
+}
+
+void	draw_floor(t_data *data, int x, int y)
+{
+	while (y < H)
+		pixel_put(data, x, y++, rgb(ft_atoi(data->f[0]), \
+		ft_atoi(data->f[1]), ft_atoi(data->f[2])));
+}
+
+void	init_textures_sides(t_data *data, t_ray *ray, float angle)
+{
+	if ((int)((ray->ry - sin(angle)) / data->block_size_y) > ray->my)
+		ray->side = 'S';
+	else if ((int)((ray->ry - sin(angle)) / data->block_size_y) < ray->my)
+		ray->side = 'N';
+	else if ((int)((ray->rx - cos(angle)) / data->block_size_x) > ray->mx)
+		ray->side = 'E';
+	else if ((int)((ray->rx - cos(angle)) / data->block_size_x) < ray->mx)
+		ray->side = 'W';
 }
 
 int	clean_exit(t_data *data)
