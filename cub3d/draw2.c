@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:25:15 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 20:14:10 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/22 19:27:38 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void	close_view(t_data *data, t_ray ray, float offset, int *x)
 		{
 			pixel_put(data, *x, y++, rgb(ft_atoi(data->c[0]), \
 			ft_atoi(data->c[1]), ft_atoi(data->c[2])));
-			j++;
 			ray.y_offset++;
+			j++;
 		}
 		else
 			texturing(data, ray, *x, y++);
