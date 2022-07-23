@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 07:28:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/23 17:35:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/24 00:05:47 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ int	check_file(t_data *data, char *file)
 	while (file[i])
 	{
 		if (file[i] == 'N' && file[i + 1] == 'O')
-			data->no = strdupmod(&file[i + 2]);
+			no_detected(data, &file[i + 2]);
 		else if (file[i] == 'S' && file[i + 1] == 'O')
-			data->so = strdupmod(&file[i + 2]);
+			so_detected(data, &file[i + 2]);
 		else if (file[i] == 'W' && file[i + 1] == 'E')
-			data->we = strdupmod(&file[i + 2]);
+			we_detected(data, &file[i + 2]);
 		else if (file[i] == 'E' && file[i + 1] == 'A')
-			data->ea = strdupmod(&file[i + 2]);
+			ea_detected(data, &file[i + 2]);
 		else if (file[i] == 'F')
-			data->f = ft_split(strdupmod(&file[i + 1]), ',');
+			f_detected(data, &file[i + 1]);
 		else if (file[i] == 'C')
-			data->c = ft_split(strdupmod(&file[i + 1]), ',');
+			c_detected(data, &file[i + 1]);
 		if (data->no && data->so && data->we && data->ea && data->f && data->c)
 			break ;
 		i++;

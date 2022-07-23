@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/23 22:14:59 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/24 00:08:02 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,13 @@ void			draw_floor(t_data *data, int x, int y);
 void			rgb_sky_check(t_data *data);
 void			rgb_floor_check(t_data *data);
 int				clean_exit(t_data *data);
+
+void			no_detected(t_data *data, char *file);
+void			so_detected(t_data *data, char *file);
+void			we_detected(t_data *data, char *file);
+void			ea_detected(t_data *data, char *file);
+void			f_detected(t_data *data, char *file);
+
+void			c_detected(t_data *data, char *file);
 
 #endif
