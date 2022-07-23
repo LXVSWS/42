@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 17:24:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/12 04:01:52 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 18:25:12 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,18 @@ static int	countword(char *s, char c)
 	word = 0;
 	while (s[i])
 	{
-		while (s[i] && s[i] == c)
-			i++;
+		if (s[i] && s[i] == c)
+			error("RGB format incorrect");
 		if (s[i] && s[i] != c)
 		{
 			word++;
 			while (s[i] && s[i] != c)
 				i++;
 		}
+		if (s[i] && s[i] == c && s[i + 1])
+			i++;
+		if (s[i] && s[i] == c)
+			error("RGB format incorrect");
 	}
 	return (word);
 }

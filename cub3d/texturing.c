@@ -6,11 +6,30 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:42:36 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/23 01:59:32 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 17:33:46 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	init_textures(t_data *data)
+{
+	t_tex	tex;
+
+	tex.no = mlx_xpm_file_to_image(data->mlx, data->no, &tex.no_w, &tex.no_h);
+	if (!tex.no)
+		error("North texture invalid");
+	tex.so = mlx_xpm_file_to_image(data->mlx, data->so, &tex.so_w, &tex.so_h);
+	if (!tex.so)
+		error("South tex invalid");
+	tex.we = mlx_xpm_file_to_image(data->mlx, data->we, &tex.we_w, &tex.we_h);
+	if (!tex.we)
+		error("West tex invalid");
+	tex.ea = mlx_xpm_file_to_image(data->mlx, data->ea, &tex.ea_w, &tex.ea_h);
+	if (!tex.ea)
+		error("East tex invalid");
+	data->tex = tex;
+}
 
 unsigned int	north_side(t_data *data, t_ray *ray, int x, int y)
 {

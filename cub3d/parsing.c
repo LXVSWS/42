@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:43:20 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/15 14:18:20 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 18:06:49 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	file_read(char **av)
 	int	size;
 	int	fd;
 
-	size = ft_strlen(av[1]);
+	size = strln(av[1]);
 	if (av[1][size - 1] != 'b' || av[1][size - 2] != 'u' \
 	|| av[1][size - 3] != 'c' || av[1][size - 4] != '.')
 		error("Wrong file extension");

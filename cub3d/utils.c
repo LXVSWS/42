@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:05:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/18 18:40:02 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 18:06:59 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_rgb	rgb(unsigned char r, unsigned char g, unsigned char b)
 	return (rgb);
 }
 
-int	ft_strlen(char *s)
+int	strln(char *s)
 {
 	int	i;
 

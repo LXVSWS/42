@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 03:58:51 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 23:17:36 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 17:31:11 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,18 @@ t_ray	raycasting(t_data *data, float angle)
 	ray.y_offset = 0;
 	ray.wall_h = pythagore(data, ray.rx, ray.ry, angle);
 	return (ray);
+}
+
+void	init_textures_sides(t_data *data, t_ray *ray, float angle)
+{
+	if ((int)((ray->ry - sin(angle)) / data->block_size_y) > ray->my)
+		ray->side = 'S';
+	else if ((int)((ray->ry - sin(angle)) / data->block_size_y) < ray->my)
+		ray->side = 'N';
+	else if ((int)((ray->rx - cos(angle)) / data->block_size_x) > ray->mx)
+		ray->side = 'E';
+	else if ((int)((ray->rx - cos(angle)) / data->block_size_x) < ray->mx)
+		ray->side = 'W';
 }
 
 void	texturing(t_data *data, t_ray ray, int x, int y)
@@ -75,22 +87,6 @@ void	strafing(t_data *data, int keycode)
 		else
 			data->player_x -= 5;
 	}
-}
-
-void	rgb_check(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->c[i])
-		i++;
-	if (i != 3)
-		error("RGB Sky data incorrect");
-	i = 0;
-	while (data->f[i])
-		i++;
-	if (i != 3)
-		error("RGB Floor data incorrect");
 }
 
 int	ft_atoi(const char *s)

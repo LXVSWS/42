@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 20:03:59 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 18:07:11 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void			check_map(t_data *data, char *file);
 
 char			**ft_split(char *s, char c);
 
+void			init_textures(t_data *data);
 unsigned int	north_side(t_data *data, t_ray *ray, int x, int y);
 unsigned int	south_side(t_data *data, t_ray *ray, int x, int y);
 unsigned int	east_side(t_data *data, t_ray *ray, int x, int y);
@@ -140,7 +141,7 @@ unsigned int	west_side(t_data *data, t_ray *ray, int x, int y);
 t_data			init(void);
 t_data			init2(t_data data);
 t_rgb			rgb(unsigned char r, unsigned char g, unsigned char b);
-int				ft_strlen(char *s);
+int				strln(char *s);
 void			error(char *s);
 
 char			*strdupmod(char *s);
@@ -156,15 +157,15 @@ void			detect_player(t_data *data);
 float			pythagore(t_data *data, float rx, float ry, float angle);
 
 t_ray			raycasting(t_data *data, float angle);
+void			init_textures_sides(t_data *data, t_ray *ray, float angle);
 void			texturing(t_data *data, t_ray ray, int x, int y);
 void			strafing(t_data *data, int keycode);
-void			rgb_check(t_data *data);
 int				ft_atoi(const char *s);
 
-void			init_textures(t_data *data);
 t_rgb			uinttorgb(unsigned int i);
 void			draw_floor(t_data *data, int x, int y);
-void			init_textures_sides(t_data *data, t_ray *ray, float angle);
+void			rgb_sky_check(t_data *data);
+void			rgb_floor_check(t_data *data);
 int				clean_exit(t_data *data);
 
 #endif

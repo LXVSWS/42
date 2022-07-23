@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 07:28:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/15 20:37:43 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 17:35:26 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ void	malloc_map(t_data *data)
 	int		i;
 	int		j;
 
-	rgb_check(data);
+	rgb_sky_check(data);
+	rgb_floor_check(data);
 	if (!data->starting_pos)
 		error("Map has no player");
 	data->map = malloc(sizeof(char *) * (data->max_map_y + 1));

@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:55:04 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/20 14:50:26 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 18:07:40 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,21 @@ void	copy_map(t_data *data, char *file)
 	while (file[i] && data->map[j])
 		mapdup(data, file[i++], &j, &k);
 	i = 0;
+	j = 0;
 	while (data->map[i])
 	{
-		if (data->map[i][0] == '0' || \
-		data->map[i][ft_strlen(data->map[i])] == '0')
+		while (data->map[0][j])
+			if (data->map[0][j++] != '1')
+				error("Map not closed");
+		if (data->map[i][0] == '0' || data->map[i][strln(data->map[i])] == '0')
 			error("Map not closed");
 		i++;
 	}
-	data->block_size_x = W / data->max_map_x;
-	data->block_size_y = H / data->max_map_y;
+	i--;
+	j = 0;
+	while (data->map[i][j])
+		if (data->map[i][j++] != '1')
+			error("Map not closed");
 }
 
 void	init_player(t_data *data, int x, int y)
@@ -84,6 +90,8 @@ void	detect_player(t_data *data)
 	int	x;
 	int	y;
 
+	data->block_size_x = W / data->max_map_x;
+	data->block_size_y = H / data->max_map_y;
 	i = -1;
 	j = -1;
 	x = 0;
