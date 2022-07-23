@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/23 17:51:45 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/23 22:17:09 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	hook(int keycode, t_data *data)
 
 static int	key_hook(int keycode, t_data *data)
 {
-	if (keycode == 41)
+	if (keycode == 46)
 	{
 		if (!data->print_map)
 			data->print_map = 1;
