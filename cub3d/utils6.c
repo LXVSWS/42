@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils6.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 23:50:11 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/24 00:17:55 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/25 10:17:29 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,12 @@ void	f_detected(t_data *data, char *file)
 		data->f = ft_split(strdupmod(file), ',');
 	else
 		error("Multiple floor rgb detected");
+}
+
+void	c_detected(t_data *data, char *file)
+{
+	if (!data->c)
+		data->c = ft_split(strdupmod(file), ',');
+	else
+		error("Multiple sky rgb detected");
 }
