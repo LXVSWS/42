@@ -6,13 +6,14 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/25 06:22:18 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/25 10:20:47 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+//# include <mlx.h>
 # include "mlx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
