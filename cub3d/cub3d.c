@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:54:44 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/25 10:18:57 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/26 05:44:38 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	hook(int keycode, t_data *data)
 
 static int	key_hook(int keycode, t_data *data)
 {
-	if (keycode == 46)
+	if (keycode == 41) // 46 for QWERTY
 	{
 		if (!data->print_map)
 			data->print_map = 1;

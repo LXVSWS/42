@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:50:48 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/25 10:20:47 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/07/26 05:41:11 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,6 @@ void			so_detected(t_data *data, char *file);
 void			we_detected(t_data *data, char *file);
 void			ea_detected(t_data *data, char *file);
 void			f_detected(t_data *data, char *file);
-
 void			c_detected(t_data *data, char *file);
 
 #endif
