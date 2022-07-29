@@ -8,4 +8,6 @@
 ## 6) push_swap (100%)
 ## 7) philosophers (125%)
 ## 8) minishell (101% - w/ <a href="https://github.com/rahmed42/" target="_blank">@rahmed42</a>)
-## 9) cub3d (in progress...)
+## 9) cub3d (waiting to be pushed)
+## 10) net_pratice (in progress...)
+## 11) C++ (in progress...)
