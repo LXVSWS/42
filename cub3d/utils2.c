@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lwyss <lwyss@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 07:28:56 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/24 00:05:47 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/08/04 21:27:32 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,29 @@ int	check_file(t_data *data, char *file)
 	i = 0;
 	while (file[i])
 	{
-		if (file[i] == 'N' && file[i + 1] == 'O')
+		if (file[i] == 'N' && file[i + 1] == 'O' && (!file[i - 1] || \
+		file[i - 1] == '\n' || file[i - 1] == '\t' || file[i - 1] == ' ') && \
+		(file[i + 2] == ' ' || file[i + 2] == '\t'))
 			no_detected(data, &file[i + 2]);
-		else if (file[i] == 'S' && file[i + 1] == 'O')
+		else if (file[i] == 'S' && file[i + 1] == 'O' && (!file[i - 1] || \
+		file[i - 1] == '\n' || file[i - 1] == '\t' || file[i - 1] == ' ') && \
+		(file[i + 2] == ' ' || file[i + 2] == '\t'))
 			so_detected(data, &file[i + 2]);
-		else if (file[i] == 'W' && file[i + 1] == 'E')
+		else if (file[i] == 'W' && file[i + 1] == 'E' && (!file[i - 1] || \
+		file[i - 1] == '\n' || file[i - 1] == '\t' || file[i - 1] == ' ') && \
+		(file[i + 2] == ' ' || file[i + 2] == '\t'))
 			we_detected(data, &file[i + 2]);
-		else if (file[i] == 'E' && file[i + 1] == 'A')
+		else if (file[i] == 'E' && file[i + 1] == 'A' && (!file[i - 1] || \
+		file[i - 1] == '\n' || file[i - 1] == '\t' || file[i - 1] == ' ') && \
+		(file[i + 2] == ' ' || file[i + 2] == '\t'))
 			ea_detected(data, &file[i + 2]);
-		else if (file[i] == 'F')
+		else if (file[i] == 'F' && (!file[i - 1] || file[i - 1] == '\n' || \
+		file[i - 1] == '\t' || file[i - 1] == ' ') && \
+		(file[i + 1] == ' ' || file[i + 1] == '\t'))
 			f_detected(data, &file[i + 1]);
-		else if (file[i] == 'C')
+		else if (file[i] == 'C' && (!file[i - 1] || file[i - 1] == '\n' || \
+		file[i - 1] == '\t' || file[i - 1] == ' ') && \
+		(file[i + 1] == ' ' || file[i + 1] == '\t'))
 			c_detected(data, &file[i + 1]);
 		if (data->no && data->so && data->we && data->ea && data->f && data->c)
 			break ;
@@ -65,7 +77,7 @@ int	check_file(t_data *data, char *file)
 	}
 	if (!data->no || !data->so || !data->we \
 	|| !data->ea || !data->f || !data->c)
-		error("Missing data in file");
+		error("Invalid/missing data");
 	return (i);
 }
 
@@ -112,20 +124,27 @@ void	full_free(t_data *data)
 {
 	int	i;
 
-	free(data->no);
-	free(data->so);
-	free(data->we);
-	free(data->ea);
+	if (data->no)
+		free(data->no);
+	if (data->so)
+		free(data->so);
+	if (data->we)
+		free(data->we);
+	if (data->ea)
+		free(data->ea);
 	i = 0;
 	while (data->f[i])
 		free(data->f[i++]);
-	free(data->f);
+	if (data->f)
+		free(data->f);
 	i = 0;
 	while (data->c[i])
 		free(data->c[i++]);
-	free(data->c);
+	if (data->c)
+		free(data->c);
 	i = 0;
 	while (data->map[i])
 		free(data->map[i++]);
-	free(data->map);
+	if (data->map)
+		free(data->map);
 }

@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 17:55:04 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/23 18:07:40 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/08/04 21:30:14 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,6 @@ void	copy_map(t_data *data, char *file)
 			error("Map not closed");
 		i++;
 	}
-	i--;
-	j = 0;
-	while (data->map[i][j])
-		if (data->map[i][j++] != '1')
-			error("Map not closed");
 }
 
 void	init_player(t_data *data, int x, int y)

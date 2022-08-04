@@ -6,7 +6,7 @@
 /*   By: lwyss <lwyss@student.42nice.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 02:43:20 by lwyss             #+#    #+#             */
-/*   Updated: 2022/07/23 18:06:49 by lwyss            ###   ########.fr       */
+/*   Updated: 2022/08/04 21:01:00 by lwyss            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,23 @@ void	check_map(t_data *data, char *file)
 	while (file[i])
 	{
 		check_incorrect_input(data, file[i]);
-		if (file[i] == '\n')
+		if (file[i] == '\n' || !file[i + 1])
 		{
+			if (file[i] != '\n' && !file[i + 1])
+			{
+				if (file[i] == '\t')
+					x += 4;
+				else
+					x++;
+			}
 			if (file[i + 1] && file[i + 1] == '\n' && file[i + 2])
 				error("Multiple empty lines in map");
 			if (x > data->max_map_x)
 				data->max_map_x = x;
 			x = 0;
-			if (!file[i + 1])
-				break ;
 			data->max_map_y++;
+			if (file[i] == '\n' && !file[i + 1])
+				data->max_map_y--;
 		}
 		else if (file[i] == '\t')
 			x += 4;
