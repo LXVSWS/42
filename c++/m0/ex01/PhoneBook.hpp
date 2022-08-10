@@ -6,11 +6,12 @@
 class PhoneBook
 {
 	int		number;
+	int		overlap;
 	Contact	contact[8];
 
 	public:
 		void AddingContact(Contact new_contact);
-		void GetContactsNumber();
+		void SearchingContacts();
 		PhoneBook();
 		~PhoneBook();
 };

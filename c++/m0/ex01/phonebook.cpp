@@ -1,92 +1,91 @@
 #include "PhoneBook.hpp"
-#include "Contact.hpp"
 #include <iostream>
+#include <iomanip>
 
-void PhoneBook::GetContactsNumber()
+PhoneBook::PhoneBook()
 {
-	std::cout << this->number << " contact(s) stored" << std::endl;
+	this->number = 0;
+	this->overlap = 0;
 }
 
 void PhoneBook::AddingContact(Contact new_contact)
 {
 	if (this->number <= 7)
+	{
 		this->contact[this->number] = new_contact;
+		this->number++;
+	}
 	else
 	{
-		this->number = 0;
-		this->contact[this->number] = new_contact;
+		if (this->overlap > 7)
+			this->overlap = 0;
+		this->contact[this->overlap] = new_contact;
+		this->overlap++;
 	}
-	this->number++;
-	std::cout << "Contact added to phonebook" << std::endl;
-	this->GetContactsNumber();
 }
 
-Contact::Contact(std::string fn, std::string ln, std::string n, std::string pn, std::string ds) : \
-first_name(fn), last_name(ln), nickname(n), phone_number(pn), darkest_secret(ds)
+void PhoneBook::SearchingContacts()
 {
-	std::cout << this->first_name << " " << this->last_name << " contact created" << std::endl;
-}
+	int i = 0;
+	std::string	resized;
 
-Contact adding()
-{
-	std::string s1;
-	std::string s2;
-	std::string s3;
-	std::string s4;
-	std::string s5;
-
-	std::cout << "Adding a new contact..." << std::endl;
-	std::cout << "First name : ";
-	std::cin >> s1;
-	std::cout << "Last name : ";
-	std::cin >> s2;
-	std::cout << "Nickname : ";
-	std::cin >> s3;
-	std::cout << "Phone number : ";
-	std::cin >> s4;
-	std::cout << "Darkest secret : ";
-	std::cin >> s5;
-	Contact contact(s1, s2, s3, s4, s5);
-	return (contact);
-}
-
-int	main()
-{
-	PhoneBook phonebook;
-	char cmd[1024];
-
-	while (1)
+	std::cout << "----------------------------\n" << this->number << " contact(s) stored" << std::endl;
+	if (this->number == 0)
+		return ;
+	std::cout << std::endl;
+	while (i < this->number)
 	{
-		std::cout << "----------------------------" << std::endl << "| Crappy Awesome Phonebook |" << \
-		std::endl << "----------------------------" << std::endl << "Enter command : ";
-		std::cin >> cmd;
-		if (cmd[0] == 'A' && cmd[1] == 'D' && cmd[2] == 'D' && !cmd[3])
-			phonebook.AddingContact(adding());
-		else if (cmd[0] == 'S' && cmd[1] == 'E' && cmd[2] == 'A' && cmd[3] == 'R' && cmd[4] == 'C' && cmd[5] == 'H' && !cmd[6])
-			phonebook.GetContactsNumber();
-		else if (cmd[0] == 'E' && cmd[1] == 'X' && cmd[2] == 'I' && cmd[3] == 'T' && !cmd[4])
-			break;
+		std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << i;
+		std::cout << " | ";
+		if (this->contact[i].first_name.size() > 10)
+		{
+			resized = this->contact[i].first_name;
+			resized.resize(10);
+			resized[9] = '.';
+			std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << resized;
+		}
+		else
+			std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << this->contact[i].first_name;
+		std::cout << " | ";
+		if (this->contact[i].last_name.size() > 10)
+		{
+			resized = this->contact[i].last_name;
+			resized.resize(10);
+			resized[9] = '.';
+			std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << resized;
+		}
+		else
+			std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << this->contact[i].last_name;
+		std::cout << " | ";
+		if (this->contact[i].nickname.size() > 10)
+		{
+			resized = this->contact[i].nickname;
+			resized.resize(10);
+			resized[9] = '.';
+			std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << resized << std::endl;
+		}
+		else
+			std::cout << std::setiosflags(std::ios::right) << std::setfill(' ') << std::setw(10) << this->contact[i].nickname << std::endl;
+		i++;
 	}
-	std::cout << "Good bye" << std::endl;
-	return (0);
-}
-
-PhoneBook::PhoneBook()
-{
-	this->number = 0;
+	i = 0;
+	std::cout << "\nEnter contact index : " ;
+	std::cin >> i;
+	if (std::cin.fail())
+	{
+		std::cin.clear();
+		std::cout << "Wrong index" << std::endl;
+		return ;
+	}
+	else if (i >= 0 && i <= this->number - 1)
+		std::cout << "----------------------------\nFirst name : " << this->contact[i].first_name << "\nLast name : " << \
+		this->contact[i].last_name << "\nNickname : " << this->contact[i].nickname << "\nPhone number : " << \
+		this->contact[i].phone_number << "\nDarkest secret : " << this->contact[i].darkest_secret << std::endl;
+	else
+		std::cout << "Index out or range" << std::endl;
 }
 
 PhoneBook::~PhoneBook()
-{
-	return ;
-}
-
-Contact::Contact()
-{
-	return ;
-}
-
-Contact::~Contact()
 {
 	return ;
 }

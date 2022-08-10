@@ -5,13 +5,8 @@
 
 class Contact
 {
-	std::string first_name;
-	std::string last_name;
-	std::string nickname;
-	std::string phone_number;
-	std::string darkest_secret;
-
 	public:
+		std::string first_name, last_name, nickname, phone_number, darkest_secret;
 		Contact(std::string fn, std::string ln, std::string n, std::string pn, std::string ds);
 		Contact();
 		~Contact();
