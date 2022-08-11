@@ -1,6 +1,4 @@
 #include "PhoneBook.hpp"
-#include <iostream>
-#include <iomanip>
 
 PhoneBook::PhoneBook()
 {
