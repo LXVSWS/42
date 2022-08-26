@@ -49,7 +49,7 @@ void Fixed::setRawBits(int const raw)
 
 int Fixed::toInt(void) const
 {
-	return (this->value);
+	return (roundf(this->value));
 }
 
 float Fixed::toFloat(void) const
