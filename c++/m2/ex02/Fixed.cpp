@@ -2,40 +2,32 @@
 
 Fixed::Fixed()
 {
-	std::cout << "Default constructor called" << std::endl;
 	this->value = 0;
 }
 
 Fixed::Fixed(const int val)
 {
-	std::cout << "Int constructor called" << std::endl;
 	this->value = val << bits;
 }
 
 Fixed::Fixed(const float val)
 {
-	std::cout << "Float constructor called" << std::endl;
 	this->value = (int)roundf(val * (1 << bits));
 }
 
 Fixed::Fixed(const Fixed &src)
 {
-	std::cout << "Copy constructor called" << std::endl;
 	*this = src;
 }
 
-Fixed &Fixed::operator=(const Fixed &src)
+Fixed &Fixed::operator=(const Fixed &right)
 {
-	std::cout << "Copy assignment operator called" << std::endl;
-	if (this != &src)
-		this->value = src.getRawBits();
+	if (this != &right)
+		this->value = right.getRawBits();
 	return (*this);
 }
 
-Fixed::~Fixed()
-{
-	std::cout << "Destructor called" << std::endl;
-}
+Fixed::~Fixed() {}
 
 int	Fixed::getRawBits() const
 {
@@ -61,4 +53,134 @@ std::ostream &operator<<(std::ostream &dst, const Fixed &src)
 {
 	dst << src.toFloat();
 	return (dst);
+}
+
+bool Fixed::operator>(Fixed &right)
+{
+	if (this->value > right.value)
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator<(Fixed &right)
+{
+	if (this->value < right.value)
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator>=(Fixed &right)
+{
+	if (this->value >= right.value)
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator<=(Fixed &right)
+{
+	if (this->value <= right.value)
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator==(Fixed &right)
+{
+	if (this->value == right.value)
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator!=(Fixed &right)
+{
+	if (this->value != right.value)
+		return (true);
+	return (false);
+}
+
+Fixed Fixed::operator+(Fixed right)
+{
+	Fixed tmp;
+	tmp.value = this->value + right.value;
+	return (tmp);
+}
+
+Fixed Fixed::operator-(Fixed right)
+{
+	Fixed tmp;
+	tmp.value = this->value - right.value;
+	return (tmp);
+}
+
+Fixed Fixed::operator*(Fixed right)
+{
+	Fixed tmp;
+	tmp.value = this->value * right.value / (1 << bits);
+	return (tmp);
+}
+
+Fixed Fixed::operator/(Fixed right)
+{
+	Fixed tmp;
+	tmp.value = this->value * (1 << bits) / right.value;
+	return (tmp);
+}
+
+Fixed &Fixed::operator++()
+{
+	this->value++;
+	return (*this);
+}
+
+Fixed Fixed::operator++(int)
+{
+	Fixed tmp = *this;
+	++*this;
+	return (tmp);
+}
+
+Fixed &Fixed::operator--()
+{
+	this->value--;
+	return (*this);
+}
+
+Fixed Fixed::operator--(int)
+{
+	Fixed tmp = *this;
+	--*this;
+	return (tmp);
+}
+
+Fixed &Fixed::min(Fixed &first, Fixed &second)
+{
+	if (first.value < second.value)
+		return (first);
+	return (second);
+}
+
+Fixed Fixed::min(const Fixed &first, const Fixed &second)
+{
+	Fixed tmp;
+	if (first.value < second.value)
+		tmp.value = first.value;
+	else
+		tmp.value = second.value;
+	return (tmp);
+}
+
+Fixed &Fixed::max(Fixed &first, Fixed &second)
+{
+	if (first.value > second.value)
+		return (first);
+	return (second);
+}
+
+Fixed Fixed::max(const Fixed &first, const Fixed &second)
+{
+	Fixed tmp;
+	if (first.value > second.value)
+		tmp.value = first.value;
+	else
+		tmp.value = second.value;
+	return (tmp);
 }
