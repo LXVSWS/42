@@ -1,13 +1,9 @@
-#include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 
 int main()
 {
-	ClapTrap ct("david");
-	for (int i = 0 ; i < 6 ; i++)
-	{
-		ct.attack("goliath");
-		ct.beRepaired(2);
-	}
-	ct.takeDamage(42);
+	ScavTrap scav("cerberus");
+	scav.attack("achilles");
+	scav.guardGate();
 	return (0);
 }

@@ -1,6 +1,6 @@
-NAME	= scavtrap
+NAME	= fragtrap
 
-SRCS	= main.cpp ClapTrap.cpp ScavTrap.cpp
+SRCS	= main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp
 
 CC		= c++
 RM		= rm -f
