@@ -10,7 +10,7 @@ class Animal
 	public:
 		Animal();
 		Animal(const Animal& src);
-		Animal& operator=(const Animal& right);
+		virtual Animal& operator=(const Animal& right);
 		virtual ~Animal();
 
 		virtual void makeSound() const;
