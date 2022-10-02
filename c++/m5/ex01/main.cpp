@@ -1,15 +1,11 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 int	main()
 {
 	try
 	{
-		Bureaucrat bc(10);
-		std::cout << bc;
-		bc.increment();
-		std::cout << bc;
-		bc.decrement();
-		std::cout << bc;
+		Form();
 	}
 	catch(const std::exception &e)
 	{
