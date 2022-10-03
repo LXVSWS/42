@@ -6,8 +6,7 @@ int	main()
 	try
 	{
 		Bureaucrat bc(50);
-		Form form(50, 150);
-		std::cout << form;
+		std::cout << bc;
 	}
 	catch(const std::exception &e)
 	{
