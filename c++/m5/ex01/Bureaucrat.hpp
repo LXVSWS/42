@@ -22,7 +22,7 @@ class Bureaucrat
 		int getGrade() const;
 		void increment();
 		void decrement();
-		void signForm(const Form &form);
+		void signForm(const Form &form) const;
 };
 
 class Error : public std::exception

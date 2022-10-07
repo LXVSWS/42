@@ -2,7 +2,7 @@
 
 Form::Form() : name("Formulaire"), signature(false), grade_sign(150), grade_exec(150) {}
 
-Form::Form(int param1, int param2) : name("Formulaire"), signature(false), grade_sign(param1), grade_exec(param2)
+Form::Form(std::string param, int param1, int param2) : name(param), signature(false), grade_sign(param1), grade_exec(param2)
 {
 	if (param1 < 1 || param2 < 1)
 		throw Error("Form::GradeTooHighException");

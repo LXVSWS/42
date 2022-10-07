@@ -52,7 +52,7 @@ void Bureaucrat::decrement()
 		throw Error("Bureaucrat::GradeTooLowException");
 }
 
-void Bureaucrat::signForm(const Form &form)
+void Bureaucrat::signForm(const Form &form) const
 {
 	if (form.getSignature())
 		std::cout << this->getName() << " signed " << form.getName() << std::endl;

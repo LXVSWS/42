@@ -8,7 +8,6 @@ int	main()
 		Bureaucrat bc(50);
 		Form form(50, 150);
 		form.beSigned(bc);
-		bc.signForm(form);
 		std::cout << form;
 	}
 	catch(const std::exception &e)

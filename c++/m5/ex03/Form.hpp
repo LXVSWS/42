@@ -14,10 +14,10 @@ class Form
 
 	public:
 		Form();
-		Form(int, int);
+		Form(std::string param, int, int);
 		Form(const Form& src);
 		Form& operator=(const Form& right);
-		~Form();
+		virtual ~Form();
 
 		std::string getName() const;
 		bool getSignature() const;
