@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-int float_detected(char *param);
+int double_detected(char *param);
 int int_detected(char *param);
 void print_values(char data);
 int overflow(void);
