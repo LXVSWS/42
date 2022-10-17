@@ -1,5 +1,5 @@
-#ifndef INCLUDES_HPP
-#define INCLUDES_HPP
+#ifndef DATA_HPP
+#define DATA_HPP
 
 #include <iostream>
 

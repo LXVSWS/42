@@ -1,6 +1,6 @@
-NAME	= identify
+NAME	= templates
 
-SRCS	= main.cpp Base.cpp
+SRCS	= main.cpp
 
 CC		= c++
 RM		= rm -f
