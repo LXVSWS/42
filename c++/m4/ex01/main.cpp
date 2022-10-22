@@ -4,10 +4,13 @@
 
 int main()
 {
-	Animal *tab[4];
 	const Animal* j = new Dog();
 	const Animal* i = new Cat();
 
+	delete j;
+	delete i;
+
+	Animal *tab[4];
 	for (int i = 0 ; i < 4 ; i++)
 	{
 		if (i < 2)
@@ -18,8 +21,17 @@ int main()
 	for (int i = 0 ; i < 4 ; i++)
 		delete tab[i];
 
-	delete j;
-	delete i;
+	Cat a;
+	Cat b;
+	a = b;
+	Cat c;
+	Cat d(c);
+
+	Dog e;
+	Dog f;
+	e = f;
+	Dog g;
+	Dog h(g);
 
 	return (0);
 }
