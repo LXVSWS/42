@@ -1,6 +1,6 @@
 NAME	= forms
 
-SRCS	= main.cpp Bureaucrat.cpp Form.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp
+SRCS	= main.cpp Bureaucrat.cpp Error.cpp Form.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp
 
 CC		= c++
 RM		= rm -f

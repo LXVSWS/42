@@ -21,16 +21,6 @@ class Bureaucrat
 		void decrement();
 };
 
-class Error : public std::exception
-{
-	std::string message;
-
-	public:
-		Error(std::string);
-		~Error() throw();
-		const char *what() const throw();
-};
-
 std::ostream &operator<<(std::ostream &dst, const Bureaucrat &src);
 
 #endif

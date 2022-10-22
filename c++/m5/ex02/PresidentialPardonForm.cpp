@@ -1,4 +1,5 @@
 #include "PresidentialPardonForm.hpp"
+#include "Error.hpp"
 
 PresidentialPardonForm::PresidentialPardonForm() : Form(25, 5), target("default") {}
 

@@ -1,4 +1,5 @@
 #include "ShrubberyCreationForm.hpp"
+#include "Error.hpp"
 
 ShrubberyCreationForm::ShrubberyCreationForm() : Form("shrubbery creation", 145, 137), target("default") {}
 

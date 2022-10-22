@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+#include "Error.hpp"
 
 Bureaucrat::Bureaucrat() : name("Varg"), grade(150) {}
 
@@ -63,15 +64,6 @@ void Bureaucrat::signForm(const Form &form) const
 		else if (this->grade < 1)
 			std::cout << this->getName() << " couldn’t sign " << form.getName() << " because grade is too high" << std::endl;
 	}
-}
-
-Error::Error(std::string param) : message(param) {}
-
-Error::~Error() throw() {}
-
-const char *Error::what() const throw()
-{
-	return (this->message.c_str());
 }
 
 std::ostream &operator<<(std::ostream &dst, const Bureaucrat &src)

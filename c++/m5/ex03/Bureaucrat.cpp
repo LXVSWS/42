@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+#include "Error.hpp"
 
 Bureaucrat::Bureaucrat() : name("Varg"), grade(150) {}
 
@@ -69,15 +70,6 @@ void Bureaucrat::executeForm(Form const & form)
 {
 	form.execute(*this);
 	std::cout << this->getName() << " executed " << form.getName() << std::endl;
-}
-
-Error::Error(std::string param) : message(param) {}
-
-Error::~Error() throw() {}
-
-const char *Error::what() const throw()
-{
-	return (this->message.c_str());
 }
 
 std::ostream &operator<<(std::ostream &dst, const Bureaucrat &src)

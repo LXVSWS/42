@@ -1,4 +1,5 @@
 #include "RobotomyRequestForm.hpp"
+#include "Error.hpp"
 
 RobotomyRequestForm::RobotomyRequestForm() : Form("robotomy request", 72, 45), target("default") {}
 
