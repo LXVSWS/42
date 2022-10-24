@@ -5,7 +5,7 @@ int	main()
 {
 	try
 	{
-		Bureaucrat bc(50);
+		Bureaucrat bc("Varg", 10);
 		Form form(50, 150);
 		form.beSigned(bc);
 		std::cout << form;

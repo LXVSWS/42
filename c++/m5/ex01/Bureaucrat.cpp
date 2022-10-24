@@ -3,7 +3,7 @@
 
 Bureaucrat::Bureaucrat() : name("Varg"), grade(150) {}
 
-Bureaucrat::Bureaucrat(int param) : name("Varg")
+Bureaucrat::Bureaucrat(std::string p, int param) : name(p)
 {
 	if (param < 1)
 		throw Error("Bureaucrat::GradeTooHighException");
@@ -13,7 +13,7 @@ Bureaucrat::Bureaucrat(int param) : name("Varg")
 		this->grade = param;
 }
 
-Bureaucrat::Bureaucrat(const Bureaucrat& src)
+Bureaucrat::Bureaucrat(const Bureaucrat& src) : name(src.name)
 {
 	*this = src;
 }

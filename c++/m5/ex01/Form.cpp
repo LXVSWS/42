@@ -11,7 +11,7 @@ Form::Form(int param1, int param2) : name("Formulaire"), signature(false), grade
 		throw Error("Form::GradeTooLowException");
 }
 
-Form::Form(const Form& src) : grade_sign(src.grade_sign), grade_exec(src.grade_sign)
+Form::Form(const Form& src) : name(src.name), grade_sign(src.grade_sign), grade_exec(src.grade_exec)
 {
 	*this = src;
 }

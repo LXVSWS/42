@@ -8,7 +8,7 @@ int	main()
 {
 	try
 	{
-		Bureaucrat bc(1);
+		Bureaucrat bc("Varg", 1);
 		//ShrubberyCreationForm test("jardin");
 		//RobotomyRequestForm test("cobaye");
 		PresidentialPardonForm test("criminal");
