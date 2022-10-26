@@ -6,7 +6,7 @@
 class Base
 {
 	public:
-		virtual ~Base() = 0;
+		virtual ~Base();
 };
 
 class A : public Base {};

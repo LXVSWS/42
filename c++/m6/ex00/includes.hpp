@@ -3,9 +3,12 @@
 
 #include <iostream>
 
+void check_char(char data);
 int double_detected(char *param);
+int float_detected(char *param);
 int int_detected(char *param);
 void print_values(char data);
+int special_values(std::string val);
 int overflow(void);
 
 #endif

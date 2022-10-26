@@ -1,18 +1,33 @@
 #include "Base.hpp"
 
-Base *generate(void)
+Base *generate(void) // implement random
 {
-	C *c = new C;
-	return (dynamic_cast<Base *>(c));
+	return (new C);
 }
 
 void identify(Base *p)
 {
-	std::cout << dynamic_cast<C *>(p) << std::endl;
+	if (dynamic_cast<A *>(p))
+		std::cout << "A detected" << std::endl;
+	else if (dynamic_cast<B *>(p))
+		std::cout << "B detected" << std::endl;
+	else if (dynamic_cast<C *>(p))
+		std::cout << "C detected" << std::endl;
+	else
+		std::cout << "Error" << std::endl;
+}
+
+void identify(Base& p)
+{
+	(void)p;
+	std::cout << "Fix me" << std::endl;
 }
 
 int main()
 {
-	identify(generate());
+	Base *ptr = generate();
+	std::cout << "Identify pointer: " << std::endl;
+	identify(ptr);
+	std::cout << "Identify reference: " << std::endl;
 	return (0);
 }

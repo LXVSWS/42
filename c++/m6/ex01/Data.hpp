@@ -6,7 +6,10 @@
 struct Data
 {
 	char v1;
-	int v2;
+	char v2;
+
+	Data();
+	~Data();
 };
 
 #endif

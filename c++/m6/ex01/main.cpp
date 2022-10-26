@@ -13,8 +13,8 @@ Data* deserialize(uintptr_t raw)
 int main()
 {
 	Data data;
-	std::cout << &data << std::endl;
-	std::cout << serialize(&data) << std::endl;
-	std::cout << deserialize(serialize(&data)) << std::endl;
+	std::cout << "Pointeur d'origine :" << &data << std::endl;
+	std::cout << "Adresse serialized: " << serialize(&data) << std::endl;
+	std::cout << "Retour deserialize: " << deserialize(serialize(&data)) << std::endl;
 	return (0);
 }

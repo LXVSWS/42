@@ -1,6 +1,6 @@
 NAME	= serialization
 
-SRCS	= main.cpp
+SRCS	= main.cpp Data.cpp
 
 CC		= c++
 RM		= rm -f
