@@ -38,8 +38,11 @@ int int_detected(char *param)
 	int data = std::atoi(param);
 	check_char(data);
 	std::cout << "int: " << data << std::endl;
-	std::cout << std::fixed << "float: " << static_cast<float>(data) << "f" << std::endl;
-	std::cout << std::fixed << "double: " << static_cast<double>(data) << std::endl;
+	if (data < -16777216 || data > 16777216)
+		std::cout << "float: impossible" << std::endl;
+	else
+		std::cout << std::fixed << std::setprecision(1) << "float: " << static_cast<float>(data) << "f" << std::endl;
+	std::cout << std::fixed << std::setprecision(1) << "double: " << static_cast<double>(data) << std::endl;
 	return (0);
 }
 

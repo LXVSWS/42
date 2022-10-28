@@ -2,6 +2,7 @@
 #define INCLUDES_HPP
 
 #include <iostream>
+#include <iomanip>
 
 void check_char(char data);
 int double_detected(char *param);
