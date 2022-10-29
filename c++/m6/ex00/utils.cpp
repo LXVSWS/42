@@ -18,24 +18,26 @@ int double_detected(char *param)
 		std::cout << "int: impossible" << std::endl;
 	else
 		std::cout << "int: " << static_cast<int>(data) << std::endl;
-	if (data < -340282346638528859811704183484516925440. || data > 340282346638528859811704183484516925440.)
+	if (data <= (std::numeric_limits<float>::max() * -1) || data >= std::numeric_limits<float>::max())
 		std::cout << "float: impossible" << std::endl;
 	else
 	{
 		double test;
 		if (std::modf(data, &test))
-		{
-			std::cout << "float: " << static_cast<float>(data) << "f" << std::endl;
-			std::cout << "double: " << data << std::endl;
-		}
+			std::cout << std::fixed << "float: " << static_cast<float>(data) << "f" << std::endl;
 		else
-		{
-			std::cout << "float: " << static_cast<float>(data) << ".0f" << std::endl;
-			std::cout << "double: " << data << ".0" << std::endl;
-		}
+			std::cout << std::fixed << std::setprecision(1) << "float: " << static_cast<float>(data) << "f" << std::endl;
 	}
-	std::cout << std::fixed << (std::numeric_limits<double>::max() * -1) << "\n" << std::endl;
-	std::cout << std::fixed << std::numeric_limits<double>::max() << std::endl;
+	if (data <= (std::numeric_limits<double>::max() * -1) || data >= std::numeric_limits<double>::max())
+		std::cout << "double: impossible" << std::endl;
+	else
+	{
+		double test2;
+		if (std::modf(data, &test2))
+			std::cout << std::fixed << "double: " << data << std::endl;
+		else
+			std::cout << std::fixed << std::setprecision(1) << "double: " << data << std::endl;
+	}
 	return (0);
 }
 
@@ -47,19 +49,21 @@ int float_detected(char *param)
 		std::cout << "int: impossible" << std::endl;
 	else
 		std::cout << "int: " << static_cast<int>(data) << std::endl;
+	if (data <= (std::numeric_limits<float>::max() * -1) || data >= std::numeric_limits<float>::max())
+	{
+		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" << std::endl;
+		return (0);
+	}
 	float test;
 	if (std::modf(data, &test))
 	{
-		std::cout << "float: " << data << "f" << std::endl;
-		std::cout << "double: " << static_cast<double>(data) << std::endl;
+		std::cout << std::fixed << "float: " << data << "f" << std::endl;
+		std::cout << std::fixed << "double: " << static_cast<double>(data) << std::endl;
+		return (0);
 	}
-	else
-	{
-		std::cout << "float: " << data << ".0f" << std::endl;
-		std::cout << "double: " << static_cast<double>(data) << ".0f" << std::endl;
-	}
-	std::cout << std::fixed << (std::numeric_limits<float>::max() * -1) << "\n" << std::endl;
-	std::cout << std::fixed << std::numeric_limits<float>::max() << std::endl;
+	std::cout << std::fixed << std::setprecision(1) << "float: " << data << "f" << std::endl;
+	std::cout << std::fixed << std::setprecision(1) << "double: " << static_cast<double>(data) << std::endl;
 	return (0);
 }
 
@@ -82,8 +86,8 @@ int int_detected(char *param)
 void print_values(char data)
 {
 	std::cout << "int: " << static_cast<int>(data) << std::endl;
-	std::cout << std::fixed << "float: " << static_cast<float>(data) << "f" << std::endl;
-	std::cout << std::fixed << "double: " << static_cast<double>(data) << std::endl;
+	std::cout << std::fixed << std::setprecision(1) << "float: " << static_cast<float>(data) << "f" << std::endl;
+	std::cout << std::fixed << std::setprecision(1) << "double: " << static_cast<double>(data) << std::endl;
 }
 
 int special_values(std::string val)
