@@ -2,6 +2,7 @@
 #define BASE_HPP
 
 #include <iostream>
+#include <random>
 
 class Base
 {
