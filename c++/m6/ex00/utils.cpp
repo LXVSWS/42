@@ -43,27 +43,30 @@ int double_detected(char *param)
 
 int float_detected(char *param)
 {
-	float data = std::atof(param);
+	double data = std::atof(param);
 	check_char(static_cast<int>(data));
-	if (data <= -16777216 || data >= 16777216)
+	if (data < -2147483648 || data > 2147483647)
 		std::cout << "int: impossible" << std::endl;
 	else
 		std::cout << "int: " << static_cast<int>(data) << std::endl;
-	if (data <= (std::numeric_limits<float>::max() * -1) || data >= std::numeric_limits<float>::max())
+	if (data < (std::numeric_limits<float>::max() * -1) || data > std::numeric_limits<float>::max())
 	{
 		std::cout << "float: impossible" << std::endl;
 		std::cout << "double: impossible" << std::endl;
 		return (0);
 	}
+	float dat = data;
 	float test;
-	if (std::modf(data, &test))
-	{
-		std::cout << std::fixed << "float: " << data << "f" << std::endl;
+	if (std::modf(dat, &test))
+		std::cout << std::fixed << "float: " << dat << "f" << std::endl;
+	else
+		std::cout << std::fixed << std::setprecision(1) << "float: " << dat << "f" << std::endl;
+	double tes;
+	if (std::modf(data, &tes))
 		std::cout << std::fixed << "double: " << static_cast<double>(data) << std::endl;
-		return (0);
-	}
-	std::cout << std::fixed << std::setprecision(1) << "float: " << data << "f" << std::endl;
-	std::cout << std::fixed << std::setprecision(1) << "double: " << static_cast<double>(data) << std::endl;
+	else
+		std::cout << std::fixed << std::setprecision(1) << "double: " << static_cast<double>(data) << std::endl;
+	std::cout << "Maximum value for flaot: " << std::numeric_limits<float>::max() << '\n';
 	return (0);
 }
 

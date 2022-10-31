@@ -14,12 +14,12 @@ int main(int ac, char **av)
 					flag = 1;
 				else if ((av[1][i] < 48 || av[1][i] > 57) || (av[1][i] == 46 && flag))
 				{
-					if (av[1][i] == 'f' && !av[1][i + 1] && flag)
+					if ((av[1][i] == 'f' || av[1][i] == 'F') && !av[1][i + 1] && flag)
 					{
 						flag = 2;
 						continue;
 					}
-					std::cerr << "Incorrect character(s)" << std::endl;
+					std::cerr << "Error" << std::endl;
 					return (-1);
 				}
 			}
@@ -35,7 +35,7 @@ int main(int ac, char **av)
 			if (input == "-inff" || input == "+inff" || input == "nanf" || \
 			input == "-inf" || input == "+inf" || input == "nan")
 				return (special_values(input));
-			std::cerr << "Incorrect character(s)" << std::endl;
+			std::cerr << "Error" << std::endl;
 			return (-1);
 		}
 		else if ((*av[1] >= 32 && *av[1] <= 47) || (*av[1] > 57 && *av[1] < 127))
