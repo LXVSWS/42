@@ -1,4 +1,4 @@
-NAME	= templates
+NAME	= basic
 
 SRCS	= main.cpp
 
