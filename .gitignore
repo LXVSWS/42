@@ -4,9 +4,9 @@
 a.out
 */a.out
 */*/a.out
-a.out.dSYM
-*/a.out.dSYM
-*/*/a.out.dSYM
+*.dSYM
+*/*.dSYM
+*/*/*.dSYM
 mlx
 */mlx
 */*/mlx
