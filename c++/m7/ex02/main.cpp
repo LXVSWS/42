@@ -2,10 +2,10 @@
 
 int main()
 {
-	Array<int> test;
+	Array<int> test(1);
 	try
 	{
-		std::cout << test[1] << std::endl;
+		std::cout << test[0] << test[1] << std::endl;
 	}
 	catch(const std::exception& e)
 	{

@@ -7,46 +7,43 @@ template<typename T>
 class Array
 {
 	T *array;
+	unsigned int size;
 
 	public:
 		Array()
 		{
 			this->array = new T[0];
+			this->size = 0;
 		}
 		Array(unsigned int n)
 		{
 			this->array = new T[n];
 			for (unsigned int i = 0 ; i < n ; i++)
 				this->array[i] = 0;
+			this->size = n;
 		}
 		Array(const Array &src)
 		{
-			unsigned int size = 0;
-			if (src.array)
-				while (src.array[size])
-					size++;
-			this->array = new T[size];
-			for (unsigned int i = 0 ; i < size ; i++)
+			this->array = new T[src.size];
+			for (unsigned int i = 0 ; i < src.size ; i++)
 				this->array[i] = src.array[i];
+			this->size = src.size;
 		}
 		Array & operator=(const Array &src)
 		{
 			if (this != &src)
 			{
 				delete[] this->array;
-				unsigned int size = 0;
-				if (src.array)
-					while (src.array[size])
-						size++;
-				this->array = new T[size];
-				for (unsigned int i = 0 ; i < size ; i++)
+				this->array = new T[src.size];
+				for (unsigned int i = 0 ; i < src.size ; i++)
 					this->array[i] = src.array[i];
+				this->size = src.size;
 			}
 			return (*this);
 		}
 		T & operator[](unsigned int i)
 		{
-			if (!this->array[i])
+			if (!this->size || i > this->size - 1)
 				throw std::exception();
 			else
 				return (this->array[i]);
