@@ -46,16 +46,10 @@ class Array
 		}
 		T & operator[](unsigned int i)
 		{
-			try
-			{
-				if (!this->array[i])
-					throw std::exception();
-			}
-			catch(const std::exception& e)
-			{
-				std::cerr << "Array::InvalidIndexException" << std::endl;
-			}
-			return (this->array[i]);
+			if (!this->array[i])
+				throw std::exception();
+			else
+				return (this->array[i]);
 		}
 		~Array()
 		{
