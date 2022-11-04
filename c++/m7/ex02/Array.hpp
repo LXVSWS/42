@@ -11,7 +11,7 @@ class Array
 	public:
 		Array()
 		{
-			this->array = NULL;
+			this->array = new T[0];
 		}
 		Array(unsigned int n)
 		{
@@ -33,10 +33,7 @@ class Array
 		{
 			if (this != &src)
 			{
-				if (this->array && !this->array[1])
-					delete this->array;
-				else if (this->array && this->array[1])
-					delete[] this->array;
+				delete[] this->array;
 				unsigned int size = 0;
 				if (src.array)
 					while (src.array[size])
@@ -49,14 +46,20 @@ class Array
 		}
 		T & operator[](unsigned int i)
 		{
+			try
+			{
+				if (!this->array[i])
+					throw std::exception();
+			}
+			catch(const std::exception& e)
+			{
+				std::cerr << "Array::InvalidIndexException" << std::endl;
+			}
 			return (this->array[i]);
 		}
 		~Array()
 		{
-			if (this->array && !this->array[1])
-				delete this->array;
-			else if (this->array && this->array[1])
-				delete[] this->array;
+			delete[] this->array;
 		}
 };
 

@@ -3,9 +3,13 @@
 int main()
 {
 	Array<int> test;
-	Array<int> test2(42);
-	Array<int> test3(test);
-	test3 = test2;
-	std::cout << test3[0] << std::endl;
+	try
+	{
+		std::cout << test[1] << std::endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "Array::InvalidIndexException" << std::endl;
+	}
 	return (0);
 }
