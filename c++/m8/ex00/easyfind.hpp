@@ -2,12 +2,15 @@
 #define EASYFIND_HPP
 
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 template<typename T>
-int easyfind(T cont, int val)
+int easyfind(T container, int integer)
 {
-	(void)cont;
-	return (val);
+	if (find(container.begin(), container.end(), integer) != container.end())
+		return (integer);
+	throw (integer);
 }
 
 #endif
