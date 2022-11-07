@@ -4,6 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <list>
+#include <deque>
 
 template<typename T>
 int easyfind(T container, int integer)
