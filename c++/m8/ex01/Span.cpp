@@ -50,3 +50,18 @@ unsigned int Span::longestSpan(void)
 	else
 		throw std::string("Span::NotEnoughNumbersException");
 }
+
+void Span::addMultipleNumbers(int *nums, unsigned int size)
+{
+	if (this->vector.size() + size <= this->N)
+		this->vector.insert(this->vector.end(), nums, nums + size);
+	else
+		throw std::string("Span::OverrideMaximumNumbersException");
+}
+
+void Span::getNumbers()
+{
+	for (std::vector<int>::iterator it = this->vector.begin() ; it != this->vector.end() ; ++it)
+		std::cout << *it << " - ";
+	std::cout << std::endl;
+}

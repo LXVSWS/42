@@ -2,7 +2,7 @@
 
 int main()
 {
-	Span span(5);
+	Span span(10);
 	Span span2(100000);
 	try
 	{
@@ -11,9 +11,9 @@ int main()
 		span.addNumber(17);
 		span.addNumber(9);
 		span.addNumber(11);
-		std::cout << "Test with 5 numbers:" << std::endl;
-		std::cout << span.shortestSpan() << std::endl;
-		std::cout << span.longestSpan() << std::endl;
+		std::cout << "Test with 5 numbers and printing span:" << std::endl;
+		std::cout << "shortestSpan: " << span.shortestSpan() << std::endl;
+		std::cout << "longestSpan: " << span.longestSpan() << std::endl;
 	}
 	catch(std::string & e)
 	{
@@ -21,11 +21,26 @@ int main()
 	}
 	try
 	{
+		std::cout << "\nTest with 100000 numbers:" << std::endl;
 		for (unsigned int i = 0 ; i < 100000 ; i++)
 			span2.addNumber(i);
-		std::cout << "Test with 100000 numbers:" << std::endl;
-		std::cout << span2.shortestSpan() << std::endl;
-		std::cout << span2.longestSpan() << std::endl;
+		std::cout << "Test successful" << std::endl;
+	}
+	catch(std::string & e)
+	{
+		std::cout << e << std::endl;
+	}
+	try
+	{
+		unsigned int size = 5;
+		int numbers[size];
+		for (unsigned int i = 0 ; i < size ; i++)
+			numbers[i] = i;
+		std::cout << "\nTest adding multiple numbers into one call:\nNumbers before calling function:" << std::endl;
+		span.getNumbers();
+		span.addMultipleNumbers(numbers, size);
+		std::cout << "Numbers after calling function:" << std::endl;
+		span.getNumbers();
 	}
 	catch(std::string & e)
 	{
