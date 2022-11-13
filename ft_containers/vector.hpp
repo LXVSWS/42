@@ -6,17 +6,17 @@
 
 namespace ft
 {
-	template<typename T>
+	template< typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
 		public:
 			vector()
 			{
-				std::cout << "vector container constructor" << std::endl;
+				std::cout << "vector constructor" << std::endl;
 			}
 			~vector()
 			{
-				std::cout << "vector container destructor" << std::endl;
+				std::cout << "vector destructor" << std::endl;
 			}
 	};
 }
