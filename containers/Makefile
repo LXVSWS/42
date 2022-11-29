@@ -1,4 +1,4 @@
-NAME	= ft_containers
+NAME	= containers
 
 SRCS	= main.cpp
 
