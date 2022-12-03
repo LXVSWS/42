@@ -10,15 +10,14 @@ namespace ft
 	class vector
 	{
 		public:
-
-			struct Iterator : public iterator<random_access_iterator_tag, T>
+			class Iterator : public ft::iterator<random_access_iterator_tag, T>
 			{
-				T *ptr;
-				friend std::ostream &operator<<(std::ostream& dst, const Iterator& src)
-				{
-					dst << src.ptr;
-					return (dst);
-				}
+				T *data;
+
+				public:
+					Iterator(T *data) : data(data) {}
+					T& operator*() { return (*data); }
+					T& operator=(T& src) { data = src.data; }
 			};
 
 			typedef T value_type;
@@ -28,7 +27,6 @@ namespace ft
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef Iterator iterator;
-			typedef reverse_iterator<iterator> reverse_iterator;
 			typedef ptrdiff_t difference_type;
 			typedef size_t size_type;
 
@@ -37,8 +35,8 @@ namespace ft
 				allocator = alloc;
 				data = allocator.allocate(1);
 				original_capacity = 1;
-				capacity = 1;
-				size = 0;
+				_capacity = 1;
+				_size = 0;
 			}
 			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			{
@@ -47,29 +45,29 @@ namespace ft
 				{
 					data = allocator.allocate(n);
 					original_capacity = n;
-					capacity = n;
+					_capacity = n;
 					for (size_t i = 0 ; i < n ; i++)
 						data[i] = val;
-					size = n;
+					_size = n;
 				}
 				else
 				{
 					data = allocator.allocate(1);
 					original_capacity = 1;
-					capacity = 1;
+					_capacity = 1;
 					*data = val;
-					size = 0;
+					_size = 0;
 				}
 			}
 			vector(const vector& src)
 			{
 				allocator = src.allocator;
-				data = allocator.allocate(src.capacity);
-				original_capacity = src.capacity;
-				capacity = src.capacity;
-				for (size_t i = 0 ; i < src.size ; i++)
+				data = allocator.allocate(src._capacity);
+				original_capacity = src._capacity;
+				_capacity = src._capacity;
+				for (size_t i = 0 ; i < src._size ; i++)
 					data[i] = (src.data)[i];
-				size = src.size;
+				_size = src._size;
 			}
 			~vector()
 			{
@@ -77,25 +75,44 @@ namespace ft
 			}
 			iterator begin()
 			{
-				iterator i;
-				i.ptr = data;
+				iterator i(data);
 				return (i);
+			}
+			iterator end()
+			{
+				iterator i(&data[_size]);
+				return (i);
+			}
+			size_type size() const
+			{
+				return (_size);
+			}
+			size_type capacity() const
+			{
+				return (_capacity);
 			}
 			void reserve(size_type n)
 			{
-				if (n > capacity)
+				if (n > _capacity)
 				{
 					data = allocator.allocate(n);
-					capacity = n;
+					_capacity = n;
 				}
+			}
+			void push_back(const value_type& val)
+			{
+				if (_size == _capacity)
+					reserve(_capacity * 2);
+				data[_size] = val;
+				_size++;
 			}
 
 		private:
+			T *data;
 			Alloc allocator;
-			value_type *data;
 			size_t original_capacity;
-			size_t capacity;
-			size_t size;
+			size_t _capacity;
+			size_t _size;
 	};
 }
 
