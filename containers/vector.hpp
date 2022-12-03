@@ -12,12 +12,16 @@ namespace ft
 		public:
 			class Iterator : public ft::iterator<random_access_iterator_tag, T>
 			{
-				T *data;
+				T *ptr;
 
 				public:
-					Iterator(T *data) : data(data) {}
-					T& operator*() { return (*data); }
-					T& operator=(const T& src) { data = src.data; }
+					Iterator(T *data) : ptr(data) {}
+					Iterator(const Iterator& src) : ptr(src.ptr) {}
+					T& operator*() { return (*ptr); }
+					Iterator& operator++() { ++ptr; return (*this); }
+					Iterator operator++(T) { Iterator tmp(*this); ++ptr; return (tmp); }
+  					bool operator==(const Iterator& src) const { return ptr == src.ptr; }
+  					bool operator!=(const Iterator& src) const { return ptr != src.ptr; }
 			};
 
 			typedef T value_type;
@@ -31,12 +35,12 @@ namespace ft
 			typedef size_t size_type;
 
 			explicit vector(const allocator_type& alloc = allocator_type()) \
-			: allocator(alloc), original_capacity(1), _capacity(1), _size(0)
+			: allocator(alloc), _capacity(1), _size(0)
 			{
 				data = allocator.allocate(1);
 			}
 			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) \
-			: allocator(alloc), original_capacity(n > 0 ? n : 1), _capacity(n > 0 ? n : 1), _size(n)
+			: allocator(alloc), _capacity(n > 0 ? n : 1), _size(n)
 			{
 				if (n)
 				{
@@ -51,22 +55,22 @@ namespace ft
 				}
 			}
 			vector(Iterator first, Iterator last, const allocator_type& alloc = allocator_type()) \
-			: allocator(alloc), original_capacity(1), _capacity(1), _size(0)
+			: allocator(alloc), _capacity(1), _size(0)
 			{
 				data = allocator.allocate(1);
 				(void)first;
 				(void)last;
 			}
 			vector(const vector& src) \
-			: original_capacity(src._capacity), _capacity(src._capacity), _size(src._size)
+			: _capacity(src._capacity), _size(src._size)
 			{
 				data = allocator.allocate(src._capacity);
 				for (size_t i = 0 ; i < src._size ; i++)
-					data[i] = (src.data)[i];
+					data[i] = src.data[i];
 			}
 			~vector()
 			{
-				allocator.deallocate(data, original_capacity);
+				allocator.deallocate(data, _capacity);
 			}
 			iterator begin()
 			{
@@ -86,16 +90,19 @@ namespace ft
 			{
 				return (_capacity);
 			}
-			size_type original_capacityy() const
-			{
-				return (original_capacity);
-			}
 			void reserve(size_type n)
 			{
+				T tmp[_size];
+
 				if (n > _capacity)
 				{
-					data = allocator.allocate(n);
+					for (size_t i = 0 ; i < _size ; i++)
+						tmp[i] = data[i];
+					allocator.deallocate(data, _capacity);
+					data = allocator.allocate(n, data);
 					_capacity = n;
+					for (size_t i = 0 ; i < _size ; i++)
+						data[i] = tmp[i];
 				}
 			}
 			void push_back(const value_type& val)
@@ -109,7 +116,6 @@ namespace ft
 		private:
 			T *data;
 			Alloc allocator;
-			const size_t original_capacity;
 			size_t _capacity;
 			size_t _size;
 	};
