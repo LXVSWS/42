@@ -30,44 +30,40 @@ namespace ft
 			typedef ptrdiff_t difference_type;
 			typedef size_t size_type;
 
-			explicit vector(const allocator_type& alloc = allocator_type())
+			explicit vector(const allocator_type& alloc = allocator_type()) \
+			: allocator(alloc), original_capacity(1), _capacity(1), _size(0)
 			{
-				allocator = alloc;
 				data = allocator.allocate(1);
-				original_capacity = 1;
-				_capacity = 1;
-				_size = 0;
 			}
-			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) \
+			: allocator(alloc), original_capacity(n > 0 ? n : 1), _capacity(n > 0 ? n : 1), _size(n)
 			{
-				allocator = alloc;
 				if (n)
 				{
 					data = allocator.allocate(n);
-					original_capacity = n;
-					_capacity = n;
 					for (size_t i = 0 ; i < n ; i++)
 						data[i] = val;
-					_size = n;
 				}
 				else
 				{
 					data = allocator.allocate(1);
-					original_capacity = 1;
-					_capacity = 1;
 					*data = val;
-					_size = 0;
 				}
 			}
-			vector(const vector& src)
+			template<class InputIterator>
+			vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) \
+			: allocator(alloc), original_capacity(1), _capacity(1), _size(0)
 			{
-				allocator = src.allocator;
+				data = allocator.allocate(1);
+				(void)first;
+				(void)last;
+			}
+			vector(const vector& src) \
+			: original_capacity(src._capacity), _capacity(src._capacity), _size(src._size)
+			{
 				data = allocator.allocate(src._capacity);
-				original_capacity = src._capacity;
-				_capacity = src._capacity;
 				for (size_t i = 0 ; i < src._size ; i++)
 					data[i] = (src.data)[i];
-				_size = src._size;
 			}
 			~vector()
 			{
@@ -91,6 +87,10 @@ namespace ft
 			{
 				return (_capacity);
 			}
+			size_type original_capacityy() const
+			{
+				return (original_capacity);
+			}
 			void reserve(size_type n)
 			{
 				if (n > _capacity)
@@ -110,7 +110,7 @@ namespace ft
 		private:
 			T *data;
 			Alloc allocator;
-			size_t original_capacity;
+			const size_t original_capacity;
 			size_t _capacity;
 			size_t _size;
 	};
