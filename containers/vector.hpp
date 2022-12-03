@@ -17,7 +17,7 @@ namespace ft
 				public:
 					Iterator(T *data) : data(data) {}
 					T& operator*() { return (*data); }
-					T& operator=(T& src) { data = src.data; }
+					T& operator=(const T& src) { data = src.data; }
 			};
 
 			typedef T value_type;
@@ -50,8 +50,7 @@ namespace ft
 					*data = val;
 				}
 			}
-			template<class InputIterator>
-			vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) \
+			vector(Iterator first, Iterator last, const allocator_type& alloc = allocator_type()) \
 			: allocator(alloc), original_capacity(1), _capacity(1), _size(0)
 			{
 				data = allocator.allocate(1);
