@@ -1,4 +1,6 @@
 #include "vector.hpp"
+#include "map.hpp"
+#include "utils.hpp"
 
 int main()
 {
