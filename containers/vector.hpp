@@ -69,24 +69,56 @@ namespace ft
 				{
 					_data = allocator.allocate(n);
 					for (size_t i = 0 ; i < n ; i++)
-						_data[i] = val;
+						allocator.construct(&_data[i], val);
 				}
+				else
+					_data = allocator.allocate(1);
+			}
+			template <typename InputIterator>
+			vector(InputIterator first, InputIterator last, const Alloc& alloc) : allocator(alloc)
+			{
+				size_t n = 0;
+				for (ft::vector<int>::iterator i = first ; i != last ; ++i)
+					n++;
+				if (n)
+					_data = allocator.allocate(n);
 				else
 				{
 					_data = allocator.allocate(1);
-					*_data = val;
+					_capacity = 1;
+					_size = 0;
+					return ;
 				}
+				_capacity = n;
+				n = 0;
+				for (ft::vector<int>::iterator i = first ; i != last ; ++i)
+					allocator.construct(&_data[n++], *i);
+				_size = n;
 			}
-			//template <InputIt> vector(InputIt first, InputIt last, const Alloc& alloc = Alloc()) : allocator(alloc) {}
 			vector(const vector& src) : _capacity(src._capacity), _size(src._size)
 			{
 				_data = allocator.allocate(src._capacity);
 				for (size_t i = 0 ; i < src._size ; i++)
-					_data[i] = src._data[i];
+					allocator.construct(&_data[i], src._data[i]);
 			}
 			~vector()
 			{
+				for (size_t i = 0 ; i < _size ; i++)
+					allocator.destroy(&_data[i]);
 				allocator.deallocate(_data, _capacity);
+				_data = NULL;
+			}
+			vector& operator=(const vector& src)
+			{
+				if (this != &src)
+				{
+					if (src._size > _capacity)
+						reserve(src._size);
+					for (size_t i = 0 ; i < src._size ; i++)
+						allocator.construct(&_data[i], src._data[i]);
+					_size = src._size;
+				}
+				return (*this);
 			}
 			iterator begin()
 			{
@@ -123,12 +155,15 @@ namespace ft
 				if (n > _capacity)
 				{
 					for (size_t i = 0 ; i < _size ; i++)
+					{
 						tmp[i] = _data[i];
+						allocator.destroy(&_data[i]);
+					}
 					allocator.deallocate(_data, _capacity);
 					_data = allocator.allocate(n, _data);
 					_capacity = n;
 					for (size_t i = 0 ; i < _size ; i++)
-						_data[i] = tmp[i];
+						allocator.construct(&_data[i], tmp[i]);
 				}
 			}
 			T *data()
@@ -143,7 +178,7 @@ namespace ft
 			{
 				if (_size == _capacity)
 					reserve(_capacity * 2);
-				_data[_size] = val;
+				allocator.construct(&_data[_size], val);
 				_size++;
 			}
 
