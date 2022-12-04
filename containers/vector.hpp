@@ -106,6 +106,14 @@ namespace ft
 						data[i] = tmp[i];
 				}
 			}
+			value_type *data()
+			{
+				return (data);
+			}
+			const value_type *data() const
+			{
+				return (data);
+			}
 			void push_back(const value_type& val)
 			{
 				if (_size == _capacity)
