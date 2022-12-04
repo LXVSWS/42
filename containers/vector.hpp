@@ -16,7 +16,7 @@ namespace ft
 				T *ptr;
 
 				public:
-					Iterator(T *data) : ptr(data) {}
+					Iterator(T *src) : ptr(src) {}
 					Iterator(const Iterator& src) : ptr(src.ptr) {}
 					T& operator*() { return (*ptr); }
 					Iterator& operator++() { ++ptr; return (*this); }
@@ -38,49 +38,49 @@ namespace ft
 			explicit vector(const allocator_type& alloc = allocator_type()) \
 			: allocator(alloc), _capacity(1), _size(0)
 			{
-				data = allocator.allocate(1);
+				_data = allocator.allocate(1);
 			}
 			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) \
 			: allocator(alloc), _capacity(n > 0 ? n : 1), _size(n)
 			{
 				if (n)
 				{
-					data = allocator.allocate(n);
+					_data = allocator.allocate(n);
 					for (size_t i = 0 ; i < n ; i++)
-						data[i] = val;
+						_data[i] = val;
 				}
 				else
 				{
-					data = allocator.allocate(1);
-					*data = val;
+					_data = allocator.allocate(1);
+					*_data = val;
 				}
 			}
 			vector(Iterator first, Iterator last, const allocator_type& alloc = allocator_type()) \
 			: allocator(alloc), _capacity(1), _size(0)
 			{
-				data = allocator.allocate(1);
+				_data = allocator.allocate(1);
 				(void)first;
 				(void)last;
 			}
 			vector(const vector& src) \
 			: _capacity(src._capacity), _size(src._size)
 			{
-				data = allocator.allocate(src._capacity);
+				_data = allocator.allocate(src._capacity);
 				for (size_t i = 0 ; i < src._size ; i++)
-					data[i] = src.data[i];
+					_data[i] = src._data[i];
 			}
 			~vector()
 			{
-				allocator.deallocate(data, _capacity);
+				allocator.deallocate(_data, _capacity);
 			}
 			iterator begin()
 			{
-				iterator i(data);
+				iterator i(_data);
 				return (i);
 			}
 			iterator end()
 			{
-				iterator i(&data[_size]);
+				iterator i(&_data[_size]);
 				return (i);
 			}
 			size_type size() const
@@ -98,32 +98,32 @@ namespace ft
 				if (n > _capacity)
 				{
 					for (size_t i = 0 ; i < _size ; i++)
-						tmp[i] = data[i];
-					allocator.deallocate(data, _capacity);
-					data = allocator.allocate(n, data);
+						tmp[i] = _data[i];
+					allocator.deallocate(_data, _capacity);
+					_data = allocator.allocate(n, _data);
 					_capacity = n;
 					for (size_t i = 0 ; i < _size ; i++)
-						data[i] = tmp[i];
+						_data[i] = tmp[i];
 				}
 			}
 			value_type *data()
 			{
-				return (data);
+				return (_data);
 			}
 			const value_type *data() const
 			{
-				return (data);
+				return (_data);
 			}
 			void push_back(const value_type& val)
 			{
 				if (_size == _capacity)
 					reserve(_capacity * 2);
-				data[_size] = val;
+				_data[_size] = val;
 				_size++;
 			}
 
 		private:
-			T *data;
+			T *_data;
 			Alloc allocator;
 			size_t _capacity;
 			size_t _size;
