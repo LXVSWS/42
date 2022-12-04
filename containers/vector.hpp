@@ -11,6 +11,20 @@ namespace ft
 	class vector
 	{
 		public:
+			class ConstIterator : public ft::iterator<random_access_iterator_tag, const T>
+			{
+				const T *ptr;
+
+				public:
+					ConstIterator(const T *src) : ptr(src) {}
+					ConstIterator(const ConstIterator& src) : ptr(src.ptr) {}
+					const T& operator*() const { return (*ptr); }
+					ConstIterator& operator++() { ++ptr; return (*this); }
+					ConstIterator operator++(T) { ConstIterator tmp(*this); ++ptr; return (tmp); }
+  					bool operator==(const ConstIterator& src) const { return ptr == src.ptr; }
+  					bool operator!=(const ConstIterator& src) const { return ptr != src.ptr; }
+			};
+
 			class Iterator : public ft::iterator<random_access_iterator_tag, T>
 			{
 				T *ptr;
@@ -18,11 +32,12 @@ namespace ft
 				public:
 					Iterator(T *src) : ptr(src) {}
 					Iterator(const Iterator& src) : ptr(src.ptr) {}
-					T& operator*() { return (*ptr); }
+					T& operator*() const { return (*ptr); }
 					Iterator& operator++() { ++ptr; return (*this); }
 					Iterator operator++(T) { Iterator tmp(*this); ++ptr; return (tmp); }
-  					bool operator==(const Iterator& src) const { return ptr == src.ptr; }
-  					bool operator!=(const Iterator& src) const { return ptr != src.ptr; }
+  					bool operator==(const Iterator& src) const { return (ptr == src.ptr); }
+  					bool operator!=(const Iterator& src) const { return (ptr != src.ptr); }
+					operator ConstIterator() const { ConstIterator src = ptr; return(src); }
 			};
 
 			typedef T value_type;
@@ -32,15 +47,22 @@ namespace ft
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef Iterator iterator;
+			typedef ConstIterator const_iterator;
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 			typedef size_t size_type;
 
-			explicit vector(const allocator_type& alloc = allocator_type()) \
+			vector() : _capacity(1), _size(0)
+			{
+				_data = allocator.allocate(1);
+			}
+			explicit vector(const Alloc& alloc) \
 			: allocator(alloc), _capacity(1), _size(0)
 			{
 				_data = allocator.allocate(1);
 			}
-			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) \
+			explicit vector(size_t n, const T& val = T(), const Alloc& alloc = Alloc()) \
 			: allocator(alloc), _capacity(n > 0 ? n : 1), _size(n)
 			{
 				if (n)
@@ -55,15 +77,8 @@ namespace ft
 					*_data = val;
 				}
 			}
-			vector(Iterator first, Iterator last, const allocator_type& alloc = allocator_type()) \
-			: allocator(alloc), _capacity(1), _size(0)
-			{
-				_data = allocator.allocate(1);
-				(void)first;
-				(void)last;
-			}
-			vector(const vector& src) \
-			: _capacity(src._capacity), _size(src._size)
+			//template <InputIt> vector(InputIt first, InputIt last, const Alloc& alloc = Alloc()) : allocator(alloc) {}
+			vector(const vector& src) : _capacity(src._capacity), _size(src._size)
 			{
 				_data = allocator.allocate(src._capacity);
 				for (size_t i = 0 ; i < src._size ; i++)
@@ -78,9 +93,19 @@ namespace ft
 				iterator i(_data);
 				return (i);
 			}
+			const_iterator begin() const
+			{
+				const_iterator i(_data);
+				return (i);
+			}
 			iterator end()
 			{
 				iterator i(&_data[_size]);
+				return (i);
+			}
+			const_iterator end() const
+			{
+				const_iterator i(&_data[_size]);
 				return (i);
 			}
 			size_type size() const
@@ -106,15 +131,15 @@ namespace ft
 						_data[i] = tmp[i];
 				}
 			}
-			value_type *data()
+			T *data()
 			{
 				return (_data);
 			}
-			const value_type *data() const
+			const T *data() const
 			{
 				return (_data);
 			}
-			void push_back(const value_type& val)
+			void push_back(const T &val)
 			{
 				if (_size == _capacity)
 					reserve(_capacity * 2);
