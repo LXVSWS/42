@@ -11,43 +11,14 @@ namespace ft
 	class vector
 	{
 		public:
-			class ConstIterator : public ft::iterator<random_access_iterator_tag, const T>
-			{
-				const T *ptr;
-
-				public:
-					ConstIterator(const T *src) : ptr(src) {}
-					ConstIterator(const ConstIterator& src) : ptr(src.ptr) {}
-					const T& operator*() const { return (*ptr); }
-					ConstIterator& operator++() { ++ptr; return (*this); }
-					ConstIterator operator++(T) { ConstIterator tmp(*this); ++ptr; return (tmp); }
-  					bool operator==(const ConstIterator& src) const { return ptr == src.ptr; }
-  					bool operator!=(const ConstIterator& src) const { return ptr != src.ptr; }
-			};
-
-			class Iterator : public ft::iterator<random_access_iterator_tag, T>
-			{
-				T *ptr;
-
-				public:
-					Iterator(T *src) : ptr(src) {}
-					Iterator(const Iterator& src) : ptr(src.ptr) {}
-					T& operator*() const { return (*ptr); }
-					Iterator& operator++() { ++ptr; return (*this); }
-					Iterator operator++(T) { Iterator tmp(*this); ++ptr; return (tmp); }
-  					bool operator==(const Iterator& src) const { return (ptr == src.ptr); }
-  					bool operator!=(const Iterator& src) const { return (ptr != src.ptr); }
-					operator ConstIterator() const { ConstIterator src = ptr; return(src); }
-			};
-
 			typedef T value_type;
 			typedef Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef Iterator iterator;
-			typedef ConstIterator const_iterator;
+			typedef Iterator<value_type> iterator;
+			typedef ConstIterator<value_type> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
@@ -112,8 +83,10 @@ namespace ft
 			{
 				if (this != &src)
 				{
+					for (size_t i = 0 ; i < _size ; i++)
+						allocator.destroy(&_data[i]);
 					if (src._size > _capacity)
-						reserve(src._size);
+						reserve(src._size * 2);
 					for (size_t i = 0 ; i < src._size ; i++)
 						allocator.construct(&_data[i], src._data[i]);
 					_size = src._size;
@@ -140,13 +113,44 @@ namespace ft
 				const_iterator i(&_data[_size]);
 				return (i);
 			}
+			reverse_iterator rbegin()
+			{
+				reverse_iterator i(&_data[_size - 1]);
+				return (i);
+			}
+			const_reverse_iterator rbegin() const
+			{
+				const_reverse_iterator i(&_data[_size - 1]);
+				return (i);
+			}
+			reverse_iterator rend()
+			{
+				reverse_iterator i(&_data[-1]);
+				return (i);
+			}
+			const_reverse_iterator rend() const
+			{
+				const_reverse_iterator i(&_data[-1]);
+				return (i);
+			}
 			size_type size() const
 			{
 				return (_size);
 			}
+			size_type max_size() const
+			{
+				return (allocator.max_size());
+			}
+			//void resize(size_type n, value_type val = value_type()) {}
 			size_type capacity() const
 			{
 				return (_capacity);
+			}
+			bool empty() const
+			{
+				if (!_size)
+					return (true);
+				return (false);
 			}
 			void reserve(size_type n)
 			{
@@ -180,6 +184,10 @@ namespace ft
 					reserve(_capacity * 2);
 				allocator.construct(&_data[_size], val);
 				_size++;
+			}
+			allocator_type get_allocator() const
+			{
+				return (allocator);
 			}
 
 		private:

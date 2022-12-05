@@ -9,10 +9,13 @@ int main()
 		ft::vector<int> test0;
 		std::cout << "Default constructor\nSize : " << test0.size() << std::endl;
 		std::cout << "Capacity : " << test0.capacity() << std::endl;
+		std::cout << "Max size : " << test0.max_size() << std::endl;
+		std::cout << "Empty : " << test0.empty() << std::endl;
 
-		ft::vector<int> test1(0);
+		ft::vector<int> test1(1);
 		std::cout << "\nFill constructor (1)\nSize : " << test1.size() << std::endl;
 		std::cout << "Capacity : " << test1.capacity() << std::endl;
+		std::cout << "Empty : " << test1.empty() << std::endl;
 		for (ft::vector<int>::iterator i = test1.begin() ; i != test1.end() ; ++i)
 			std::cout << *i << std::endl;
 
@@ -40,13 +43,12 @@ int main()
 		for (ft::vector<int>::iterator i = test2.begin() ; i != test2.end() ; ++i)
 			std::cout << *i << std::endl;
 
-		test.push_back(66);
-		std::cout << "\nPush_back (66) member function" << std::endl;
-		std::cout << "Data : " << test.data() << std::endl;
-		std::cout << "Size : " << test.size() << std::endl;
-		std::cout << "Capacity : " << test.capacity() << std::endl;
-		for (ft::vector<int>::iterator i = test.begin() ; i != test.end() ; ++i)
-			std::cout << *i<< std::endl;
+		test2 = test;
+		std::cout << "\nAssign operator\nData : " << test2.data() << std::endl;
+		std::cout << "Size : " << test2.size() << std::endl;
+		std::cout << "Capacity : " << test2.capacity() << std::endl;
+		for (ft::vector<int>::iterator i = test2.begin() ; i != test2.end() ; ++i)
+			std::cout << *i << std::endl;
 
 		test.reserve(5);
 		std::cout << "\nReserve (5) member function" << std::endl;
@@ -54,12 +56,13 @@ int main()
 		std::cout << "Size : " << test.size() << std::endl;
 		std::cout << "Capacity : " << test.capacity() << std::endl;
 
-		test2 = test;
-		std::cout << "\nAssign operator\nData : " << test2.data() << std::endl;
-		std::cout << "Size : " << test2.size() << std::endl;
-		std::cout << "Capacity : " << test2.capacity() << std::endl;
-		for (ft::vector<int>::iterator i = test2.begin() ; i != test2.end() ; ++i)
-			std::cout << *i << std::endl;
+		test.push_back(66);test.push_back(66);test.push_back(66);test.push_back(66);
+		std::cout << "\nPush_back (66) member function" << std::endl;
+		std::cout << "Data : " << test.data() << std::endl;
+		std::cout << "Size : " << test.size() << std::endl;
+		std::cout << "Capacity : " << test.capacity() << std::endl;
+		for (ft::vector<int>::iterator i = test.begin() ; i != test.end() ; ++i)
+			std::cout << *i<< std::endl;
 	}
 	catch (std::exception &e)
 	{
