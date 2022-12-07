@@ -4,8 +4,10 @@
 namespace ft
 {
 	template <bool Cond, class T = void>
-	class enable_if
+	struct enable_if
 	{
+		if (Cond)
+			typedef T type;
 	};
 
 	template <class T>
