@@ -141,7 +141,18 @@ namespace ft
 			{
 				return (allocator.max_size());
 			}
-			//void resize(size_type n, value_type val = value_type()) {}
+			void resize(size_type n, value_type val = T())
+			{
+				if (n < _size)
+					for (size_t i = n ; i < _size ; _size--)
+						allocator.destroy(&_data[i]);
+				else if (n > _size)
+				{
+					reserve(n);
+					while (n > _size)
+						allocator.construct(&_data[_size++], val);
+				}
+			}
 			size_type capacity() const
 			{
 				return (_capacity);
@@ -177,6 +188,24 @@ namespace ft
 			const T *data() const
 			{
 				return (_data);
+			}
+			reference at(size_type pos)
+			{
+				if (!(pos < _size))
+					throw std::out_of_range("Exception::OutOfRange");
+				return (_data[pos]);
+			}
+			const_reference at(size_type pos) const
+			{
+				if (!(pos < _size))
+					throw std::out_of_range("Exception::OutOfRange");
+				return (_data[pos]);
+			}
+			void clear()
+			{
+				for (size_t i = 0 ; i < _size ; i++)
+					allocator.destroy(&_data[i]);
+				_size = 0;
 			}
 			void push_back(const T &val)
 			{

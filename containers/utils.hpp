@@ -6,8 +6,8 @@ namespace ft
 	template <bool Cond, class T = void>
 	struct enable_if
 	{
-		if (Cond)
-			typedef T type;
+		//if (Cond)
+		//	typedef T type;
 	};
 
 	template <class T>

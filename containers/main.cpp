@@ -50,19 +50,37 @@ int main()
 		for (ft::vector<int>::iterator i = test2.begin() ; i != test2.end() ; ++i)
 			std::cout << *i << std::endl;
 
+		test2.clear();
+		std::cout << "\nClear member function" << std::endl;
+		std::cout << "Data : " << test2.data() << std::endl;
+		std::cout << "Size : " << test2.size() << std::endl;
+		std::cout << "Capacity : " << test2.capacity() << std::endl;
+		for (ft::vector<int>::iterator i = test2.begin() ; i != test2.end() ; ++i)
+			std::cout << *i<< std::endl;
+
 		test.reserve(5);
 		std::cout << "\nReserve (5) member function" << std::endl;
 		std::cout << "Data : " << test.data() << std::endl;
 		std::cout << "Size : " << test.size() << std::endl;
 		std::cout << "Capacity : " << test.capacity() << std::endl;
 
-		test.push_back(66);test.push_back(66);test.push_back(66);test.push_back(66);
+		test.push_back(66);
 		std::cout << "\nPush_back (66) member function" << std::endl;
 		std::cout << "Data : " << test.data() << std::endl;
 		std::cout << "Size : " << test.size() << std::endl;
 		std::cout << "Capacity : " << test.capacity() << std::endl;
 		for (ft::vector<int>::iterator i = test.begin() ; i != test.end() ; ++i)
 			std::cout << *i<< std::endl;
+
+		test.resize(6, 23);
+		std::cout << "\nResize (6) member function" << std::endl;
+		std::cout << "Data : " << test.data() << std::endl;
+		std::cout << "Size : " << test.size() << std::endl;
+		std::cout << "Capacity : " << test.capacity() << std::endl;
+		for (ft::vector<int>::iterator i = test.begin() ; i != test.end() ; ++i)
+			std::cout << *i<< std::endl;
+
+		std::cout << "\nAt (2) function member : " << test.at(2) << std::endl;
 	}
 	catch (std::exception &e)
 	{
