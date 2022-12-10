@@ -49,7 +49,7 @@ namespace ft
 			vector(InputIterator first, InputIterator last, const Alloc& alloc) : allocator(alloc)
 			{
 				size_t n = 0;
-				for (ft::vector<int>::iterator i = first ; i != last ; ++i)
+				for (iterator i = first ; i != last ; ++i)
 					n++;
 				if (n)
 					_data = allocator.allocate(n);
@@ -62,11 +62,11 @@ namespace ft
 				}
 				_capacity = n;
 				n = 0;
-				for (ft::vector<int>::iterator i = first ; i != last ; ++i)
+				for (iterator i = first ; i != last ; ++i)
 					allocator.construct(&_data[n++], *i);
 				_size = n;
 			}
-			vector(const vector& src) : _capacity(src._capacity), _size(src._size)
+			vector(const vector& src) : allocator(src.allocator), _capacity(src._capacity), _size(src._size)
 			{
 				_data = allocator.allocate(src._capacity);
 				for (size_t i = 0 ; i < src._size ; i++)
@@ -86,7 +86,7 @@ namespace ft
 					for (size_t i = 0 ; i < _size ; i++)
 						allocator.destroy(&_data[i]);
 					if (src._size > _capacity)
-						reserve(src._size * 2);
+						reserve(src._size);
 					for (size_t i = 0 ; i < src._size ; i++)
 						allocator.construct(&_data[i], src._data[i]);
 					_size = src._size;
@@ -148,7 +148,8 @@ namespace ft
 						allocator.destroy(&_data[i]);
 				else if (n > _size)
 				{
-					reserve(n);
+					if (n > _capacity)
+						reserve(n);
 					while (n > _size)
 						allocator.construct(&_data[_size++], val);
 				}
@@ -181,13 +182,13 @@ namespace ft
 						allocator.construct(&_data[i], tmp[i]);
 				}
 			}
-			T *data()
+			reference operator[](size_type n)
 			{
-				return (_data);
+				return (_data[n]);
 			}
-			const T *data() const
+			const_reference operator[](size_type n) const
 			{
-				return (_data);
+				return (_data[n]);
 			}
 			reference at(size_type pos)
 			{
@@ -201,11 +202,29 @@ namespace ft
 					throw std::out_of_range("Exception::OutOfRange");
 				return (_data[pos]);
 			}
-			void clear()
+			reference front()
 			{
-				for (size_t i = 0 ; i < _size ; i++)
-					allocator.destroy(&_data[i]);
-				_size = 0;
+				return (*_data);
+			}
+			const_reference front() const
+			{
+				return (*_data);
+			}
+			reference back()
+			{
+				return (_data[_size - 1]);
+			}
+			const_reference back() const
+			{
+				return (_data[_size - 1]);
+			}
+			T *data()
+			{
+				return (_data);
+			}
+			const T *data() const
+			{
+				return (_data);
 			}
 			void push_back(const T &val)
 			{
@@ -213,6 +232,12 @@ namespace ft
 					reserve(_capacity * 2);
 				allocator.construct(&_data[_size], val);
 				_size++;
+			}
+			void clear()
+			{
+				for (size_t i = 0 ; i < _size ; i++)
+					allocator.destroy(&_data[i]);
+				_size = 0;
 			}
 			allocator_type get_allocator() const
 			{

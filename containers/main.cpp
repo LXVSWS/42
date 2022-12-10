@@ -81,6 +81,9 @@ int main()
 			std::cout << *i<< std::endl;
 
 		std::cout << "\nAt (2) function member : " << test.at(2) << std::endl;
+		std::cout << "Operator[2] overload : " << test[2] << std::endl;
+		std::cout << "Front function member : " << test.front() << std::endl;
+		std::cout << "Back function member : " << test.back() << std::endl;
 	}
 	catch (std::exception &e)
 	{
