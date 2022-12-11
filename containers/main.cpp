@@ -84,6 +84,14 @@ int main()
 		std::cout << "Operator[2] overload : " << test[2] << std::endl;
 		std::cout << "Front function member : " << test.front() << std::endl;
 		std::cout << "Back function member : " << test.back() << std::endl;
+
+		test.assign(4, 'a');
+		std::cout << "\nAssign member function" << std::endl;
+		std::cout << "Data : " << test.data() << std::endl;
+		std::cout << "Size : " << test.size() << std::endl;
+		std::cout << "Capacity : " << test.capacity() << std::endl;
+		for (ft::vector<int>::iterator i = test.begin() ; i != test.end() ; ++i)
+			std::cout << *i << std::endl;
 	}
 	catch (std::exception &e)
 	{

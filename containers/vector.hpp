@@ -49,7 +49,7 @@ namespace ft
 			vector(InputIterator first, InputIterator last, const Alloc& alloc) : allocator(alloc)
 			{
 				size_t n = 0;
-				for (iterator i = first ; i != last ; ++i)
+				for (InputIterator i = first ; i != last ; ++i)
 					n++;
 				if (n)
 					_data = allocator.allocate(n);
@@ -62,7 +62,7 @@ namespace ft
 				}
 				_capacity = n;
 				n = 0;
-				for (iterator i = first ; i != last ; ++i)
+				for (InputIterator i = first ; i != last ; ++i)
 					allocator.construct(&_data[n++], *i);
 				_size = n;
 			}
@@ -225,6 +225,37 @@ namespace ft
 			const T *data() const
 			{
 				return (_data);
+			}
+			template <class InputIterator>
+			void assign(InputIterator first, InputIterator last)
+			{
+				for (size_t i = 0 ; i < _size ; i++)
+					allocator.destroy(&_data[i]);
+				size_t n = 0;
+				for (InputIterator i = first ; i != last ; ++i)
+					n++;
+				if (n > _capacity)
+				{
+					reserve(n);
+					_capacity = n;
+				}
+				n = 0;
+				for (InputIterator i = first ; i != last ; ++i)
+					allocator.construct(&_data[n++], *i);
+				_size = n;
+			}
+			void assign(size_type n, const value_type& val) // overrided by template overload if both parameters is same type
+			{
+				for (size_t i = 0 ; i < _size ; i++)
+					allocator.destroy(&_data[i]);
+				if (n > _capacity)
+				{
+					reserve(n);
+					_capacity = n;
+				}
+				for (size_t i = 0 ; i < n ; i++)
+					allocator.construct(&_data[i], val);
+				_size = n;
 			}
 			void push_back(const T &val)
 			{
