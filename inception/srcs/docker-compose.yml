@@ -1,12 +1,21 @@
 version: '3.9'
 
 services:
-  db:
-    container_name: db
-    build: ./db
+  mariadb:
+    container_name: mariadb
+    build: ./mariadb
+    restart: always
   nginx:
     container_name: nginx
     build: ./nginx
-  php:
-    container_name: php
-    build: ./php
+    restart: always
+  wordpress:
+    container_name: wordpress
+    build: ./wordpress
+    depends_on:
+      - mariadb
+    restart: always
+
+volumes:
+  db_data: {}
+  wp_data: {}
