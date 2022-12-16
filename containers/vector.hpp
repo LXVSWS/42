@@ -24,11 +24,7 @@ namespace ft
 			typedef ptrdiff_t difference_type;
 			typedef size_t size_type;
 
-			vector() : _capacity(1), _size(0)
-			{
-				_data = allocator.allocate(1);
-			}
-			explicit vector(const Alloc& alloc) \
+			explicit vector(const Alloc& alloc = Alloc()) \
 			: allocator(alloc), _capacity(1), _size(0)
 			{
 				_data = allocator.allocate(1);
@@ -46,7 +42,8 @@ namespace ft
 					_data = allocator.allocate(1);
 			}
 			template <typename InputIterator>
-			vector(InputIterator first, InputIterator last, const Alloc& alloc) : allocator(alloc)
+			vector(typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, // replace by own implementations
+			InputIterator last, const Alloc& alloc = Alloc()) : allocator(alloc)
 			{
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
@@ -115,24 +112,26 @@ namespace ft
 			}
 			reverse_iterator rbegin()
 			{
-				reverse_iterator i(&_data[_size - 1]);
+				reverse_iterator i(end());
 				return (i);
 			}
 			const_reverse_iterator rbegin() const
 			{
-				const_reverse_iterator i(&_data[_size - 1]);
+				const_reverse_iterator i(end());
 				return (i);
 			}
 			reverse_iterator rend()
 			{
-				reverse_iterator i(&_data[-1]);
+				reverse_iterator i(begin());
 				return (i);
 			}
+			/*
 			const_reverse_iterator rend() const
 			{
-				const_reverse_iterator i(&_data[-1]);
+				const_reverse_iterator i(begin());
 				return (i);
 			}
+			*/
 			size_type size() const
 			{
 				return (_size);
@@ -144,14 +143,18 @@ namespace ft
 			void resize(size_type n, value_type val = T())
 			{
 				if (n < _size)
-					for (size_t i = n ; i < _size ; _size--)
+				{
+					for (size_t i = n ; i < _size ; i++)
 						allocator.destroy(&_data[i]);
+					_size = n;
+				}
 				else if (n > _size)
 				{
 					if (n > _capacity)
 						reserve(n);
-					while (n > _size)
-						allocator.construct(&_data[_size++], val);
+					for (size_t i = _size ; i < n ; i++)
+						allocator.construct(&_data[i], val);
+					_size = n;
 				}
 			}
 			size_type capacity() const
@@ -226,8 +229,9 @@ namespace ft
 			{
 				return (_data);
 			}
-			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last)
+			template <typename InputIterator>
+			typename std::enable_if<!std::is_integral<InputIterator>::value>::type // replace by own implementations
+			assign(InputIterator first, InputIterator last)
 			{
 				for (size_t i = 0 ; i < _size ; i++)
 					allocator.destroy(&_data[i]);
@@ -244,7 +248,7 @@ namespace ft
 					allocator.construct(&_data[n++], *i);
 				_size = n;
 			}
-			void assign(size_type n, const value_type& val) // overrided by template overload if both parameters is same type
+			void assign(size_type n, const value_type& val)
 			{
 				for (size_t i = 0 ; i < _size ; i++)
 					allocator.destroy(&_data[i]);
@@ -264,6 +268,12 @@ namespace ft
 				allocator.construct(&_data[_size], val);
 				_size++;
 			}
+			void pop_back()
+			{
+				allocator.destroy(&_data[_size - 1]);
+				_size--;
+			}
+			//iterator insert(iterator position, const value_type& val) {}
 			void clear()
 			{
 				for (size_t i = 0 ; i < _size ; i++)
