@@ -4,6 +4,4 @@ RUN apk update && apk upgrade && apk add openrc nginx && mkdir /www
 
 WORKDIR /www
 
-EXPOSE 443
-
-CMD rc-service nginx start
+CMD nginx -g 'daemon off;'

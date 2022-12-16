@@ -25,13 +25,13 @@ rm:
 	docker system prune -af --volumes
 
 mariadb:
-	docker run -it --rm mariadb:alpine-3.16 /bin/sh
+	docker exec -it mariadb /bin/sh
 
 nginx:
-	docker run -it --rm nginx:alpine-3.16 /bin/sh
+	docker exec -it nginx /bin/sh
 
 wordpress:
-	docker run -it --rm wordpress:alpine-3.16 /bin/sh
+	docker exec -it wordpress /bin/sh
 
 
 .PHONY:	up ls stop start down rm mariadb nginx wordpress

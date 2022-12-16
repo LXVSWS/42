@@ -1,7 +1,5 @@
 FROM alpine:3.16
 
-RUN apk update && apk upgrade && apk add openrc mariadb
+RUN apk update && apk upgrade && apk add mysql mysql-client
 
-VOLUME /db_data
-
-CMD rc-service mariadb start
+CMD ["/bin/sh"]
