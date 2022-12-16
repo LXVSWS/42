@@ -17,8 +17,8 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef Iterator<value_type> iterator;
-			typedef ConstIterator<value_type> const_iterator;
+			typedef random_access_iterator<value_type> iterator;
+			typedef random_access_iterator<const value_type> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
@@ -29,7 +29,7 @@ namespace ft
 			{
 				_data = allocator.allocate(1);
 			}
-			explicit vector(size_t n, const T& val = T(), const Alloc& alloc = Alloc()) \
+			explicit vector(size_t n, const T& val = value_type(), const Alloc& alloc = Alloc()) \
 			: allocator(alloc), _capacity(n > 0 ? n : 1), _size(n)
 			{
 				if (n)
@@ -125,13 +125,11 @@ namespace ft
 				reverse_iterator i(begin());
 				return (i);
 			}
-			/*
 			const_reverse_iterator rend() const
 			{
 				const_reverse_iterator i(begin());
 				return (i);
 			}
-			*/
 			size_type size() const
 			{
 				return (_size);
@@ -140,20 +138,16 @@ namespace ft
 			{
 				return (allocator.max_size());
 			}
-			void resize(size_type n, value_type val = T())
+			void resize(size_type n, value_type val = value_type())
 			{
+				if (n > max_size())
+					throw std::exception();
+				while (n > _size)
+					push_back(val);
 				if (n < _size)
 				{
 					for (size_t i = n ; i < _size ; i++)
 						allocator.destroy(&_data[i]);
-					_size = n;
-				}
-				else if (n > _size)
-				{
-					if (n > _capacity)
-						reserve(n);
-					for (size_t i = _size ; i < n ; i++)
-						allocator.construct(&_data[i], val);
 					_size = n;
 				}
 			}
@@ -179,7 +173,7 @@ namespace ft
 						allocator.destroy(&_data[i]);
 					}
 					allocator.deallocate(_data, _capacity);
-					_data = allocator.allocate(n, _data);
+					_data = allocator.allocate(n);
 					_capacity = n;
 					for (size_t i = 0 ; i < _size ; i++)
 						allocator.construct(&_data[i], tmp[i]);
@@ -273,7 +267,7 @@ namespace ft
 				allocator.destroy(&_data[_size - 1]);
 				_size--;
 			}
-			//iterator insert(iterator position, const value_type& val) {}
+			// iterator insert(iterator position, const value_type& val) {}
 			void clear()
 			{
 				for (size_t i = 0 ; i < _size ; i++)
