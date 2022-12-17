@@ -1,9 +1,9 @@
 FROM alpine:3.16
 
-# apk update && apk upgrade && apk add openrc nginx
-
-RUN mkdir /www
+# RUN apk add openrc nginx && rc-update add nginx default
 
 WORKDIR /www
 
-CMD nginx -g 'daemon off;'
+CMD ["/bin/sh"]
+
+# CMD ["nginx", "-g", "daemon off;"]
