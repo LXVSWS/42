@@ -1,10 +1,10 @@
 version: '3.9'
 
 volumes:
-  db_data:
-    name: db_data
-  wp_data:
-    name: wp_data
+  db:
+    name: db
+  data:
+    name: data
 
 networks:
   docker-network:
@@ -15,9 +15,9 @@ services:
     container_name: mariadb
     build: ./mariadb
     volumes:
-      - db_data:/db_data
+    - db:/db
     networks:
-      - docker-network
+    - docker-network
   nginx:
     container_name: nginx
     build: ./nginx
@@ -25,14 +25,12 @@ services:
       - 443:443
     networks:
       - docker-network
-    depends_on:
-      - wordpress
   wordpress:
     container_name: wordpress
     build: ./wordpress
     volumes:
-      - wp_data:/wp_data
+    - data:/data
     networks:
-      - docker-network
+    - docker-network
     depends_on:
       - mariadb
