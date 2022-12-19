@@ -1,7 +1,10 @@
 FROM alpine:3.16
 
-RUN apk add openrc mariadb mariadb-client
+RUN apk add --no-cache mariadb mariadb-client
+RUN mariadb-install-db --datadir=/var/lib/mysql
 
-WORKDIR /db
+COPY my.cnf /etc/
 
-ENTRYPOINT ["/sbin/init"]
+EXPOSE 3306
+
+CMD ["mysqld_safe"]

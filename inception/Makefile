@@ -1,5 +1,5 @@
 up:
-	docker-compose -f srcs/docker-compose.yml up -d
+	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
 
 stop:
 	docker-compose -f srcs/docker-compose.yml stop
@@ -16,6 +16,7 @@ ls:
 
 clean:
 	docker system prune -f
+	docker volume rm db_data wp_data
 
 rm:
 	docker system prune -af --volumes

@@ -1,9 +1,7 @@
 FROM alpine:3.16
 
-# RUN apk add openrc nginx && rc-update add nginx default
+RUN apk add --no-cache nginx
 
-WORKDIR /www
+COPY nginx.conf /etc/nginx
 
-CMD ["/bin/sh"]
-
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
