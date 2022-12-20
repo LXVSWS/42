@@ -1,29 +1,30 @@
 version: '3.9'
 
 volumes:
-  db_data:
-    name: db_data
+  db:
+    name: db
     driver_opts:
       o: 'bind'
       type: 'none'
-      device: '/home/lxv/data/db_data'
-  wp_data:
-    name: wp_data
+      device: '/Users/Louis/Desktop/data/db' # /home/login/data/db
+  wp:
+    name: wp
     driver_opts:
       o: 'bind'
       type: 'none'
-      device: '/home/lxv/data/wp_data'
+      device: '/Users/Louis/Desktop/data/wp' # /home/login/data/wp
 
 networks:
   docker-network:
     name: docker-network
+    driver: bridge
 
 services:
   mariadb:
     container_name: mariadb
     build: ./mariadb
     volumes:
-      - db_data:/var/lib/mysql
+      - db:/var/lib/mysql
     env_file:
       - .env
     networks:
@@ -33,7 +34,7 @@ services:
     container_name: nginx
     build: ./nginx
     volumes:
-      - wp_data:/www
+      - wp:/www
     ports:
       - 443:443
     networks:
@@ -43,7 +44,7 @@ services:
     container_name: wordpress
     build: ./wordpress
     volumes:
-      - wp_data:/wordpress
+      - wp:/wordpress
     depends_on:
       - mariadb
     networks:

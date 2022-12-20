@@ -8,4 +8,4 @@ COPY php-fpm.conf /etc/php8
 
 EXPOSE 9000
 
-CMD ["php-fpm8"]
+CMD ["php-fpm8", "-p", "/"]

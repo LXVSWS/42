@@ -1,5 +1,7 @@
 up:
+	mkdir -p ~/Desktop/data/db ~/Desktop/data/wp
 	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
+#	mkdir -p /home/login/data/db /home/login/data/wp
 
 stop:
 	docker-compose -f srcs/docker-compose.yml stop
@@ -16,7 +18,11 @@ ls:
 
 clean:
 	docker system prune -f
-	docker volume rm db_data wp_data
+
+vol:
+	docker volume rm db wp
+	rm -rf ~/Desktop/data
+#	rm -rf /home/login/data
 
 rm:
 	docker system prune -af --volumes
@@ -31,4 +37,4 @@ wordpress:
 	docker exec -it wordpress /bin/sh
 
 
-.PHONY:	up stop start down ls clean rm mariadb nginx wordpress
+.PHONY:	up stop start down ls clean vol rm mariadb nginx wordpress
