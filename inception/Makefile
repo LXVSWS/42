@@ -2,6 +2,7 @@ up:
 	mkdir -p ~/Desktop/data/db ~/Desktop/data/wp
 	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
 #	mkdir -p /home/login/data/db /home/login/data/wp
+#	echo '127.0.0.1   login.42.fr' >> /etc/hosts
 
 stop:
 	docker-compose -f srcs/docker-compose.yml stop
@@ -15,6 +16,11 @@ down:
 ls:
 	echo "\n" && docker ps -a && echo "\nIMAGE ID\t\tSIZE\t\tIMAGE" && \
 	docker images -a --format "{{.ID}}\t\t{{.Size}}\t\t{{.Repository}}"
+
+log:
+	docker exec -it nginx cat /var/log/nginx/access.log
+	docker exec -it nginx cat /var/log/nginx/error.log
+	docker logs nginx
 
 clean:
 	docker system prune -f
@@ -37,4 +43,4 @@ wordpress:
 	docker exec -it wordpress /bin/sh
 
 
-.PHONY:	up stop start down ls clean vol rm mariadb nginx wordpress
+.PHONY:	up stop start down ls log clean vol rm mariadb nginx wordpress
