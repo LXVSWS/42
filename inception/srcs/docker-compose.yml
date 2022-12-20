@@ -22,7 +22,7 @@ networks:
 services:
   mariadb:
     container_name: mariadb
-    build: ./mariadb
+    build: ./requirements/mariadb
     volumes:
       - db:/var/lib/mysql
     env_file:
@@ -32,7 +32,7 @@ services:
     restart: always
   nginx:
     container_name: nginx
-    build: ./nginx
+    build: ./requirements/nginx
     volumes:
       - wp:/www
     ports:
@@ -42,7 +42,7 @@ services:
     restart: always
   wordpress:
     container_name: wordpress
-    build: ./wordpress
+    build: ./requirements/wordpress
     volumes:
       - wp:/wordpress
     depends_on:

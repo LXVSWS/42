@@ -15,4 +15,3 @@ mlx
 */*/*.o
 .vscode
 tester
-*.tar.gz
