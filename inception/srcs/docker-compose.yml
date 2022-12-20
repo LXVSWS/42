@@ -37,6 +37,8 @@ services:
       - wp:/www
     ports:
       - 443:443
+    depends_on:
+      - wordpress
     networks:
       - docker-network
     restart: always
