@@ -22,6 +22,11 @@ log:
 	docker exec -it nginx cat /var/log/nginx/error.log
 	docker logs nginx
 
+ logs:
+	docker exec -it wordpress cat var/log/php8/access.log
+	docker exec -it wordpress cat var/log/php8/error.log
+	docker logs wordpress
+
 clean:
 	docker system prune -f
 
@@ -43,4 +48,4 @@ wordpress:
 	docker exec -it wordpress /bin/sh
 
 
-.PHONY:	up stop start down ls log clean vol rm mariadb nginx wordpress
+.PHONY:	up stop start down ls log logs clean vol rm mariadb nginx wordpress
