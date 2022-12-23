@@ -2,11 +2,13 @@
 
 # echo '127.0.0.1   login.42.fr' >> /etc/hosts
 # add self signed certificate to authorized CA
+# add space on docker daemon to sustain images
 
 up:
 	mkdir -p ~/Desktop/data/db ~/Desktop/data/wp
 	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
 	docker exec mariadb ./init.sh
+	curl https://login.42.fr/wp-admin/install.php\?step\=2 | grep "<code>"
 #	mkdir -p /home/login/data/db /home/login/data/wp
 
 stop:

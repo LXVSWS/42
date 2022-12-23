@@ -20,6 +20,10 @@ COPY conf/php-fpm.conf /etc/php8
 
 COPY conf/wp-config.php /wordpress
 
+COPY conf/install.php /wordpress/wp-admin
+
+COPY conf/functions.php /wordpress/wp-includes
+
 EXPOSE 9000
 
 CMD ["php-fpm8", "-F", "-p", "/"]
