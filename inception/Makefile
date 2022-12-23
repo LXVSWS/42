@@ -1,8 +1,7 @@
 # TODO ON HOST
-
 # echo '127.0.0.1   login.42.fr' >> /etc/hosts
-# add self signed certificate to authorized CA
-# add space on docker daemon to sustain images
+# add self signed certificates to authorized CA
+# add space to sustain images & containers
 
 up:
 	mkdir -p ~/Desktop/data/db ~/Desktop/data/wp
@@ -29,7 +28,7 @@ log:
 	docker exec -it nginx cat /var/log/nginx/error.log
 	docker logs nginx
 
- logs:
+logs:
 	docker exec -it wordpress cat var/log/php8/access.log
 	docker exec -it wordpress cat var/log/php8/error.log
 	docker logs wordpress

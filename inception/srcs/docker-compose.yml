@@ -52,3 +52,9 @@ services:
     networks:
       - docker-network
     restart: always
+  bonus:
+    container_name: bonus
+    build: ./requirements/bonus
+    ports:
+      - 80:80
+    restart: always
