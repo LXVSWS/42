@@ -18,6 +18,8 @@ ADD tools/wp.tar.gz /
 
 COPY conf/php-fpm.conf /etc/php8
 
+COPY conf/wp-config.php /wordpress
+
 EXPOSE 9000
 
 CMD ["php-fpm8", "-F", "-p", "/"]

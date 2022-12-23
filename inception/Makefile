@@ -1,8 +1,13 @@
+# TODO ON HOST
+
+# echo '127.0.0.1   login.42.fr' >> /etc/hosts
+# add self signed certificate to authorized CA
+
 up:
 	mkdir -p ~/Desktop/data/db ~/Desktop/data/wp
 	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
+	docker exec mariadb ./init.sh
 #	mkdir -p /home/login/data/db /home/login/data/wp
-#	echo '127.0.0.1   login.42.fr' >> /etc/hosts
 
 stop:
 	docker-compose -f srcs/docker-compose.yml stop
@@ -36,7 +41,7 @@ vol:
 #	rm -rf /home/login/data
 
 rm:
-	docker system prune -af --volumes
+	docker system prune -af
 
 mariadb:
 	docker exec -it mariadb /bin/sh
