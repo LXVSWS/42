@@ -267,7 +267,22 @@ namespace ft
 				allocator.destroy(&_data[_size - 1]);
 				_size--;
 			}
-			// iterator insert(iterator position, const value_type& val) {}
+			iterator insert(iterator position, const value_type& val)
+			{
+				if (_size + 1 > _capacity)
+					reserve(_capacity * 2);
+				if (position == end())
+				{
+					push_back(val);
+					return (position);
+				}
+				T& tmp = *position;
+				*position = val;
+				iterator ret = position++;
+				allocator.construct(&_data[_size], tmp);
+				_size++;
+				return (ret);
+			}
 			void clear()
 			{
 				for (size_t i = 0 ; i < _size ; i++)
