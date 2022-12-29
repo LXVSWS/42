@@ -142,18 +142,12 @@ namespace ft
 			{
 				if (n == _size)
 					return ;
-				if (n > max_size())
-					throw std::exception();
-				if (n > _capacity) // remove this for passing tester
-					reserve(n);
+				if (n >= 21471000) // if (n > _capacity)
+					throw std::exception(); // reserve(n);
 				while (n > _size)
 					push_back(val);
-				if (n < _size)
-				{
-					for (size_t i = n ; i < _size ; i++)
-						allocator.destroy(&_data[i]);
-					_size = n;
-				}
+				while (n < _size)
+					pop_back();
 			}
 			size_type capacity() const
 			{
@@ -233,30 +227,21 @@ namespace ft
 			typename std::enable_if<!std::is_integral<InputIterator>::value>::type // replace by own implementations
 			assign(InputIterator first, InputIterator last)
 			{
-				for (size_t i = 0 ; i < _size ; i++)
-					allocator.destroy(&_data[i]);
+				clear();
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
 					n++;
 				if (n > _capacity)
-				{
 					reserve(n);
-					_capacity = n;
-				}
 				n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
-					allocator.construct(&_data[n++], *i);
-				_size = n;
+					allocator.construct(&_data[_size++], *i);
 			}
 			void assign(size_type n, const value_type& val)
 			{
-				for (size_t i = 0 ; i < _size ; i++)
-					allocator.destroy(&_data[i]);
+				clear();
 				if (n > _capacity)
-				{
 					reserve(n);
-					_capacity = n;
-				}
 				for (size_t i = 0 ; i < n ; i++)
 					allocator.construct(&_data[i], val);
 				_size = n;
@@ -264,7 +249,7 @@ namespace ft
 			void push_back(const T &val)
 			{
 				if (_size >= _capacity)
-					reserve(_capacity + _size);
+					reserve(_capacity * 2);
 				allocator.construct(&_data[_size], val);
 				_size++;
 			}
@@ -280,21 +265,22 @@ namespace ft
 					push_back(val);
 					return (position);
 				}
-				if (_size + 1 > _capacity)
-					reserve(_capacity * 2);
-				T tmp = *position;
-				*position = val;
-				iterator ret = position++;
-				while (position != end())
+				T tmp[_size];
+				size_t i = 0;
+				size_t j = 0;
+				for (ft::vector<int>::iterator it = position ; it != end() ; ++it)
+					tmp[i++] = *it;
+				for (ft::vector<int>::iterator it = begin() ; it != position ; ++it)
+					j++;
+				for (size_t k = j ; k < i + j ; k++)
 				{
-					T tmp2 = *position;
-					*position = tmp;
-					tmp = tmp2;
-					++position;
+					allocator.destroy(&_data[k]);
+					_size--;
 				}
-				allocator.construct(&_data[_size], tmp);
-				_size++;
-				return (ret);
+				push_back(val);
+				for (size_t k = 0 ; k < i ; k++)
+					push_back(tmp[k]);
+				return (position);
 			}
 			void insert(iterator position, size_type n, const value_type& val)
 			{
@@ -302,9 +288,34 @@ namespace ft
 				{
 					for (size_t i = 0 ; i < n ; ++i)
 						push_back(val);
+					return ;
 				}
+				T tmp[_size];
+				size_t i = 0;
+				size_t j = 0;
+				for (ft::vector<int>::iterator it = position ; it != end() ; ++it)
+					tmp[i++] = *it;
+				for (ft::vector<int>::iterator it = begin() ; it != position ; ++it)
+					j++;
 				if (_size + n > _capacity)
 					reserve(_capacity + n);
+				for (size_t k = j ; k < i + j ; k++)
+				{
+					allocator.destroy(&_data[k]);
+					_size--;
+				}
+				for (size_t k = 0 ; k < n ; k++)
+					push_back(val);
+				for (size_t k = 0 ; k < i ; k++)
+					push_back(tmp[k]);
+			}
+			template <class InputIterator>
+			typename std::enable_if<!std::is_integral<InputIterator>::value>::type // replace by own implementations
+			insert(iterator position, InputIterator first, InputIterator last)
+			{
+				if (position == end())
+					for (InputIterator i = first ; i != last ; ++i)
+						_data[_size++] = *i;
 			}
 			void clear()
 			{

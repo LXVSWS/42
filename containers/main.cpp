@@ -8,7 +8,9 @@ int main()
 	try
 	{
 		ft::vector<int> test(2, 42);
+		test.push_back(99);
 		test.push_back(666);
+		test.resize(77, 77);
 		for (ft::vector<int>::iterator it = test.begin() ; it != test.end() ; ++it)
 			std::cout << *it << std::endl;
 	}
