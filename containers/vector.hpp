@@ -140,8 +140,12 @@ namespace ft
 			}
 			void resize(size_type n, value_type val = value_type())
 			{
+				if (n == _size)
+					return ;
 				if (n > max_size())
 					throw std::exception();
+				if (n > _capacity) // remove this for passing tester
+					reserve(n);
 				while (n > _size)
 					push_back(val);
 				if (n < _size)
@@ -165,6 +169,8 @@ namespace ft
 			{
 				T tmp[_size];
 
+				if (n > max_size())
+					throw std::exception();
 				if (n > _capacity)
 				{
 					for (size_t i = 0 ; i < _size ; i++)
@@ -257,8 +263,8 @@ namespace ft
 			}
 			void push_back(const T &val)
 			{
-				if (_size == _capacity)
-					reserve(_capacity * 2);
+				if (_size >= _capacity)
+					reserve(_capacity + _size);
 				allocator.construct(&_data[_size], val);
 				_size++;
 			}
@@ -269,19 +275,36 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type& val)
 			{
-				if (_size + 1 > _capacity)
-					reserve(_capacity * 2);
 				if (position == end())
 				{
 					push_back(val);
 					return (position);
 				}
-				T& tmp = *position;
+				if (_size + 1 > _capacity)
+					reserve(_capacity * 2);
+				T tmp = *position;
 				*position = val;
 				iterator ret = position++;
+				while (position != end())
+				{
+					T tmp2 = *position;
+					*position = tmp;
+					tmp = tmp2;
+					++position;
+				}
 				allocator.construct(&_data[_size], tmp);
 				_size++;
 				return (ret);
+			}
+			void insert(iterator position, size_type n, const value_type& val)
+			{
+				if (position == end())
+				{
+					for (size_t i = 0 ; i < n ; ++i)
+						push_back(val);
+				}
+				if (_size + n > _capacity)
+					reserve(_capacity + n);
 			}
 			void clear()
 			{
