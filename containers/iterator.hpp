@@ -57,6 +57,13 @@ namespace ft
 		private:
 			T* ptr;
 		public:
+			typedef iterator<random_access_iterator_tag, T> iterator_type;
+			typedef typename iterator_traits<random_access_iterator>::value_type		value_type;
+			typedef typename iterator_traits<random_access_iterator>::difference_type	difference_type;
+			typedef typename iterator_traits<random_access_iterator>::pointer			pointer;
+			typedef typename iterator_traits<random_access_iterator>::reference			reference;
+			typedef typename iterator_traits<random_access_iterator>::iterator_category	iterator_category;
+
 			random_access_iterator() : ptr(NULL) {}
 			random_access_iterator(T *src) : ptr(src) {}
 			random_access_iterator(const random_access_iterator& src) : ptr(src.ptr) {}
@@ -65,9 +72,9 @@ namespace ft
 
 			T& operator*() const { return (*ptr); }
 			random_access_iterator& operator++() { ++ptr; return (*this); }
-			random_access_iterator operator++(T) { random_access_iterator tmp(*this); ++ptr; return (tmp); }
+			random_access_iterator operator++(int) { random_access_iterator tmp(*this); ++ptr; return (tmp); }
 			random_access_iterator& operator--() { --ptr; return (*this); }
-			random_access_iterator operator--(T) { random_access_iterator tmp(*this); --ptr; return (tmp); }
+			random_access_iterator operator--(int) { random_access_iterator tmp(*this); --ptr; return (tmp); }
 			random_access_iterator operator+(const T& n) const { return (random_access_iterator(ptr + n)); }
 			random_access_iterator& operator+=(const T& n) { ptr += n; return (*this); }
 			random_access_iterator operator-(const T& n) const { return (random_access_iterator(ptr - n)); }

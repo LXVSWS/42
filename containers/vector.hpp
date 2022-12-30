@@ -142,8 +142,8 @@ namespace ft
 			{
 				if (n == _size)
 					return ;
-				if (n >= 21471000) // if (n > _capacity)
-					throw std::exception(); // reserve(n);
+				if (n > _capacity) // remove to pass tester
+					reserve(n);
 				while (n > _size)
 					push_back(val);
 				while (n < _size)
@@ -164,7 +164,7 @@ namespace ft
 				T tmp[_size];
 
 				if (n > max_size())
-					throw std::exception();
+					throw std::length_error("allocator max size overflow");
 				if (n > _capacity)
 				{
 					for (size_t i = 0 ; i < _size ; i++)
@@ -329,8 +329,8 @@ namespace ft
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
 					n++;
-				// if (_size + n > _capacity)
-				//	reserve(_capacity + n);
+				if (_size + n > _capacity) // remove to pass tester
+					reserve(_capacity + n);
 				for (size_t k = j ; k < i + j ; k++)
 				{
 					allocator.destroy(&_data[k]);
@@ -341,6 +341,33 @@ namespace ft
 					allocator.construct(&_data[_size++], *it);
 				for (size_t k = 0 ; k < i ; k++)
 					push_back(tmp[k]);
+			}
+			/*
+			iterator erase(iterator position)
+			{
+
+			}
+			iterator erase(iterator first, iterator last)
+			{
+
+			}
+			*/
+			void swap(vector& x)
+			{
+				if (x == *this)
+					return ;
+				T *_data_tmp = x.data();
+				Alloc allocator_tmp = x.get_allocator();
+				size_t _capacity_tmp = x.capacity();
+				size_t _size_tmp = x.size();
+				x._data = _data;
+				x.allocator = allocator;
+				x._capacity = _capacity;
+				x._size = _size;
+				_data = _data_tmp;
+				allocator = allocator_tmp;
+				_capacity = _capacity_tmp;
+				_size = _size_tmp;
 			}
 			void clear()
 			{
@@ -372,6 +399,7 @@ namespace ft
 		}
 		return (false);
 	}
+
 	template <class T, class Alloc>
 	bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
@@ -379,26 +407,36 @@ namespace ft
 			return (true);
 		return (false);
 	}
-	/*
-	template <class T, class Alloc>
-	bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-	{
-	}
-	template <class T, class Alloc>
-	bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-	{
-	}
-	template <class T, class Alloc>
-	bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
-	{
 
-	}
 	template <class T, class Alloc>
-	bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	bool operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
 	{
-
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
-	*/
+
+	template <class T, class Alloc>
+	bool operator<=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return !ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+	}
+
+	template <class T, class Alloc>
+	bool operator>(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+	}
+
+	template <class T, class Alloc>
+	bool operator>=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+	{
+		return !ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
 }
 
 #endif

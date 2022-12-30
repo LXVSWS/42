@@ -11,12 +11,19 @@ int main()
 		test.push_back(99);
 		test.push_back(666);
 
-		ft::vector<int> test2(2, 42);
+		ft::vector<int> test2(2, 41);
 		test2.push_back(98);
-		test2.push_back(666);
+		test2.push_back(667);
 
-		std::cout << (test == test2 ? true : false) << std::endl;
-		std::cout << (test != test2 ? true : false) << std::endl;
+		test.swap(test2);
+
+		for (ft::vector<int>::iterator it = test.begin() ; it != test.end() ; ++it)
+			std::cout << *it << std::endl;
+
+		std::cout << (test < test2 ? true : false) << std::endl;
+		std::cout << (test > test2 ? true : false) << std::endl;
+		std::cout << (test <= test2 ? true : false) << std::endl;
+		std::cout << (test >= test2 ? true : false) << std::endl;
 	}
 	catch (std::exception &e)
 	{
