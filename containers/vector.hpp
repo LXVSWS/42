@@ -314,8 +314,33 @@ namespace ft
 			insert(iterator position, InputIterator first, InputIterator last)
 			{
 				if (position == end())
+				{
 					for (InputIterator i = first ; i != last ; ++i)
 						_data[_size++] = *i;
+					return ;
+				}
+				T tmp[_size];
+				size_t i = 0;
+				size_t j = 0;
+				for (ft::vector<int>::iterator it = position ; it != end() ; ++it)
+					tmp[i++] = *it;
+				for (ft::vector<int>::iterator it = begin() ; it != position ; ++it)
+					j++;
+				size_t n = 0;
+				for (InputIterator i = first ; i != last ; ++i)
+					n++;
+				// if (_size + n > _capacity)
+				//	reserve(_capacity + n);
+				for (size_t k = j ; k < i + j ; k++)
+				{
+					allocator.destroy(&_data[k]);
+					_size--;
+				}
+				n = 0;
+				for (InputIterator it = first ; it != last ; ++it)
+					allocator.construct(&_data[_size++], *it);
+				for (size_t k = 0 ; k < i ; k++)
+					push_back(tmp[k]);
 			}
 			void clear()
 			{
@@ -334,6 +359,46 @@ namespace ft
 			size_t _capacity;
 			size_t _size;
 	};
+
+	template <class T, class Alloc>
+	bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (size_t i = 0 ; i < lhs.size() ; ++i)
+				if (lhs[i] != rhs[i])
+					return (false);
+			return (true);
+		}
+		return (false);
+	}
+	template <class T, class Alloc>
+	bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (!(lhs == rhs))
+			return (true);
+		return (false);
+	}
+	/*
+	template <class T, class Alloc>
+	bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+	}
+	template <class T, class Alloc>
+	bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+	}
+	template <class T, class Alloc>
+	bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+
+	}
+	template <class T, class Alloc>
+	bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+
+	}
+	*/
 }
 
 #endif
