@@ -47,7 +47,7 @@ namespace ft
 					_data = allocator.allocate(1);
 			}
 			template <typename InputIterator>
-			vector(typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type first, // replace by own implementations
+			vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
 			InputIterator last, const Alloc& alloc = Alloc()) : allocator(alloc)
 			{
 				size_t n = 0;
@@ -229,7 +229,7 @@ namespace ft
 				return (_data);
 			}
 			template <typename InputIterator>
-			typename std::enable_if<!std::is_integral<InputIterator>::value>::type // replace by own implementations
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type
 			assign(InputIterator first, InputIterator last)
 			{
 				clear();
@@ -315,7 +315,7 @@ namespace ft
 					push_back(tmp[k]);
 			}
 			template <class InputIterator>
-			typename std::enable_if<!std::is_integral<InputIterator>::value>::type // replace by own implementations
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type
 			insert(iterator position, InputIterator first, InputIterator last)
 			{
 				if (position == end())
