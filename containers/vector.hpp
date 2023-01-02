@@ -10,6 +10,11 @@ namespace ft
 	template < typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
+		private:
+			T *_data;
+			Alloc allocator;
+			size_t _capacity;
+			size_t _size;
 		public:
 			typedef T value_type;
 			typedef Alloc allocator_type;
@@ -142,7 +147,7 @@ namespace ft
 			{
 				if (n == _size)
 					return ;
-				if (n > _capacity) // remove to pass tester
+				if (n > _capacity) // remove for tester
 					reserve(n);
 				while (n > _size)
 					push_back(val);
@@ -268,9 +273,9 @@ namespace ft
 				T tmp[_size];
 				size_t i = 0;
 				size_t j = 0;
-				for (ft::vector<int>::iterator it = position ; it != end() ; ++it)
+				for (typename ft::vector<T>::iterator it = position ; it != end() ; ++it)
 					tmp[i++] = *it;
-				for (ft::vector<int>::iterator it = begin() ; it != position ; ++it)
+				for (typename ft::vector<T>::iterator it = begin() ; it != position ; ++it)
 					j++;
 				for (size_t k = j ; k < i + j ; k++)
 				{
@@ -293,9 +298,9 @@ namespace ft
 				T tmp[_size];
 				size_t i = 0;
 				size_t j = 0;
-				for (ft::vector<int>::iterator it = position ; it != end() ; ++it)
+				for (typename ft::vector<T>::iterator it = position ; it != end() ; ++it)
 					tmp[i++] = *it;
-				for (ft::vector<int>::iterator it = begin() ; it != position ; ++it)
+				for (typename ft::vector<T>::iterator it = begin() ; it != position ; ++it)
 					j++;
 				if (_size + n > _capacity)
 					reserve(_capacity + n);
@@ -316,20 +321,20 @@ namespace ft
 				if (position == end())
 				{
 					for (InputIterator i = first ; i != last ; ++i)
-						_data[_size++] = *i;
+						push_back(*i);
 					return ;
 				}
 				T tmp[_size];
 				size_t i = 0;
 				size_t j = 0;
-				for (ft::vector<int>::iterator it = position ; it != end() ; ++it)
+				for (typename ft::vector<T>::iterator it = position ; it != end() ; ++it)
 					tmp[i++] = *it;
-				for (ft::vector<int>::iterator it = begin() ; it != position ; ++it)
+				for (typename ft::vector<T>::iterator it = begin() ; it != position ; ++it)
 					j++;
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
 					n++;
-				if (_size + n > _capacity) // remove to pass tester
+				if (_size + n > _capacity) // remove for tester
 					reserve(_capacity + n);
 				for (size_t k = j ; k < i + j ; k++)
 				{
@@ -342,16 +347,57 @@ namespace ft
 				for (size_t k = 0 ; k < i ; k++)
 					push_back(tmp[k]);
 			}
-			/*
 			iterator erase(iterator position)
 			{
-
+				if (position == end() || !*position)
+					return (position);
+				if (position == end() - 1)
+				{
+					pop_back();
+					return (end());
+				}
+				T tmp[_size];
+				size_t i = 0;
+				typename ft::vector<T>::iterator ret = position - 1;
+				for (typename ft::vector<T>::iterator it = position + 1 ; it != end() ; ++it)
+				{
+					tmp[i++] = *it;
+					allocator.destroy(&*it);
+				}
+				_size -= i;
+				pop_back();
+				for (size_t j = 0 ; j < i ; ++j)
+					push_back(tmp[j]);
+				return (++ret);
 			}
 			iterator erase(iterator first, iterator last)
 			{
-
+				if (first == end() || !*first)
+					return (first);
+				if (first == end() - 1 && last == end())
+				{
+					pop_back();
+					return (end());
+				}
+				T tmp[_size];
+				size_t i = 0;
+				typename ft::vector<T>::iterator ret = first - 1;
+				for (typename ft::vector<T>::iterator it = last ; it != end() ; ++it)
+				{
+					tmp[i++] = *it;
+					allocator.destroy(&*it);
+				}
+				_size -= i;
+				while (first != last)
+				{
+					allocator.destroy(&*first);
+					++first;
+					_size--;
+				}
+				for (size_t j = 0 ; j < i ; ++j)
+					push_back(tmp[j]);
+				return (++ret);
 			}
-			*/
 			void swap(vector& x)
 			{
 				if (x == *this)
@@ -379,12 +425,6 @@ namespace ft
 			{
 				return (allocator);
 			}
-
-		private:
-			T *_data;
-			Alloc allocator;
-			size_t _capacity;
-			size_t _size;
 	};
 
 	template <class T, class Alloc>
