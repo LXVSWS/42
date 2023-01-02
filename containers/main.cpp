@@ -5,10 +5,7 @@ int main()
 {
 	try
 	{
-		ft::vector<int> test(2, 42);
-		test.push_back(666);
-		for (ft::vector<int>::iterator it = test.begin() ; it != test.end() ; ++it)
-			std::cout << *it << std::endl;
+		ft::map<int, std::string> test;
 	}
 	catch (std::exception &e)
 	{

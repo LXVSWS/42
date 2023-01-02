@@ -147,7 +147,7 @@ namespace ft
 			{
 				if (n == _size)
 					return ;
-				if (n > _capacity) // remove for tester
+				if (n > _capacity) //
 					reserve(n);
 				while (n > _size)
 					push_back(val);
@@ -334,7 +334,7 @@ namespace ft
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
 					n++;
-				if (_size + n > _capacity) // remove for tester
+				if (_size + n > _capacity) //
 					reserve(_capacity + n);
 				for (size_t k = j ; k < i + j ; k++)
 				{
