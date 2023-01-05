@@ -1,23 +1,21 @@
 # TODO ON HOST
-# echo '127.0.0.1   login.42.fr' >> /etc/hosts
+# echo '127.0.0.1   lwyss.42.fr' >> /etc/hosts
 # add self signed certificates to authorized CA
-# add space to sustain images & containers
 
 up:
-	mkdir -p ~/Desktop/data/db ~/Desktop/data/wp
+	mkdir -p /home/lwyss/data/db /home/lwyss/data/wp
 	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
 	docker exec mariadb ./init.sh
 	curl https://login.42.fr/wp-admin/install.php\?step\=2 | grep "<code>"
-#	mkdir -p /home/login/data/db /home/login/data/wp
 
 stop:
-	docker-compose -f srcs/docker-compose.yml stop
+	docker compose -f srcs/docker-compose.yml stop
 
 start:
-	docker-compose -f srcs/docker-compose.yml start
+	docker compose -f srcs/docker-compose.yml start
 
 down:
-	docker-compose -f srcs/docker-compose.yml down
+	docker compose -f srcs/docker-compose.yml down
 
 ls:
 	echo "\n" && docker ps -a && echo "\nIMAGE ID\t\tSIZE\t\tIMAGE" && \
@@ -38,8 +36,7 @@ clean:
 
 vol:
 	docker volume rm db wp
-	rm -rf ~/Desktop/data
-#	rm -rf /home/login/data
+	rm -rf /home/lwyss/data
 
 rm:
 	docker system prune -af
