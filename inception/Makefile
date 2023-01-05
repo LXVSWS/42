@@ -4,7 +4,7 @@
 
 up:
 	mkdir -p /home/lwyss/data/db /home/lwyss/data/wp
-	docker-compose -f srcs/docker-compose.yml up -d --build --force-recreate
+	docker compose -f srcs/docker-compose.yml up -d --build --force-recreate
 	docker exec mariadb ./init.sh
 	curl https://login.42.fr/wp-admin/install.php\?step\=2 | grep "<code>"
 
