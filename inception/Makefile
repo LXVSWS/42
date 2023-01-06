@@ -1,12 +1,8 @@
-# TODO ON HOST
-# echo '127.0.0.1   lwyss.42.fr' >> /etc/hosts
-# add self signed certificates to authorized CA
-
 up:
 	mkdir -p /home/lwyss/data/db /home/lwyss/data/wp
 	docker compose -f srcs/docker-compose.yml up -d --build --force-recreate
 	docker exec mariadb ./init.sh
-	curl https://login.42.fr/wp-admin/install.php\?step\=2 | grep "<code>"
+	curl -k https://lwyss.42.fr/wp-admin/install.php\?step\=2 | grep "<code>"
 
 stop:
 	docker compose -f srcs/docker-compose.yml stop
