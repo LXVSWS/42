@@ -1,4 +1,4 @@
-# :desktop_computer: 42 projects :desktop_computer:
+# :desktop_computer: 42 projects (Common Core) :desktop_computer:
 
 ### 1) libft (125%)
 ### 2) ft_printf (100%)
@@ -14,3 +14,5 @@
 ### 12) C++ (100%)
 ### 13) inception (110%)
 ### 14) ft_containers (in progress...)
+### 15) ft_irc (idle)
+### 16) ft_transcendence (idle)
