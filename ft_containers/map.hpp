@@ -11,6 +11,13 @@ namespace ft
 	class map
 	{
 		private:
+			struct Node
+			{
+				ft::pair<const Key, T> val;
+				Node* left;
+				Node* right;
+			};
+			Node* root;
 			Compare compare;
 			Alloc allocator;
 		public:
@@ -34,13 +41,20 @@ namespace ft
 			typedef size_t size_type;
 
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) \
-			: compare(comp), allocator(alloc) { std::cout << "Map created" << std::endl; }
+			: compare(comp), allocator(alloc)
+			{
+				root = new Node;
+			}
 			/*
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), \
 			const allocator_type& alloc = allocator_type()) {}
 			map(const map& x) {}
 			*/
+			~map()
+			{
+				delete root;
+			}
 	};
 }
 
