@@ -13,7 +13,7 @@ namespace ft
 		private:
 			struct Node
 			{
-				ft::pair<const Key, T> val;
+				ft::pair<const Key, T>* val;
 				Node* left;
 				Node* right;
 			};
@@ -44,6 +44,7 @@ namespace ft
 			: compare(comp), allocator(alloc)
 			{
 				root = new Node;
+				root->val = allocator.allocate(1);
 			}
 			/*
 			template <class InputIterator>
@@ -53,7 +54,13 @@ namespace ft
 			*/
 			~map()
 			{
+				allocator.destroy(root->val);
+				allocator.deallocate(root->val, 1);
 				delete root;
+			}
+			void insert(const value_type& val) // return type : pair<iterator, bool>
+			{
+				allocator.construct(root->val, val);
 			}
 	};
 }

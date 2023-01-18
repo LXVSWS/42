@@ -6,6 +6,7 @@ int main()
 	try
 	{
 		ft::map<int, std::string> test;
+		test.insert(ft::pair<int, std::string>(1, "test"));
 	}
 	catch (std::exception &e)
 	{
