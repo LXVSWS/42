@@ -87,6 +87,29 @@ namespace ft
 			operator random_access_iterator<const T>() { return random_access_iterator<const T>(ptr); }
 	};
 
+	template <typename T>
+	class bidirectional_iterator : public iterator<bidirectional_iterator_tag, T>
+	{
+		private:
+			struct Node
+			{
+				T* val;
+				Node* left;
+				Node* right;
+			};
+			Node* root;
+		public:
+			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
+			typedef typename iterator_traits<bidirectional_iterator>::value_type		value_type;
+			typedef typename iterator_traits<bidirectional_iterator>::difference_type	difference_type;
+			typedef typename iterator_traits<bidirectional_iterator>::pointer			pointer;
+			typedef typename iterator_traits<bidirectional_iterator>::reference			reference;
+			typedef typename iterator_traits<bidirectional_iterator>::iterator_category	iterator_category;
+
+			bidirectional_iterator() : root(NULL) {}
+			bidirectional_iterator(T *src) : root(src) {}
+	};
+
 	template <class Iterator>
 	class reverse_iterator
 	{

@@ -7,6 +7,7 @@ int main()
 	{
 		ft::map<int, std::string> test;
 		test.insert(ft::pair<int, std::string>(1, "test"));
+		ft::map<int, std::string>::iterator test2;
 	}
 	catch (std::exception &e)
 	{
