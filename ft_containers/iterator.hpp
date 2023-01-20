@@ -87,17 +87,13 @@ namespace ft
 			operator random_access_iterator<const T>() { return random_access_iterator<const T>(ptr); }
 	};
 
-	template <typename T>
+	template <typename T, typename N>
 	class bidirectional_iterator : public iterator<bidirectional_iterator_tag, T>
 	{
 		private:
-			struct Node
-			{
-				T* val;
-				Node* left;
-				Node* right;
-			};
-			Node* root;
+			T* val;
+			N* left;
+			N* right;
 		public:
 			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
 			typedef typename iterator_traits<bidirectional_iterator>::value_type		value_type;
@@ -106,8 +102,20 @@ namespace ft
 			typedef typename iterator_traits<bidirectional_iterator>::reference			reference;
 			typedef typename iterator_traits<bidirectional_iterator>::iterator_category	iterator_category;
 
-			bidirectional_iterator() : root(NULL) {}
-			bidirectional_iterator(T *src) : root(src) {}
+			bidirectional_iterator() : val(NULL), left(NULL), right(NULL) {}
+			bidirectional_iterator(T* val, N* left, N* right) : val(val), left(left), right(right) {}
+			bidirectional_iterator(const bidirectional_iterator& src) : val(src.val), left(src.left), right(src.right) {}
+			bidirectional_iterator& operator=(const bidirectional_iterator& src)
+			{
+				val = src.val;
+				left = src.left;
+				right = src.right;
+				return (*this);
+			}
+			~bidirectional_iterator() {};
+
+			T& operator*() const { return (*val); }
+			T* operator->() const { return (val); }
 	};
 
 	template <class Iterator>
