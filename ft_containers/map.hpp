@@ -58,31 +58,57 @@ namespace ft
 				allocator.deallocate(root->val, 1);
 				delete root;
 			}
-			void insert(const value_type& val) // return type : pair<iterator, bool>
+			pair<iterator, bool> insert(const value_type& val)
 			{
+				Node* tmp = root;
 				if (!_size)
-					allocator.construct(root->val, val);
+					allocator.construct(tmp->val, val);
 				else
-				{
-					Node* leaf = root;
-					bool ab = key_compare()(val.first, leaf->val->first);
-					bool ba = key_compare()(leaf->val->first, val.first);
+					for (size_t i = 0 ; i < _size ; ++i)
+					{
+						bool ab = key_compare()(val.first, tmp->val->first);
+						bool ba = key_compare()(tmp->val->first, val.first);
 
-					if (!ab && !ba)
-						std::cout << "equivalent" << std::endl;
-					else if (ab)
-						std::cout << "value less than root" << std::endl;
-					else
-						std::cout << "value bigger than root" << std::endl;
-				}
+						if (!ab && !ba)
+							return (ft::make_pair<iterator, bool>(iterator(tmp->val, tmp), false));
+						else if (ab && !tmp->left)
+						{
+							tmp->left = new Node;
+							tmp->left->val = allocator.allocate(1);
+							allocator.construct(tmp->left->val, val);
+							tmp->par = tmp;
+							break;
+						}
+						else if (!ab && !tmp->right)
+						{
+							tmp->right = new Node;
+							tmp->right->val = allocator.allocate(1);
+							allocator.construct(tmp->right->val, val);
+							tmp->par = tmp;
+							break;
+						}
+						else if (ab && tmp->left)
+							tmp = tmp->left;
+						else if (!ab && tmp->right)
+							tmp = tmp->right;
+					}
 				_size++;
+				return (ft::make_pair<iterator, bool>(iterator(tmp->val, tmp), true));
 			}
 			iterator begin()
 			{
 				Node* leaf = root;
 				while (leaf->left)
 					leaf = leaf->left;
-				iterator i(leaf->val, leaf->par, leaf->left, leaf->right);
+				iterator i(leaf->val, leaf);
+				return (i);
+			}
+			iterator end()
+			{
+				Node* leaf = root;
+				while (leaf->right)
+					leaf = leaf->right;
+				iterator i(leaf->val, leaf);
 				return (i);
 			}
 	};

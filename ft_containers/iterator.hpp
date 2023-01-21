@@ -92,9 +92,7 @@ namespace ft
 	{
 		private:
 			T* val;
-			N* par;
-			N* left;
-			N* right;
+			N* node;
 		public:
 			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
 			typedef typename iterator_traits<bidirectional_iterator>::value_type		value_type;
@@ -103,16 +101,16 @@ namespace ft
 			typedef typename iterator_traits<bidirectional_iterator>::reference			reference;
 			typedef typename iterator_traits<bidirectional_iterator>::iterator_category	iterator_category;
 
-			bidirectional_iterator() : val(NULL), par(NULL), left(NULL), right(NULL) {}
-			bidirectional_iterator(T* val, N* par, N* left, N* right) : val(val), par(par), left(left), right(right) {}
-			bidirectional_iterator(const bidirectional_iterator& src) : val(src.val), par(src.par), left(src.left), right(src.right) {}
-			bidirectional_iterator& operator=(const bidirectional_iterator& src) { val = src.val; par = src.par; left = src.left; right = src.right; return (*this); }
+			bidirectional_iterator() : val(NULL), node(NULL) {}
+			bidirectional_iterator(T* val, N* node) : val(val), node(node) {}
+			bidirectional_iterator(const bidirectional_iterator& src) : val(src.val), node(src.node) {}
+			bidirectional_iterator& operator=(const bidirectional_iterator& src) { val = src.val; node = src.node; return (*this); }
 			~bidirectional_iterator() {};
 
 			T& operator*() const { return (*val); }
 			T* operator->() const { return (val); }
 			//bidirectional_iterator& operator++() {}
-			//bidirectional_iterator operator++(int) {}
+			bool operator!=(const bidirectional_iterator& src) const { return (val != src.val); }
 	};
 
 	template <class Iterator>
