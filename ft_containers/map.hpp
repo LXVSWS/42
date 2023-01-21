@@ -14,13 +14,13 @@ namespace ft
 			struct Node
 			{
 				ft::pair<const Key, T>* val;
+				Node* par;
 				Node* left;
 				Node* right;
 			};
 			Node* root;
 			Compare compare;
 			Alloc allocator;
-			size_t _capacity;
 			size_t _size;
 		public:
 			typedef Key key_type;
@@ -41,7 +41,7 @@ namespace ft
 			typedef size_t size_type;
 
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) \
-			: compare(comp), allocator(alloc), _capacity(1), _size(0)
+			: compare(comp), allocator(alloc), _size(0)
 			{
 				root = new Node;
 				root->val = allocator.allocate(1);
@@ -62,11 +62,27 @@ namespace ft
 			{
 				if (!_size)
 					allocator.construct(root->val, val);
+				else
+				{
+					Node* leaf = root;
+					bool ab = key_compare()(val.first, leaf->val->first);
+					bool ba = key_compare()(leaf->val->first, val.first);
+
+					if (!ab && !ba)
+						std::cout << "equivalent" << std::endl;
+					else if (ab)
+						std::cout << "value less than root" << std::endl;
+					else
+						std::cout << "value bigger than root" << std::endl;
+				}
 				_size++;
 			}
 			iterator begin()
 			{
-				iterator i(root->val, root->left, root->right);
+				Node* leaf = root;
+				while (leaf->left)
+					leaf = leaf->left;
+				iterator i(leaf->val, leaf->par, leaf->left, leaf->right);
 				return (i);
 			}
 	};
