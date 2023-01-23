@@ -91,7 +91,6 @@ namespace ft
 	class bidirectional_iterator : public iterator<bidirectional_iterator_tag, T>
 	{
 		private:
-			T* val;
 			N* node;
 		public:
 			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
@@ -101,22 +100,32 @@ namespace ft
 			typedef typename iterator_traits<bidirectional_iterator>::reference			reference;
 			typedef typename iterator_traits<bidirectional_iterator>::iterator_category	iterator_category;
 
-			bidirectional_iterator() : val(NULL), node(NULL) {}
-			bidirectional_iterator(T* val, N* node) : val(val), node(node) {}
-			bidirectional_iterator(const bidirectional_iterator& src) : val(src.val), node(src.node) {}
-			bidirectional_iterator& operator=(const bidirectional_iterator& src) { val = src.val; node = src.node; return (*this); }
+			bidirectional_iterator() : node(NULL) {}
+			bidirectional_iterator(N* node) : node(node) {}
+			bidirectional_iterator(const bidirectional_iterator& src) : node(src.node) {}
+			bidirectional_iterator& operator=(const bidirectional_iterator& src) { node = src.node; return (*this); }
 			~bidirectional_iterator() {};
 
-			T& operator*() const { return (*val); }
+			T& operator*() const { return (node->val); }
 			T* operator->() const {
-				std::cout << "\n" << node << "\nparent: " << node->par << "\nleft: " << node->left << "\nright: " << node->right << std::endl; return (val); }
+				std::cout << "\n" << node << "\nparent: " << node->par << "\nleft: " << node->left << "\nright: " << node->right << std::endl; return (node->val); }
 			bidirectional_iterator& operator++()
 			{
 				if (node->right)
+				{
 					node = node->right;
-				else
+					while (node && node->left)
+						node = node->left;
+				}
+				else if (node->par)
+				{
+					N* tmp = node;
 					node = node->par;
-				val = node->val;
+					while (node && node->left != tmp)
+						node = node->left;
+				}
+				if (!node)
+					throw std::exception();
 				return (*this);
 			}
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }

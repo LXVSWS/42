@@ -64,7 +64,7 @@ namespace ft
 				{
 					allocator.construct(root->val, val);
 					_size++;
-					return (ft::make_pair<iterator, bool>(iterator(root->val, root), true));
+					return (ft::make_pair<iterator, bool>(iterator(root), true));
 				}
 				Node* tmp = root;
 				while (1)
@@ -72,7 +72,7 @@ namespace ft
 					bool ab = key_compare()(val.first, tmp->val->first);
 					bool ba = key_compare()(tmp->val->first, val.first);
 					if (!ab && !ba)
-						return (ft::make_pair<iterator, bool>(iterator(tmp->val, tmp), false));
+						return (ft::make_pair<iterator, bool>(iterator(tmp), false));
 					else if (ab && !tmp->left)
 					{
 						tmp->left = new Node;
@@ -80,7 +80,7 @@ namespace ft
 						allocator.construct(tmp->left->val, val);
 						tmp->left->par = tmp;
 						_size++;
-						return (ft::make_pair<iterator, bool>(iterator(tmp->left->val, tmp->left), true));
+						return (ft::make_pair<iterator, bool>(iterator(tmp->left), true));
 					}
 					else if (!ab && !tmp->right)
 					{
@@ -89,7 +89,7 @@ namespace ft
 						allocator.construct(tmp->right->val, val);
 						tmp->right->par = tmp;
 						_size++;
-						return (ft::make_pair<iterator, bool>(iterator(tmp->right->val, tmp->right), true));
+						return (ft::make_pair<iterator, bool>(iterator(tmp->right), true));
 					}
 					else if (ab && tmp->left)
 						tmp = tmp->left;
@@ -102,7 +102,7 @@ namespace ft
 				Node* leaf = root;
 				while (leaf->left)
 					leaf = leaf->left;
-				iterator i(leaf->val, leaf);
+				iterator i(leaf);
 				return (i);
 			}
 			iterator end()
@@ -110,7 +110,7 @@ namespace ft
 				Node* leaf = root;
 				while (leaf->right)
 					leaf = leaf->right;
-				iterator i(leaf->val, leaf);
+				iterator i(leaf);
 				return (i);
 			}
 	};
