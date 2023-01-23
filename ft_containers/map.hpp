@@ -60,40 +60,42 @@ namespace ft
 			}
 			pair<iterator, bool> insert(const value_type& val)
 			{
-				Node* tmp = root;
 				if (!_size)
-					allocator.construct(tmp->val, val);
-				else
-					for (size_t i = 0 ; i < _size ; ++i)
+				{
+					allocator.construct(root->val, val);
+					_size++;
+					return (ft::make_pair<iterator, bool>(iterator(root->val, root), true));
+				}
+				Node* tmp = root;
+				while (1)
+				{
+					bool ab = key_compare()(val.first, tmp->val->first);
+					bool ba = key_compare()(tmp->val->first, val.first);
+					if (!ab && !ba)
+						return (ft::make_pair<iterator, bool>(iterator(tmp->val, tmp), false));
+					else if (ab && !tmp->left)
 					{
-						bool ab = key_compare()(val.first, tmp->val->first);
-						bool ba = key_compare()(tmp->val->first, val.first);
-
-						if (!ab && !ba)
-							return (ft::make_pair<iterator, bool>(iterator(tmp->val, tmp), false));
-						else if (ab && !tmp->left)
-						{
-							tmp->left = new Node;
-							tmp->left->val = allocator.allocate(1);
-							allocator.construct(tmp->left->val, val);
-							tmp->par = tmp;
-							break;
-						}
-						else if (!ab && !tmp->right)
-						{
-							tmp->right = new Node;
-							tmp->right->val = allocator.allocate(1);
-							allocator.construct(tmp->right->val, val);
-							tmp->par = tmp;
-							break;
-						}
-						else if (ab && tmp->left)
-							tmp = tmp->left;
-						else if (!ab && tmp->right)
-							tmp = tmp->right;
+						tmp->left = new Node;
+						tmp->left->val = allocator.allocate(1);
+						allocator.construct(tmp->left->val, val);
+						tmp->left->par = tmp;
+						_size++;
+						return (ft::make_pair<iterator, bool>(iterator(tmp->left->val, tmp->left), true));
 					}
-				_size++;
-				return (ft::make_pair<iterator, bool>(iterator(tmp->val, tmp), true));
+					else if (!ab && !tmp->right)
+					{
+						tmp->right = new Node;
+						tmp->right->val = allocator.allocate(1);
+						allocator.construct(tmp->right->val, val);
+						tmp->right->par = tmp;
+						_size++;
+						return (ft::make_pair<iterator, bool>(iterator(tmp->right->val, tmp->right), true));
+					}
+					else if (ab && tmp->left)
+						tmp = tmp->left;
+					else if (!ab && tmp->right)
+						tmp = tmp->right;
+				}
 			}
 			iterator begin()
 			{

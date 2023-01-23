@@ -108,9 +108,18 @@ namespace ft
 			~bidirectional_iterator() {};
 
 			T& operator*() const { return (*val); }
-			T* operator->() const { return (val); }
-			//bidirectional_iterator& operator++() {}
-			bool operator!=(const bidirectional_iterator& src) const { return (val != src.val); }
+			T* operator->() const {
+				std::cout << "\n" << node << "\nparent: " << node->par << "\nleft: " << node->left << "\nright: " << node->right << std::endl; return (val); }
+			bidirectional_iterator& operator++()
+			{
+				if (node->right)
+					node = node->right;
+				else
+					node = node->par;
+				val = node->val;
+				return (*this);
+			}
+			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
 	};
 
 	template <class Iterator>
