@@ -132,6 +132,8 @@ namespace ft
 					node = prev;
 					prev = NULL;
 				}
+				if (!node && !prev)
+					throw std::exception();
 				return (*this);
 			}
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
