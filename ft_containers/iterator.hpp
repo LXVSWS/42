@@ -92,6 +92,7 @@ namespace ft
 	{
 		private:
 			N* node;
+			N* prev;
 		public:
 			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
 			typedef typename iterator_traits<bidirectional_iterator>::value_type		value_type;
@@ -114,6 +115,8 @@ namespace ft
 				if (node->right)
 				{
 					node = node->right;
+					if (node->left)
+						prev = node;
 					while (node && node->left)
 						node = node->left;
 				}
@@ -124,8 +127,11 @@ namespace ft
 					while (node && node->left != tmp)
 						node = node->left;
 				}
-				if (!node)
-					throw std::exception();
+				if (!node && prev)
+				{
+					node = prev;
+					prev = NULL;
+				}
 				return (*this);
 			}
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
