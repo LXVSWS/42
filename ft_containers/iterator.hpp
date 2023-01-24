@@ -116,7 +116,7 @@ namespace ft
 				{
 					node = node->right;
 					if (node->left)
-						prev = node;
+						prev = node->left;
 					while (node && node->left)
 						node = node->left;
 				}
