@@ -46,17 +46,34 @@ namespace ft
 				root = new Node;
 				root->val = allocator.allocate(1);
 			}
-			/*
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), \
-			const allocator_type& alloc = allocator_type()) {}
-			map(const map& x) {}
-			*/
+			const allocator_type& alloc = allocator_type()) : compare(comp), allocator(alloc), _size(0)
+			{
+				root = new Node;
+				root->val = allocator.allocate(1);
+				while (first != last)
+				{
+					insert(*first);
+					++first;
+				}
+			}
+			map(const map& x) : compare(x.compare), allocator(x.allocator)
+			{
+				root = new Node;
+				root->val = allocator.allocate(1);
+				for (const_iterator it = x.begin() ; it != x.end() ; ++it)
+					insert(*it);
+			}
 			~map()
 			{
 				allocator.destroy(root->val);
 				allocator.deallocate(root->val, 1);
 				delete root;
+			}
+			size_type size() const
+			{
+				return (_size);
 			}
 			pair<iterator, bool> insert(const value_type& val)
 			{
@@ -105,9 +122,48 @@ namespace ft
 				iterator i(leaf);
 				return (i);
 			}
+			const_iterator begin() const
+			{
+				Node* leaf = root;
+				while (leaf->left)
+					leaf = leaf->left;
+				const_iterator i(leaf);
+				return (i);
+			}
 			iterator end()
 			{
 				iterator i(NULL);
+				return (i);
+			}
+			const_iterator end() const
+			{
+				const_iterator i(NULL);
+				return (i);
+			}
+			reverse_iterator rbegin()
+			{
+				Node* leaf = root;
+				while (leaf->right)
+					leaf = leaf->right;
+				reverse_iterator i(leaf);
+				return (i);
+			}
+			const_reverse_iterator rbegin() const
+			{
+				Node* leaf = root;
+				while (leaf->right)
+					leaf = leaf->right;
+				const_reverse_iterator i(leaf);
+				return (i);
+			}
+			reverse_iterator rend()
+			{
+				reverse_iterator i(NULL);
+				return (i);
+			}
+			const_reverse_iterator rend() const
+			{
+				const_reverse_iterator i(NULL);
 				return (i);
 			}
 	};

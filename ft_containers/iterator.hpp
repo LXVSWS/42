@@ -170,6 +170,7 @@ namespace ft
 				*this = operator--();
 				return (tmp);
 			}
+			bool operator==(const bidirectional_iterator& src) const { return (node == src.node); }
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
 	};
 
