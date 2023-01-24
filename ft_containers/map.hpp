@@ -107,10 +107,7 @@ namespace ft
 			}
 			iterator end()
 			{
-				Node* leaf = root;
-				while (leaf->right)
-					leaf = leaf->right;
-				iterator i(leaf);
+				iterator i(NULL);
 				return (i);
 			}
 	};

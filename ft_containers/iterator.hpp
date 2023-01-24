@@ -92,7 +92,6 @@ namespace ft
 	{
 		private:
 			N* node;
-			N* prev;
 		public:
 			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
 			typedef typename iterator_traits<bidirectional_iterator>::value_type		value_type;
@@ -107,34 +106,69 @@ namespace ft
 			bidirectional_iterator& operator=(const bidirectional_iterator& src) { node = src.node; return (*this); }
 			~bidirectional_iterator() {};
 
-			T& operator*() const { return (node->val); }
-			T* operator->() const {
-				std::cout << "\n" << node << "\nparent: " << node->par << "\nleft: " << node->left << "\nright: " << node->right << std::endl; return (node->val); }
+			T& operator*() const
+			{
+				if (!node)
+					throw std::exception();
+				return (*(node->val));
+			}
+			T* operator->() const
+			{
+				if (!node)
+					throw std::exception();
+				return (node->val);
+			}
 			bidirectional_iterator& operator++()
 			{
+				if (!node)
+					throw std::exception();
 				if (node->right)
 				{
 					node = node->right;
-					if (node->left)
-						prev = node->left;
 					while (node && node->left)
 						node = node->left;
+					return (*this);
 				}
-				else if (node->par)
+				N* parent = node->par;
+				while (parent && parent->left != node)
 				{
-					N* tmp = node;
-					node = node->par;
-					while (node && node->left != tmp)
-						node = node->left;
+					node = parent;
+					parent = parent->par;
 				}
-				if (!node && prev)
-				{
-					node = prev;
-					prev = NULL;
-				}
-				if (!node && !prev)
-					throw std::exception();
+				node = parent;
 				return (*this);
+			}
+			bidirectional_iterator operator++(int)
+			{
+				bidirectional_iterator tmp = *this;
+				*this = operator++();
+				return (tmp);
+			}
+			bidirectional_iterator& operator--()
+			{
+				if (!node)
+					throw std::exception();
+				if (node->left)
+				{
+					node = node->left;
+					while (node && node->right)
+						node = node->right;
+					return (*this);
+				}
+				N* parent = node->par;
+				while (parent && parent->right != node)
+				{
+					node = parent;
+					parent = parent->par;
+				}
+				node = parent;
+				return (*this);
+			}
+			bidirectional_iterator operator--(int)
+			{
+				bidirectional_iterator tmp = *this;
+				*this = operator--();
+				return (tmp);
 			}
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
 	};
