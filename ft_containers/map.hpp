@@ -19,6 +19,7 @@ namespace ft
 				Node* right;
 			};
 			Node* root;
+			Node* _end;
 			Compare compare;
 			Alloc allocator;
 			size_t _size;
@@ -58,7 +59,7 @@ namespace ft
 					++first;
 				}
 			}
-			map(const map& x) : compare(x.compare), allocator(x.allocator)
+			map(const map& x) : compare(x.compare), allocator(x.allocator), _size(0)
 			{
 				root = new Node;
 				root->val = allocator.allocate(1);
@@ -67,8 +68,11 @@ namespace ft
 			}
 			~map()
 			{
-				allocator.destroy(root->val);
-				allocator.deallocate(root->val, 1);
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					allocator.destroy(&*it);
+					allocator.deallocate(&*it, 1);
+				}
 				delete root;
 			}
 			size_type size() const
