@@ -108,15 +108,19 @@ namespace ft
 
 			T& operator*() const
 			{
-				if (!node)
+				if (!node || !node->val)
 					throw std::exception();
 				return (*(node->val));
 			}
 			T* operator->() const
 			{
-				if (!node)
+				if (!node || !node->val)
 					throw std::exception();
 				return (node->val);
+			}
+			N* operator&() const
+			{
+				return (node);
 			}
 			bidirectional_iterator& operator++()
 			{

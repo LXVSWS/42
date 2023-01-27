@@ -45,35 +45,43 @@ namespace ft
 			: compare(comp), allocator(alloc), _size(0)
 			{
 				root = new Node;
-				root->val = allocator.allocate(1);
+				_end = root;
 			}
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), \
 			const allocator_type& alloc = allocator_type()) : compare(comp), allocator(alloc), _size(0)
 			{
 				root = new Node;
-				root->val = allocator.allocate(1);
-				while (first != last)
-				{
-					insert(*first);
-					++first;
-				}
+				_end = root;
+				for (iterator it = first ; it != last ; ++it)
+					insert(*it);
 			}
 			map(const map& x) : compare(x.compare), allocator(x.allocator), _size(0)
 			{
 				root = new Node;
-				root->val = allocator.allocate(1);
+				_end = root;
 				for (const_iterator it = x.begin() ; it != x.end() ; ++it)
 					insert(*it);
 			}
 			~map()
 			{
+				Node *tmp[_size];
+				size_t i = 0;
 				for (iterator it = begin() ; it != end() ; ++it)
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
+					tmp[i++] = &it;
 				}
-				delete root;
+				for (size_t j = 0 ; j < i ; ++j)
+					delete tmp[j];
+				if (_size)
+					delete _end;
+			}
+			map& operator=(const map& x)
+			{
+				(void)x;
+				return (*this);
 			}
 			size_type size() const
 			{
@@ -83,6 +91,10 @@ namespace ft
 			{
 				if (!_size)
 				{
+					root->right = new Node;
+					_end = root->right;
+					_end->par = root;
+					root->val = allocator.allocate(1);
 					allocator.construct(root->val, val);
 					_size++;
 					return (ft::make_pair<iterator, bool>(iterator(root), true));
@@ -106,6 +118,17 @@ namespace ft
 					else if (!ab && !tmp->right)
 					{
 						tmp->right = new Node;
+						tmp->right->val = allocator.allocate(1);
+						allocator.construct(tmp->right->val, val);
+						tmp->right->par = tmp;
+						_size++;
+						return (ft::make_pair<iterator, bool>(iterator(tmp->right), true));
+					}
+					else if (!ab && tmp->right == _end)
+					{
+						tmp->right->right = new Node;
+						_end = tmp->right->right;
+						_end->par = tmp->right;
 						tmp->right->val = allocator.allocate(1);
 						allocator.construct(tmp->right->val, val);
 						tmp->right->par = tmp;
@@ -136,18 +159,18 @@ namespace ft
 			}
 			iterator end()
 			{
-				iterator i(NULL);
+				iterator i(_end);
 				return (i);
 			}
 			const_iterator end() const
 			{
-				const_iterator i(NULL);
+				const_iterator i(_end);
 				return (i);
 			}
 			reverse_iterator rbegin()
 			{
 				Node* leaf = root;
-				while (leaf->right)
+				while (leaf->right && leaf->right != _end)
 					leaf = leaf->right;
 				reverse_iterator i(leaf);
 				return (i);
@@ -155,7 +178,7 @@ namespace ft
 			const_reverse_iterator rbegin() const
 			{
 				Node* leaf = root;
-				while (leaf->right)
+				while (leaf->right && leaf->right != _end)
 					leaf = leaf->right;
 				const_reverse_iterator i(leaf);
 				return (i);
