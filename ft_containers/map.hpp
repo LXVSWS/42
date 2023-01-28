@@ -53,7 +53,7 @@ namespace ft
 			{
 				root = new Node;
 				_end = root;
-				for (iterator it = first ; it != last ; ++it)
+				for (const_iterator it = first ; it != last ; ++it)
 					insert(*it);
 			}
 			map(const map& x) : compare(x.compare), allocator(x.allocator), _size(0)
@@ -75,12 +75,28 @@ namespace ft
 				}
 				for (size_t j = 0 ; j < i ; ++j)
 					delete tmp[j];
-				if (_size)
+				if (_end)
 					delete _end;
 			}
 			map& operator=(const map& x)
 			{
-				(void)x;
+				Node *tmp[_size];
+				size_t i = 0;
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					allocator.destroy(&*it);
+					allocator.deallocate(&*it, 1);
+					tmp[i++] = &it;
+				}
+				for (size_t j = 0 ; j < i ; ++j)
+					delete tmp[j];
+				if (_end)
+					delete _end;
+				_size = 0;
+				root = new Node;
+				_end = root;
+				for (const_iterator it = x.begin() ; it != x.end() ; ++it)
+					insert(*it);
 				return (*this);
 			}
 			size_type size() const
@@ -169,28 +185,22 @@ namespace ft
 			}
 			reverse_iterator rbegin()
 			{
-				Node* leaf = root;
-				while (leaf->right && leaf->right != _end)
-					leaf = leaf->right;
-				reverse_iterator i(leaf);
+				reverse_iterator i(_end);
 				return (i);
 			}
 			const_reverse_iterator rbegin() const
 			{
-				Node* leaf = root;
-				while (leaf->right && leaf->right != _end)
-					leaf = leaf->right;
-				const_reverse_iterator i(leaf);
+				const_reverse_iterator i(_end);
 				return (i);
 			}
 			reverse_iterator rend()
 			{
-				reverse_iterator i(NULL);
+				reverse_iterator i(begin());
 				return (i);
 			}
 			const_reverse_iterator rend() const
 			{
-				const_reverse_iterator i(NULL);
+				const_reverse_iterator i(begin());
 				return (i);
 			}
 	};

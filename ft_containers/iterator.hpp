@@ -176,6 +176,7 @@ namespace ft
 			}
 			bool operator==(const bidirectional_iterator& src) const { return (node == src.node); }
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
+			operator bidirectional_iterator<const T, N>() { return bidirectional_iterator<const T, N>(node); }
 	};
 
 	template <class Iterator>
