@@ -26,8 +26,8 @@ namespace ft
 			typedef random_access_iterator<const value_type> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-			typedef ptrdiff_t difference_type;
-			typedef size_t size_type;
+			typedef std::ptrdiff_t difference_type;
+			typedef std::size_t size_type;
 
 			explicit vector(const Alloc& alloc = Alloc()) \
 			: allocator(alloc), _capacity(1), _size(0)

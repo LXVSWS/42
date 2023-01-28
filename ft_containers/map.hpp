@@ -38,8 +38,8 @@ namespace ft
 			typedef ft::bidirectional_iterator<const value_type, Node> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-			typedef ptrdiff_t difference_type;
-			typedef size_t size_type;
+			typedef std::ptrdiff_t difference_type;
+			typedef std::size_t size_type;
 
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) \
 			: compare(comp), allocator(alloc), _size(0)
@@ -99,9 +99,65 @@ namespace ft
 					insert(*it);
 				return (*this);
 			}
+			iterator begin()
+			{
+				Node* leaf = root;
+				while (leaf->left)
+					leaf = leaf->left;
+				iterator i(leaf);
+				return (i);
+			}
+			const_iterator begin() const
+			{
+				Node* leaf = root;
+				while (leaf->left)
+					leaf = leaf->left;
+				const_iterator i(leaf);
+				return (i);
+			}
+			iterator end()
+			{
+				iterator i(_end);
+				return (i);
+			}
+			const_iterator end() const
+			{
+				const_iterator i(_end);
+				return (i);
+			}
+			reverse_iterator rbegin()
+			{
+				reverse_iterator i(_end);
+				return (i);
+			}
+			const_reverse_iterator rbegin() const
+			{
+				const_reverse_iterator i(_end);
+				return (i);
+			}
+			reverse_iterator rend()
+			{
+				reverse_iterator i(begin());
+				return (i);
+			}
+			const_reverse_iterator rend() const
+			{
+				const_reverse_iterator i(begin());
+				return (i);
+			}
+			bool empty() const
+			{
+				if (!_size)
+					return (true);
+				return (false);
+			}
 			size_type size() const
 			{
 				return (_size);
+			}
+			size_type max_size() const
+			{
+				return (allocator.max_size());
 			}
 			pair<iterator, bool> insert(const value_type& val)
 			{
@@ -157,51 +213,15 @@ namespace ft
 						tmp = tmp->right;
 				}
 			}
-			iterator begin()
+			iterator insert(iterator position, const value_type& val)
 			{
-				Node* leaf = root;
-				while (leaf->left)
-					leaf = leaf->left;
-				iterator i(leaf);
-				return (i);
+				(void)position;
+				pair<iterator, bool> ret(insert(val));
+				return (ret.first);
 			}
-			const_iterator begin() const
+			allocator_type get_allocator() const
 			{
-				Node* leaf = root;
-				while (leaf->left)
-					leaf = leaf->left;
-				const_iterator i(leaf);
-				return (i);
-			}
-			iterator end()
-			{
-				iterator i(_end);
-				return (i);
-			}
-			const_iterator end() const
-			{
-				const_iterator i(_end);
-				return (i);
-			}
-			reverse_iterator rbegin()
-			{
-				reverse_iterator i(_end);
-				return (i);
-			}
-			const_reverse_iterator rbegin() const
-			{
-				const_reverse_iterator i(_end);
-				return (i);
-			}
-			reverse_iterator rend()
-			{
-				reverse_iterator i(begin());
-				return (i);
-			}
-			const_reverse_iterator rend() const
-			{
-				const_reverse_iterator i(begin());
-				return (i);
+				return (allocator);
 			}
 	};
 }
