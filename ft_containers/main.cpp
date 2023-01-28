@@ -17,6 +17,8 @@ int main()
 		for (ft::map<int, std::string>::iterator it = test.begin() ; it != test.end() ; ++it)
 			std::cout << &it << " : " << it->first << " => " << it->second << std::endl;
 		std::cout << "size : " << test.size() << std::endl;
+
+		ft::vector<int> test2(42, 42);
 	}
 	catch (std::exception &e)
 	{

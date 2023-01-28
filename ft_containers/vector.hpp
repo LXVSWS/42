@@ -15,6 +15,7 @@ namespace ft
 			Alloc allocator;
 			size_t _capacity;
 			size_t _size;
+			size_t alloc_first_value;
 		public:
 			typedef T value_type;
 			typedef Alloc allocator_type;
@@ -26,25 +27,30 @@ namespace ft
 			typedef random_access_iterator<const value_type> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-			typedef std::ptrdiff_t difference_type;
-			typedef std::size_t size_type;
+			typedef ptrdiff_t difference_type;
+			typedef size_t size_type;
 
 			explicit vector(const Alloc& alloc = Alloc()) \
-			: allocator(alloc), _capacity(1), _size(0)
+			: allocator(alloc), _capacity(0), _size(0)
 			{
 				_data = allocator.allocate(1);
+				alloc_first_value = 1;
 			}
 			explicit vector(size_t n, const T& val = value_type(), const Alloc& alloc = Alloc()) \
-			: allocator(alloc), _capacity(n > 0 ? n : 1), _size(n)
+			: allocator(alloc), _capacity(n), _size(n)
 			{
 				if (n)
 				{
 					_data = allocator.allocate(n);
 					for (size_t i = 0 ; i < n ; i++)
 						allocator.construct(&_data[i], val);
+					alloc_first_value = n;
 				}
 				else
+				{
 					_data = allocator.allocate(1);
+					alloc_first_value = 1;
+				}
 			}
 			template <typename InputIterator>
 			vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
@@ -58,8 +64,9 @@ namespace ft
 				else
 				{
 					_data = allocator.allocate(1);
-					_capacity = 1;
+					_capacity = 0;
 					_size = 0;
+					alloc_first_value = 1;
 					return ;
 				}
 				_capacity = n;
@@ -67,10 +74,20 @@ namespace ft
 				for (InputIterator i = first ; i != last ; ++i)
 					allocator.construct(&_data[n++], *i);
 				_size = n;
+				alloc_first_value = n;
 			}
-			vector(const vector& src) : allocator(src.allocator), _capacity(src._capacity), _size(src._size)
+			vector(const vector& src) : allocator(src.allocator), _capacity(src._size), _size(src._size)
 			{
-				_data = allocator.allocate(src._capacity);
+				if (src._size)
+				{
+					_data = allocator.allocate(src._size);
+					alloc_first_value = src._size;
+				}
+				else
+				{
+					_data = allocator.allocate(1);
+					alloc_first_value = 1;
+				}
 				for (size_t i = 0 ; i < src._size ; i++)
 					allocator.construct(&_data[i], src._data[i]);
 			}
@@ -78,7 +95,7 @@ namespace ft
 			{
 				for (size_t i = 0 ; i < _size ; i++)
 					allocator.destroy(&_data[i]);
-				allocator.deallocate(_data, _capacity);
+				allocator.deallocate(_data, alloc_first_value);
 				_data = NULL;
 			}
 			vector& operator=(const vector& src)
@@ -141,13 +158,16 @@ namespace ft
 			}
 			size_type max_size() const
 			{
-				return (allocator.max_size());
+				size_type i = allocator.max_size();
+				if (i > 9223372036854775807)
+					return (9223372036854775807);
+				return (i);
 			}
 			void resize(size_type n, value_type val = value_type())
 			{
 				if (n == _size)
 					return ;
-				if (n > _capacity) //
+				if (n > _size + _capacity)
 					reserve(n);
 				while (n > _size)
 					push_back(val);
@@ -177,11 +197,12 @@ namespace ft
 						tmp[i] = _data[i];
 						allocator.destroy(&_data[i]);
 					}
-					allocator.deallocate(_data, _capacity);
+					allocator.deallocate(_data, alloc_first_value);
 					_data = allocator.allocate(n);
 					_capacity = n;
 					for (size_t i = 0 ; i < _size ; i++)
 						allocator.construct(&_data[i], tmp[i]);
+					alloc_first_value = n;
 				}
 			}
 			reference operator[](size_type n)
@@ -253,6 +274,8 @@ namespace ft
 			}
 			void push_back(const T &val)
 			{
+				if (!_capacity)
+					reserve(1);
 				if (_size >= _capacity)
 					reserve(_capacity * 2);
 				allocator.construct(&_data[_size], val);

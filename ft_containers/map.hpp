@@ -38,8 +38,8 @@ namespace ft
 			typedef ft::bidirectional_iterator<const value_type, Node> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-			typedef std::ptrdiff_t difference_type;
-			typedef std::size_t size_type;
+			typedef ptrdiff_t difference_type;
+			typedef size_t size_type;
 
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) \
 			: compare(comp), allocator(alloc), _size(0)
@@ -71,7 +71,7 @@ namespace ft
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
-					tmp[i++] = &it;
+					tmp[i++] = it.base();
 				}
 				for (size_t j = 0 ; j < i ; ++j)
 					delete tmp[j];
@@ -86,7 +86,7 @@ namespace ft
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
-					tmp[i++] = &it;
+					tmp[i++] = it.base();
 				}
 				for (size_t j = 0 ; j < i ; ++j)
 					delete tmp[j];
