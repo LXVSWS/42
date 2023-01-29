@@ -189,7 +189,7 @@ namespace ft
 				T tmp[_size];
 
 				if (n > max_size())
-					throw std::length_error("allocator max size overflow");
+					throw std::length_error("Exception::AllocatorOverflow");
 				if (n > _capacity)
 				{
 					for (size_t i = 0 ; i < _size ; i++)

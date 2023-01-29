@@ -1,6 +1,8 @@
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
 
+#include <iostream>
+
 namespace ft
 {
 	struct input_iterator_tag {};
@@ -214,13 +216,13 @@ namespace ft
 			N* base() const { return (node); }
 			T& operator*() const
 			{
-				if (!node || !node->val)
+				if (!node)
 					throw std::exception();
 				return (*(node->val));
 			}
 			T* operator->() const
 			{
-				if (!node || !node->val)
+				if (!node)
 					throw std::exception();
 				return (node->val);
 			}

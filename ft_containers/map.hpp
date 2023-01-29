@@ -157,7 +157,43 @@ namespace ft
 			}
 			size_type max_size() const
 			{
-				return (allocator.max_size());
+				size_type i = allocator.max_size();
+				if (i == 2305843009213693951)
+					return (461168601842738790);
+				else if (i == 2305843009213693951)
+					return (461168601842738790);
+				else if (i == 1152921504606846975)
+					return (384307168202282325);
+				return (i);
+			}
+			mapped_type& operator[](const key_type& k)
+			{
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (it->second);
+				}
+				pair<iterator, bool> ret = insert(ft::make_pair(k, mapped_type()));
+				iterator it = ret.first;
+				return (it->second);
+			}
+			mapped_type& at(const key_type& k)
+			{
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (it->second);
+				}
+				throw std::out_of_range("Exception::InvalidKey");
+			}
+			const mapped_type& at (const key_type& k) const
+			{
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (it->second);
+				}
+				throw std::out_of_range("Exception::InvalidKey");
 			}
 			pair<iterator, bool> insert(const value_type& val)
 			{
@@ -218,6 +254,80 @@ namespace ft
 				(void)position;
 				pair<iterator, bool> ret(insert(val));
 				return (ret.first);
+			}
+			template <class InputIterator>
+			void insert(InputIterator first, InputIterator last)
+			{
+				for (iterator it = first ; it != last ; ++it)
+					insert(*it);
+			}
+			void erase(iterator position)
+			{
+				if (!position.base())
+					return ;
+				Node* node = position.base();
+				Node* par = node->par;
+				Node* left = node->left;
+				Node* right = node->right;
+				allocator.destroy(node->val);
+				allocator.deallocate(node->val, 1);
+				delete node;
+				if (par)
+					(void)par;
+				if (left)
+					(void)left;
+				if (right)
+					(void)right;
+				--_size;
+			}
+			void clear()
+			{
+				Node *tmp[_size];
+				size_t i = 0;
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					allocator.destroy(&*it);
+					allocator.deallocate(&*it, 1);
+					tmp[i++] = it.base();
+				}
+				for (size_t j = 0 ; j < i ; ++j)
+					delete tmp[j];
+				if (_end)
+					delete _end;
+				_size = 0;
+				root = new Node;
+				_end = root;
+			}
+			key_compare key_comp() const
+			{
+				return (compare);
+			}
+			iterator find(const key_type& k)
+			{
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (it);
+				}
+				return (end());
+			}
+			const_iterator find(const key_type& k) const
+			{
+				for (const_iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (it);
+				}
+				return (end());
+			}
+			size_type count(const key_type& k) const
+			{
+				for (const_iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (1);
+				}
+				return (0);
 			}
 			allocator_type get_allocator() const
 			{
