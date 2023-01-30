@@ -158,10 +158,7 @@ namespace ft
 			}
 			size_type max_size() const
 			{
-				size_type i = allocator.max_size();
-				if (i > 9223372036854775807)
-					return (9223372036854775807);
-				return (i);
+				return (allocator.max_size());
 			}
 			void resize(size_type n, value_type val = value_type())
 			{
@@ -474,25 +471,25 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
 	{
-		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class T, class Alloc>
 	bool operator<=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
 	{
-		return !ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+		return (!ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	}
 
 	template <class T, class Alloc>
 	bool operator>(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
 	{
-		return ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end());
+		return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	}
 
 	template <class T, class Alloc>
 	bool operator>=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
 	{
-		return !ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return (!ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class T, class Alloc>

@@ -157,14 +157,7 @@ namespace ft
 			}
 			size_type max_size() const
 			{
-				size_type i = allocator.max_size();
-				if (i == 2305843009213693951)
-					return (461168601842738790);
-				else if (i == 2305843009213693951)
-					return (461168601842738790);
-				else if (i == 1152921504606846975)
-					return (384307168202282325);
-				return (i);
+				return (allocator.max_size());
 			}
 			mapped_type& operator[](const key_type& k)
 			{
@@ -186,7 +179,7 @@ namespace ft
 				}
 				throw std::out_of_range("Exception::InvalidKey");
 			}
-			const mapped_type& at (const key_type& k) const
+			const mapped_type& at(const key_type& k) const
 			{
 				for (iterator it = begin() ; it != end() ; ++it)
 				{
@@ -329,11 +322,115 @@ namespace ft
 				}
 				return (0);
 			}
+			iterator lower_bound(const key_type& k)
+			{
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first || !(key_compare()(it->first, k)))
+						return (it);
+				}
+				return (end());
+			}
+			const_iterator lower_bound(const key_type& k) const
+			{
+				for (const_iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first || !(key_compare()(it->first, k)))
+						return (it);
+				}
+				return (end());
+			}
+			iterator upper_bound(const key_type& k)
+			{
+				for (iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (++it);
+					else if (key_compare()(k, it->first))
+						return (it);
+				}
+				return (end());
+			}
+			const_iterator upper_bound(const key_type& k) const
+			{
+				for (const_iterator it = begin() ; it != end() ; ++it)
+				{
+					if (k == it->first)
+						return (++it);
+					else if (key_compare()(k, it->first))
+						return (it);
+				}
+				return (end());
+			}
+			pair<const_iterator, const_iterator> equal_range(const key_type& k) const
+			{
+				return (ft::make_pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
+			}
+			pair<iterator, iterator> equal_range(const key_type& k)
+			{
+				return (ft::make_pair<iterator, iterator>(lower_bound(k), upper_bound(k)));
+			}
 			allocator_type get_allocator() const
 			{
 				return (allocator);
 			}
 	};
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator==(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return (false);
+		typename ft::map<Key,T,Compare,Alloc>::const_iterator lit = lhs.begin();
+		typename ft::map<Key,T,Compare,Alloc>::const_iterator rit = rhs.begin();
+		while (lit != lhs.end())
+		{
+			if (lit->first != rit->first || lit->second != rit->second)
+				return (false);
+			++lit, ++rit;
+		}
+		return (true);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator!=(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return (true);
+		typename ft::map<Key,T,Compare,Alloc>::const_iterator lit = lhs.begin();
+		typename ft::map<Key,T,Compare,Alloc>::const_iterator rit = rhs.begin();
+		while (lit != lhs.end())
+		{
+			if (lit->first != rit->first || lit->second != rit->second)
+				return (true);
+			++lit, ++rit;
+		}
+		return (false);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
+	{
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<=(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
+	{
+		return (!ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
+	{
+		return (ft::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>=(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
+	{
+		return (!ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
 }
 
 #endif

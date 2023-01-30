@@ -103,29 +103,39 @@ namespace ft
 		return (i);
 	}
 
-	template <class Iterator>
-	bool operator==(const reverse_iterator<Iterator>& left, const reverse_iterator<Iterator>& right) {
-		return (left.base() == right.base()); }
+	template <typename Iterator1, typename Iterator2>
+	typename reverse_iterator<Iterator1>::difference_type
+	operator-(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return (rhs.base() - lhs.base()); }
 
-	template <class Iterator>
-	bool operator!=(const reverse_iterator<Iterator>& left, const reverse_iterator<Iterator>& right) {
-		return (left.base() != right.base()); }
+	template <typename Iterator1, typename Iterator2>
+	typename reverse_iterator<Iterator1>::difference_type
+	operator+(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return (lhs.base() + rhs.base()); }
 
-	template <class Iterator>
-	bool operator<(const reverse_iterator<Iterator>& left, const reverse_iterator<Iterator>& right) {
-		return (left.base() > right.base()); }
+	template <typename Iterator1, typename Iterator2>
+	bool operator==(const reverse_iterator<Iterator1> & lhs, const reverse_iterator<Iterator2> & rhs) {
+		return ((lhs.base() == rhs.base())); }
 
-	template <class Iterator>
-	bool operator<=(const reverse_iterator<Iterator>& left, const reverse_iterator<Iterator>& right) {
-		return (left.base() >= right.base()); }
+	template <typename Iterator1, typename Iterator2>
+	bool operator!=(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return (!(lhs == rhs)); }
 
-	template <class Iterator>
-	bool operator>(const reverse_iterator<Iterator>& left, const reverse_iterator<Iterator>& right) {
-		return (left.base() < right.base()); }
+	template <typename Iterator1, typename Iterator2>
+	bool operator<(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return ((lhs.base() > rhs.base())); }
 
-	template <class Iterator>
-	bool operator>=(const reverse_iterator<Iterator>& left, const reverse_iterator<Iterator>& right) {
-		return (left.base() <= right.base()); }
+	template <typename Iterator1, typename Iterator2>
+	bool operator<=(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return ((lhs == rhs || lhs < rhs)); }
+
+	template <typename Iterator1, typename Iterator2>
+	bool operator>(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return (!(lhs <= rhs)); }
+
+	template <typename Iterator1, typename Iterator2>
+	bool operator>=(reverse_iterator<Iterator1> const & lhs, reverse_iterator<Iterator2> const & rhs) {
+		return (!(lhs < rhs)); }
 
 	template <typename T>
 	class random_access_iterator : public iterator<random_access_iterator_tag, T>
@@ -282,6 +292,40 @@ namespace ft
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
 			operator bidirectional_iterator<const T, N>() { return bidirectional_iterator<const T, N>(node); }
 	};
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	typename bidirectional_iterator<Iterator1, N>::difference_type
+	operator+(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() + rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	typename bidirectional_iterator<Iterator1, N>::difference_type
+	operator-(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() - rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	bool operator==(const bidirectional_iterator<Iterator1, N>& lhs, const bidirectional_iterator<Iterator2, N>& rhs) {
+		return (lhs.base() == rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	bool operator!=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() != rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	bool operator<(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() < rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	bool operator<=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() <= rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	bool operator>(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() > rhs.base()); }
+
+	template <typename Iterator1, typename Iterator2, typename N>
+	bool operator>=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
+		return (lhs.base() >= rhs.base()); }
 }
 
 #endif
