@@ -260,9 +260,9 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type& val)
 			{
-				(void)position;
 				pair<iterator, bool> ret(insert(val));
-				return (ret.first);
+				position = ret.first;
+				return (position);
 			}
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)

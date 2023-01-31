@@ -10,10 +10,10 @@ int main()
 		test.insert(ft::pair<int, std::string>(0, "test"));
 		test.insert(ft::pair<int, std::string>(20, "test"));
 		test.insert(ft::pair<int, std::string>(30, "test"));
-		test.insert(ft::pair<int, std::string>(40, "test"));
+		test.insert(test.begin(), ft::pair<int, std::string>(40, "test"));
 
 		for (ft::map<int, std::string>::iterator it = test.begin() ; it != test.end() ; ++it)
-			std::cout << &it << " : " << it->first << " => " << it->second << std::endl;
+			std::cout << it.base() << " : " << it->first << " => " << it->second << std::endl;
 
 		ft::vector<int> test2;
 		test2.push_back(1);
@@ -23,7 +23,7 @@ int main()
 		test2.push_back(666);
 
 		for (ft::vector<int>::iterator it = test2.begin() ; it != test2.end() ; ++it)
-			std::cout << &it << " : " << *it << std::endl;
+			std::cout << it.base() << " : " << *it << std::endl;
 	}
 	catch (std::exception &e)
 	{
