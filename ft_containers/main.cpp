@@ -14,6 +14,16 @@ int main()
 
 		for (ft::map<int, std::string>::iterator it = test.begin() ; it != test.end() ; ++it)
 			std::cout << &it << " : " << it->first << " => " << it->second << std::endl;
+
+		ft::vector<int> test2;
+		test2.push_back(1);
+		test2.push_back(42);
+		test2.push_back(88888);
+		test2.push_back(44);
+		test2.push_back(666);
+
+		for (ft::vector<int>::iterator it = test2.begin() ; it != test2.end() ; ++it)
+			std::cout << &it << " : " << *it << std::endl;
 	}
 	catch (std::exception &e)
 	{

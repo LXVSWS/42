@@ -28,7 +28,6 @@ namespace ft
 			typedef T mapped_type;
 			typedef ft::pair<const key_type, mapped_type> value_type;
 			typedef Compare key_compare;
-			//typedef ft::value_comp() value_compare;
 			typedef Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
@@ -40,6 +39,23 @@ namespace ft
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
 			typedef size_t size_type;
+
+			class value_compare : public std::binary_function<value_type, value_type, bool>
+			{
+				friend class map;
+
+				protected:
+					Compare comp;
+					value_compare(Compare c) : comp(c) {}
+				public:
+					typedef bool result_type;
+					typedef value_type first_argument_type;
+					typedef value_type second_argument_type;
+					bool operator() (const value_type& x, const value_type& y) const
+					{
+						return comp(x.first, y.first);
+					}
+			};
 
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) \
 			: compare(comp), allocator(alloc), _size(0)
@@ -294,6 +310,10 @@ namespace ft
 			key_compare key_comp() const
 			{
 				return (compare);
+			}
+			value_compare value_comp() const
+			{
+				return (value_compare(key_compare()));
 			}
 			iterator find(const key_type& k)
 			{

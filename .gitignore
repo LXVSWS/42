@@ -14,5 +14,5 @@ mlx
 */*.o
 */*/*.o
 .vscode
-tester
+testers
 stack.hpp

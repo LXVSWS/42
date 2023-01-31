@@ -186,7 +186,7 @@ namespace ft
 				T tmp[_size];
 
 				if (n > max_size())
-					throw std::length_error("Exception::AllocatorOverflow");
+					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 				if (n > _capacity)
 				{
 					for (size_t i = 0 ; i < _size ; i++)
@@ -288,14 +288,14 @@ namespace ft
 				if (position == end())
 				{
 					push_back(val);
-					return (position);
+					return (end() - 1);
 				}
 				T tmp[_size];
 				size_t i = 0;
 				size_t j = 0;
-				for (typename ft::vector<T>::iterator it = position ; it != end() ; ++it)
+				for (iterator it = position ; it != end() ; ++it)
 					tmp[i++] = *it;
-				for (typename ft::vector<T>::iterator it = begin() ; it != position ; ++it)
+				for (iterator it = begin() ; it != position ; ++it)
 					j++;
 				for (size_t k = j ; k < i + j ; k++)
 				{
@@ -305,7 +305,10 @@ namespace ft
 				push_back(val);
 				for (size_t k = 0 ; k < i ; k++)
 					push_back(tmp[k]);
-				return (position);
+				iterator ret = begin();
+				for (size_t k = 0 ; k < j ; ++k)
+					++ret;
+				return (ret);
 			}
 			void insert(iterator position, size_type n, const value_type& val)
 			{
@@ -318,9 +321,9 @@ namespace ft
 				T tmp[_size];
 				size_t i = 0;
 				size_t j = 0;
-				for (typename ft::vector<T>::iterator it = position ; it != end() ; ++it)
+				for (iterator it = position ; it != end() ; ++it)
 					tmp[i++] = *it;
-				for (typename ft::vector<T>::iterator it = begin() ; it != position ; ++it)
+				for (iterator it = begin() ; it != position ; ++it)
 					j++;
 				if (_size + n > _capacity)
 					reserve(_capacity + n);
@@ -347,9 +350,9 @@ namespace ft
 				T tmp[_size];
 				size_t i = 0;
 				size_t j = 0;
-				for (typename ft::vector<T>::iterator it = position ; it != end() ; ++it)
+				for (iterator it = position ; it != end() ; ++it)
 					tmp[i++] = *it;
-				for (typename ft::vector<T>::iterator it = begin() ; it != position ; ++it)
+				for (iterator it = begin() ; it != position ; ++it)
 					j++;
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
@@ -369,7 +372,7 @@ namespace ft
 			}
 			iterator erase(iterator position)
 			{
-				if (position == end() || !*position)
+				if (position == end() || !position)
 					return (position);
 				if (position == end() - 1)
 				{
@@ -378,8 +381,8 @@ namespace ft
 				}
 				T tmp[_size];
 				size_t i = 0;
-				typename ft::vector<T>::iterator ret = position - 1;
-				for (typename ft::vector<T>::iterator it = position + 1 ; it != end() ; ++it)
+				iterator ret = position - 1;
+				for (iterator it = position + 1 ; it != end() ; ++it)
 				{
 					tmp[i++] = *it;
 					allocator.destroy(&*it);
@@ -392,7 +395,7 @@ namespace ft
 			}
 			iterator erase(iterator first, iterator last)
 			{
-				if (first == end() || !*first)
+				if (first == end() || !first)
 					return (first);
 				if (first == end() - 1 && last == end())
 				{
@@ -401,8 +404,8 @@ namespace ft
 				}
 				T tmp[_size];
 				size_t i = 0;
-				typename ft::vector<T>::iterator ret = first - 1;
-				for (typename ft::vector<T>::iterator it = last ; it != end() ; ++it)
+				iterator ret = first - 1;
+				for (iterator it = last ; it != end() ; ++it)
 				{
 					tmp[i++] = *it;
 					allocator.destroy(&*it);
