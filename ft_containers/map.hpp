@@ -260,9 +260,43 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type& val)
 			{
+				if (!_size)
+				{
+					root->right = new Node;
+					_end = root->right;
+					_end->par = root;
+					root->val = allocator.allocate(1);
+					allocator.construct(root->val, val);
+					_size++;
+					return (iterator(root));
+				}
+				Node* tmp = position.base();
+				bool ab = key_compare()(val.first, tmp->val->first);
+				bool ba = key_compare()(tmp->val->first, val.first);
+				if (!ab && !ba)
+					return (iterator(tmp));
+				else if (ab && !tmp->left)
+				{
+					tmp->left = new Node;
+					tmp->left->val = allocator.allocate(1);
+					allocator.construct(tmp->left->val, val);
+					tmp->left->par = tmp;
+					_size++;
+					return (iterator(tmp->left));
+				}
+				else if (!ab && tmp->right == _end)
+				{
+					tmp->right->right = new Node;
+					_end = tmp->right->right;
+					_end->par = tmp->right;
+					tmp->right->val = allocator.allocate(1);
+					allocator.construct(tmp->right->val, val);
+					tmp->right->par = tmp;
+					_size++;
+					return (iterator(tmp->right));
+				}
 				pair<iterator, bool> ret(insert(val));
-				position = ret.first;
-				return (position);
+				return (ret.first);
 			}
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)

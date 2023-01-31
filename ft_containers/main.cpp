@@ -10,7 +10,7 @@ int main()
 		test.insert(ft::pair<int, std::string>(0, "test"));
 		test.insert(ft::pair<int, std::string>(20, "test"));
 		test.insert(ft::pair<int, std::string>(30, "test"));
-		test.insert(test.begin(), ft::pair<int, std::string>(40, "test"));
+		test.insert(test.begin(), ft::pair<int, std::string>(25, "test"));
 
 		for (ft::map<int, std::string>::iterator it = test.begin() ; it != test.end() ; ++it)
 			std::cout << it.base() << " : " << it->first << " => " << it->second << std::endl;
