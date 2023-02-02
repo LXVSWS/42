@@ -96,21 +96,7 @@ namespace ft
 			}
 			map& operator=(const map& x)
 			{
-				Node *tmp[_size];
-				size_t i = 0;
-				for (iterator it = begin() ; it != end() ; ++it)
-				{
-					allocator.destroy(&*it);
-					allocator.deallocate(&*it, 1);
-					tmp[i++] = it.base();
-				}
-				for (size_t j = 0 ; j < i ; ++j)
-					delete tmp[j];
-				if (_end)
-					delete _end;
-				_size = 0;
-				root = new Node;
-				_end = root;
+				clear();
 				for (const_iterator it = x.begin() ; it != x.end() ; ++it)
 					insert(*it);
 				return (*this);
@@ -271,6 +257,11 @@ namespace ft
 					return (iterator(root));
 				}
 				Node* tmp = position.base();
+				if (!tmp || !tmp->val)
+				{
+					pair<iterator, bool> ret(insert(val));
+					return (ret.first);
+				}
 				bool ab = key_compare()(val.first, tmp->val->first);
 				bool ba = key_compare()(tmp->val->first, val.first);
 				if (!ab && !ba)
@@ -306,22 +297,39 @@ namespace ft
 			}
 			void erase(iterator position)
 			{
-				if (!position.base())
+				Node* tmp = position.base();
+				if (!tmp || !tmp->val)
 					return ;
-				Node* node = position.base();
-				Node* par = node->par;
-				Node* left = node->left;
-				Node* right = node->right;
-				allocator.destroy(node->val);
-				allocator.deallocate(node->val, 1);
-				delete node;
-				if (par)
-					(void)par;
-				if (left)
-					(void)left;
-				if (right)
-					(void)right;
-				--_size;
+				if (!tmp->par)
+				{
+					if (tmp->left)
+						root = tmp->left;
+					else
+						root = tmp->right;
+					_end->par = root;
+				}
+				else
+				{
+
+				}
+				allocator.destroy(tmp->val);
+				allocator.deallocate(tmp->val, 1);
+				delete tmp;
+				_size--;
+			}
+			void swap(map& x)
+			{
+				if (x == *this)
+					return ;
+				Node *tmp_root = x.root;
+				Node *tmp_end = x._end;
+				size_t tmp_size = x._size;
+				x.root = root;
+				x._end = _end;
+				x._size = _size;
+				root = tmp_root;
+				_end = tmp_end;
+				_size = tmp_size;
 			}
 			void clear()
 			{
@@ -484,6 +492,12 @@ namespace ft
 	bool operator>=(const ft::map<Key,T,Compare,Alloc>& lhs, const ft::map<Key,T,Compare,Alloc>& rhs)
 	{
 		return (!ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	void swap(ft::map<Key,T,Compare,Alloc>& x, ft::map<Key,T,Compare,Alloc>& y)
+	{
+		x.swap(y);
 	}
 }
 

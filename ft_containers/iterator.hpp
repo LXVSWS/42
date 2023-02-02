@@ -244,20 +244,14 @@ namespace ft
 			N* base() const { return (node); }
 			T& operator*() const
 			{
-				if (!node)
-					throw std::exception();
 				return (*(node->val));
 			}
 			T* operator->() const
 			{
-				if (!node)
-					throw std::exception();
 				return (node->val);
 			}
 			bidirectional_iterator& operator++()
 			{
-				if (!node)
-					throw std::exception();
 				if (node->right)
 				{
 					node = node->right;
@@ -282,8 +276,6 @@ namespace ft
 			}
 			bidirectional_iterator& operator--()
 			{
-				if (!node)
-					throw std::exception();
 				if (node->left)
 				{
 					node = node->left;
@@ -311,36 +303,6 @@ namespace ft
 			operator bidirectional_iterator<const T, N>() { return bidirectional_iterator<const T, N>(node); }
 	};
 
-	template <class Iterator, class N>
-	bidirectional_iterator<Iterator, N>
-	operator+(const bidirectional_iterator<Iterator, N>& lhs, typename bidirectional_iterator<Iterator, N>::difference_type n) {
-		return bidirectional_iterator<Iterator, N>(lhs.base() + n); }
-
-	template <class Iterator, class N>
-	bidirectional_iterator<Iterator, N>
-	operator-(const bidirectional_iterator<Iterator, N>& lhs, typename bidirectional_iterator<Iterator, N>::difference_type n) {
-		return bidirectional_iterator<Iterator, N>(lhs.base() - n); }
-
-	template <class Iterator, class N>
-	bidirectional_iterator<Iterator, N>
-	operator+(typename bidirectional_iterator<Iterator, N>::difference_type n, const bidirectional_iterator<Iterator, N>& rhs) {
-		return bidirectional_iterator<Iterator, N>(rhs.base() + n); }
-
-	template <class Iterator, class N>
-	bidirectional_iterator<Iterator, N>
-	operator-(typename bidirectional_iterator<Iterator, N>::difference_type n, const bidirectional_iterator<Iterator, N>& rhs) {
-		return bidirectional_iterator<Iterator, N>(rhs.base() - n); }
-
-	template <typename Iterator1, typename Iterator2, typename N>
-	typename bidirectional_iterator<Iterator1, N>::difference_type
-	operator+(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() + rhs.base()); }
-
-	template <typename Iterator1, typename Iterator2, typename N>
-	typename bidirectional_iterator<Iterator1, N>::difference_type
-	operator-(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() - rhs.base()); }
-
 	template <typename Iterator1, typename Iterator2, typename N>
 	bool operator==(const bidirectional_iterator<Iterator1, N>& lhs, const bidirectional_iterator<Iterator2, N>& rhs) {
 		return (lhs.base() == rhs.base()); }
@@ -348,22 +310,6 @@ namespace ft
 	template <typename Iterator1, typename Iterator2, typename N>
 	bool operator!=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
 		return (lhs.base() != rhs.base()); }
-
-	template <typename Iterator1, typename Iterator2, typename N>
-	bool operator<(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() < rhs.base()); }
-
-	template <typename Iterator1, typename Iterator2, typename N>
-	bool operator<=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() <= rhs.base()); }
-
-	template <typename Iterator1, typename Iterator2, typename N>
-	bool operator>(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() > rhs.base()); }
-
-	template <typename Iterator1, typename Iterator2, typename N>
-	bool operator>=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() >= rhs.base()); }
 }
 
 #endif
