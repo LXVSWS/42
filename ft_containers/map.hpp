@@ -297,25 +297,45 @@ namespace ft
 			}
 			void erase(iterator position)
 			{
-				Node* tmp = position.base();
-				if (!tmp || !tmp->val)
+				Node* node = position.base();
+				if (!node || !node->val || node == _end)
 					return ;
-				if (!tmp->par)
+				iterator it = position;
+				Node* before = (--it).base();
+				iterator itt = position;
+				Node* next = (++itt).base();
+				if (before && next)
 				{
-					if (tmp->left)
-						root = tmp->left;
-					else
-						root = tmp->right;
-					_end->par = root;
+					if (before->left == node)
+						before->left = next;
+					else if (before->right == node)
+						before->right = next;
+					next->par = before;
 				}
-				else
+				else if (!before && next)
 				{
-
+					next->par = NULL;
+					root = next;
 				}
-				allocator.destroy(tmp->val);
-				allocator.deallocate(tmp->val, 1);
-				delete tmp;
+				allocator.destroy(node->val);
+				allocator.deallocate(node->val, 1);
+				delete node;
 				_size--;
+			}
+			size_type erase(const key_type& k)
+			{
+				iterator it = find(k);
+				if (it.base() && it != end())
+				{
+					erase(it);
+					return (1);
+				}
+				return (0);
+			}
+			void erase(iterator first, iterator last)
+			{
+				for (iterator it = first ; it != last ; ++it)
+					erase(it);
 			}
 			void swap(map& x)
 			{
