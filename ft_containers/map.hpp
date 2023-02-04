@@ -300,25 +300,54 @@ namespace ft
 				Node* node = position.base();
 				if (!node || !node->val || node == _end)
 					return ;
-				iterator it = position;
-				Node* before = (--it).base();
-				iterator itt = position;
-				Node* next = (++itt).base();
-				if (before && next)
+				if (!node->left && !node->right)
 				{
-					if (before->left == node)
-						before->left = next;
-					else if (before->right == node)
-						before->right = next;
-					next->par = before;
+					if (node->par)
+					{
+						if (node->par->left == node)
+							node->par->left = NULL;
+						else
+							node->par->right = NULL;
+					}
 				}
-				else if (!before && next)
+				else if (!node->left)
 				{
-					next->par = NULL;
-					root = next;
+					if (node->par)
+					{
+						if (node->par->left == node)
+							node->par->left = node->right;
+						else
+							node->par->right = node->right;
+					}
+					node->right->par = node->par;
+				}
+				else if (!node->right)
+				{
+					if (node->par)
+					{
+						if (node->par->left == node)
+							node->par->left = node->left;
+						else
+							node->par->right = node->left;
+					}
+					node->left->par = node->par;
+				}
+				else
+				{
+					iterator min = position;
+					++min;
+					node->val = min.base()->val;
+					erase(min);
 				}
 				allocator.destroy(node->val);
 				allocator.deallocate(node->val, 1);
+				if (node == root)
+				{
+					if (node->right && node->right != _end)
+						root = node->right;
+					else
+						root = _end;
+				}
 				delete node;
 				_size--;
 			}

@@ -15,9 +15,29 @@ int main()
 		test.insert(ft::pair<int, std::string>(10, "test"));
 		test.insert(ft::pair<int, std::string>(100, "test"));
 		test.insert(ft::pair<int, std::string>(-1, "test"));
-		//test.erase(test.begin());
 		for (ft::map<int, std::string>::iterator it = test.begin() ; it != test.end() ; ++it)
-			std::cout << it.base() << " : " << it->first << " => " << it->second << std::endl;
+			std::cout << it->first << std::endl;
+		std::cout << "_______________________________" << std::endl;
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		std::cout << "erasing : " << test.begin()->first << std::endl;
+		test.erase(test.begin());
+		for (ft::map<int, std::string>::iterator it = test.begin() ; it != test.end() ; ++it)
+			std::cout << it->first << std::endl;
 	}
 	catch (std::exception &e)
 	{
