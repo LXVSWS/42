@@ -215,6 +215,7 @@ namespace ft
 						tmp->left->val = allocator.allocate(1);
 						allocator.construct(tmp->left->val, val);
 						tmp->left->par = tmp;
+						tmp->left->right = NULL;
 						_size++;
 						return (ft::make_pair<iterator, bool>(iterator(tmp->left), true));
 					}
@@ -224,6 +225,7 @@ namespace ft
 						tmp->right->val = allocator.allocate(1);
 						allocator.construct(tmp->right->val, val);
 						tmp->right->par = tmp;
+						tmp->right->right = NULL;
 						_size++;
 						return (ft::make_pair<iterator, bool>(iterator(tmp->right), true));
 					}
@@ -300,56 +302,7 @@ namespace ft
 				Node* node = position.base();
 				if (!node || !node->val || node == _end)
 					return ;
-				if (!node->left && !node->right)
-				{
-					if (node->par)
-					{
-						if (node->par->left == node)
-							node->par->left = NULL;
-						else
-							node->par->right = NULL;
-					}
-				}
-				else if (!node->left)
-				{
-					if (node->par)
-					{
-						if (node->par->left == node)
-							node->par->left = node->right;
-						else
-							node->par->right = node->right;
-					}
-					node->right->par = node->par;
-				}
-				else if (!node->right)
-				{
-					if (node->par)
-					{
-						if (node->par->left == node)
-							node->par->left = node->left;
-						else
-							node->par->right = node->left;
-					}
-					node->left->par = node->par;
-				}
-				else
-				{
-					iterator min = position;
-					++min;
-					node->val = min.base()->val;
-					erase(min);
-				}
-				allocator.destroy(node->val);
-				allocator.deallocate(node->val, 1);
-				if (node == root)
-				{
-					if (node->right && node->right != _end)
-						root = node->right;
-					else
-						root = _end;
-				}
-				delete node;
-				_size--;
+				root = deleteNode(root, node);
 			}
 			size_type erase(const key_type& k)
 			{
@@ -484,6 +437,78 @@ namespace ft
 			allocator_type get_allocator() const
 			{
 				return (allocator);
+			}
+		private:
+			Node* min(Node* root) const
+			{
+				if (root == _end)
+					return NULL;
+				while (root->left)
+					root = root->left;
+				return root;
+			}
+			Node* max(Node* root) const
+			{
+				if (root == _end)
+					return NULL;
+				while (root->right && root->right != _end)
+					root = root->right;
+				return root;
+			}
+			Node *deleteNode(Node* root, Node* node)
+			{
+				if (!root || root == _end)
+					return root;
+				if (key_compare()(node->val->first, root->val->first))
+					root->left = deleteNode(root->left, node);
+				else if (key_compare()(root->val->first, node->val->first))
+					root->right = deleteNode(root->right, node);
+				else
+				{
+					if (!root->left && (!root->right || root->right == _end))
+					{
+						allocator.destroy(root->val);
+						allocator.deallocate(root->val, 1);
+						delete root;
+						_end->par = NULL;
+						--_size;
+						return (_end);
+					}
+					else if (root->left && root->right)
+					{
+						Node* node = root->right == _end ? max(root->left) : min(root->right);
+						Node* tmp = root;
+						root = new Node;
+						root->val = allocator.allocate(1);
+						allocator.construct(root->val, *(node->val));
+						root->left->par = root;
+						root->right->par = root;
+						allocator.destroy(tmp->val);
+						allocator.deallocate(tmp->val, 1);
+						delete tmp;
+						--_size;
+						if (root->right == _end)
+							root->left = deleteNode(root->left, node);
+						else
+							root->right = deleteNode(root->right, node);
+					}
+					else
+					{
+						Node* child;
+						if (root->left)
+							child = root->left;
+						else
+							child = root->right;
+						if (child)
+							child->par = root->par;
+						allocator.destroy(root->val);
+						allocator.deallocate(root->val, 1);
+						delete root;
+						--_size;
+						return (child);
+					}
+				}
+				return (root);
 			}
 	};
 
