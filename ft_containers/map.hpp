@@ -22,6 +22,7 @@ namespace ft
 			Node* _end;
 			Compare compare;
 			Alloc allocator;
+			std::allocator<Node> na;
 			size_t _size;
 		public:
 			typedef Key key_type;
@@ -60,21 +61,21 @@ namespace ft
 			explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) \
 			: compare(comp), allocator(alloc), _size(0)
 			{
-				root = new Node;
+				root = na.allocate(1);
 				_end = root;
 			}
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), \
 			const allocator_type& alloc = allocator_type()) : compare(comp), allocator(alloc), _size(0)
 			{
-				root = new Node;
+				root = na.allocate(1);
 				_end = root;
 				for (const_iterator it = first ; it != last ; ++it)
 					insert(*it);
 			}
 			map(const map& x) : compare(x.compare), allocator(x.allocator), _size(0)
 			{
-				root = new Node;
+				root = na.allocate(1);
 				_end = root;
 				for (const_iterator it = x.begin() ; it != x.end() ; ++it)
 					insert(*it);
@@ -90,9 +91,9 @@ namespace ft
 					tmp[i++] = it.base();
 				}
 				for (size_t j = 0 ; j < i ; ++j)
-					delete tmp[j];
+					na.deallocate(tmp[j], 1);
 				if (_end)
-					delete _end;
+					na.deallocate(_end, 1);
 			}
 			map& operator=(const map& x)
 			{
@@ -189,7 +190,7 @@ namespace ft
 			{
 				if (!_size)
 				{
-					root->right = new Node;
+					root->right = na.allocate(1);
 					_end = root->right;
 					_end->par = root;
 					root->val = allocator.allocate(1);
@@ -206,7 +207,7 @@ namespace ft
 						return (ft::make_pair<iterator, bool>(iterator(tmp), false));
 					else if (ab && !tmp->left)
 					{
-						tmp->left = new Node;
+						tmp->left = na.allocate(1);
 						tmp->left->val = allocator.allocate(1);
 						allocator.construct(tmp->left->val, val);
 						tmp->left->par = tmp;
@@ -216,7 +217,7 @@ namespace ft
 					}
 					else if (!ab && !tmp->right)
 					{
-						tmp->right = new Node;
+						tmp->right = na.allocate(1);
 						tmp->right->val = allocator.allocate(1);
 						allocator.construct(tmp->right->val, val);
 						tmp->right->par = tmp;
@@ -226,7 +227,7 @@ namespace ft
 					}
 					else if (!ab && tmp->right == _end)
 					{
-						tmp->right->right = new Node;
+						tmp->right->right = na.allocate(1);
 						_end = tmp->right->right;
 						_end->par = tmp->right;
 						tmp->right->val = allocator.allocate(1);
@@ -243,47 +244,7 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type& val)
 			{
-				if (!_size)
-				{
-					root->right = new Node;
-					_end = root->right;
-					_end->par = root;
-					root->val = allocator.allocate(1);
-					allocator.construct(root->val, val);
-					_size++;
-					return (iterator(root));
-				}
-				Node* tmp = position.base();
-				if (!tmp || !tmp->val)
-				{
-					pair<iterator, bool> ret(insert(val));
-					return (ret.first);
-				}
-				bool ab = key_compare()(val.first, tmp->val->first);
-				bool ba = key_compare()(tmp->val->first, val.first);
-				if (!ab && !ba)
-					return (iterator(tmp));
-				else if (ab && !tmp->left)
-				{
-					tmp->left = new Node;
-					tmp->left->val = allocator.allocate(1);
-					allocator.construct(tmp->left->val, val);
-					tmp->left->par = tmp;
-					tmp->left->right = NULL;
-					_size++;
-					return (iterator(tmp->left));
-				}
-				else if (!ab && tmp->right == _end)
-				{
-					tmp->right->right = new Node;
-					_end = tmp->right->right;
-					_end->par = tmp->right;
-					tmp->right->val = allocator.allocate(1);
-					allocator.construct(tmp->right->val, val);
-					tmp->right->par = tmp;
-					_size++;
-					return (iterator(tmp->right));
-				}
+				(void)position;
 				pair<iterator, bool> ret(insert(val));
 				return (ret.first);
 			}
@@ -317,15 +278,16 @@ namespace ft
 			}
 			void swap(map& x)
 			{
-				if (x == *this)
-					return ;
 				Node *tmp_root = x.root;
+				Alloc tmp_alloc = x.allocator;
 				Node *tmp_end = x._end;
 				size_t tmp_size = x._size;
 				x.root = root;
+				x.allocator = allocator;
 				x._end = _end;
 				x._size = _size;
 				root = tmp_root;
+				allocator = tmp_alloc;
 				_end = tmp_end;
 				_size = tmp_size;
 			}
@@ -340,12 +302,9 @@ namespace ft
 					tmp[i++] = it.base();
 				}
 				for (size_t j = 0 ; j < i ; ++j)
-					delete tmp[j];
-				if (_end)
-					delete _end;
+					na.deallocate(tmp[j], 1);
 				_size = 0;
-				root = new Node;
-				_end = root;
+				root = _end;
 			}
 			key_compare key_comp() const
 			{
@@ -463,25 +422,33 @@ namespace ft
 				{
 					if (!root->left && (!root->right || root->right == _end))
 					{
+						char toggle = 0;
+						if (!root->par && root->right == _end)
+							toggle = 1;
 						allocator.destroy(root->val);
 						allocator.deallocate(root->val, 1);
-						delete root;
-						_end->par = NULL;
+						na.deallocate(root, 1);
 						--_size;
-						return (_end);
+						if (toggle)
+						{
+							root = na.allocate(1);
+							_end->par = root;
+							return root;
+						}
+						return (NULL);
 					}
 					else if (root->left && root->right)
 					{
 						Node* node = root->right == _end ? max(root->left) : min(root->right);
 						Node* tmp = root;
-						root = new Node;
+						root = na.allocate(1);
 						root->val = allocator.allocate(1);
 						allocator.construct(root->val, *(node->val));
 						root->left->par = root;
 						root->right->par = root;
 						allocator.destroy(tmp->val);
 						allocator.deallocate(tmp->val, 1);
-						delete tmp;
+						na.deallocate(tmp, 1);
 						--_size;
 						if (root->right == _end)
 							root->left = deleteNode(root->left, node);
@@ -499,7 +466,7 @@ namespace ft
 							child->par = root->par;
 						allocator.destroy(root->val);
 						allocator.deallocate(root->val, 1);
-						delete root;
+						na.deallocate(root, 1);
 						--_size;
 						return (child);
 					}

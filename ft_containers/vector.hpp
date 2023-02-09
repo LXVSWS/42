@@ -395,12 +395,6 @@ namespace ft
 			{
 				if (first == end() || !first)
 					return (first);
-				if (*first && last == end())
-				{
-					while (first++ != last)
-						pop_back();
-					return (end());
-				}
 				T tmp[_size];
 				size_t i = 0;
 				iterator ret = first - 1;
