@@ -71,7 +71,7 @@ namespace ft
 	template <> struct is_integral<unsigned long int>		: 	public std::true_type {};
 	template <> struct is_integral<unsigned long long int>	: 	public std::true_type {};
 
-	template<class InputIt1, class InputIt2>
+	template <class InputIt1, class InputIt2>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
 	{
 		for (; (first1 != last1) && (first2 != last2) ; ++first1, ++first2)
@@ -84,7 +84,7 @@ namespace ft
 		return (first1 == last1) && (first2 != last2);
 	}
 
-	template<class InputIt1, class InputIt2, class Compare>
+	template <class InputIt1, class InputIt2, class Compare>
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Compare comp)
 	{
 		for (; (first1 != last1) && (first2 != last2) ; ++first1, ++first2)

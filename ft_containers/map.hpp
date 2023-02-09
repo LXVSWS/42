@@ -163,11 +163,6 @@ namespace ft
 			}
 			mapped_type& operator[](const key_type& k)
 			{
-				for (iterator it = begin() ; it != end() ; ++it)
-				{
-					if (k == it->first)
-						return (it->second);
-				}
 				pair<iterator, bool> ret = insert(ft::make_pair(k, mapped_type()));
 				iterator it = ret.first;
 				return (it->second);
@@ -274,6 +269,7 @@ namespace ft
 					tmp->left->val = allocator.allocate(1);
 					allocator.construct(tmp->left->val, val);
 					tmp->left->par = tmp;
+					tmp->left->right = NULL;
 					_size++;
 					return (iterator(tmp->left));
 				}

@@ -183,23 +183,21 @@ namespace ft
 			}
 			void reserve(size_type n)
 			{
-				T tmp[_size];
+				T* new_data;
 
 				if (n > max_size())
 					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 				if (n > _capacity)
 				{
+					new_data = allocator.allocate(n);
 					for (size_t i = 0 ; i < _size ; i++)
-					{
-						tmp[i] = _data[i];
+						allocator.construct(&new_data[i], _data[i]);
+					for (size_t i = 0 ; i < _size ; i++)
 						allocator.destroy(&_data[i]);
-					}
 					allocator.deallocate(_data, alloc_first_value);
-					_data = allocator.allocate(n);
 					_capacity = n;
-					for (size_t i = 0 ; i < _size ; i++)
-						allocator.construct(&_data[i], tmp[i]);
 					alloc_first_value = n;
+					_data = new_data;
 				}
 			}
 			reference operator[](size_type n)
@@ -357,7 +355,7 @@ namespace ft
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
 					n++;
-				if (_size + n > _capacity) //
+				if (_size + n > _capacity)
 					reserve(_capacity + n);
 				for (size_t k = j ; k < i + j ; k++)
 				{
@@ -397,9 +395,10 @@ namespace ft
 			{
 				if (first == end() || !first)
 					return (first);
-				if (first == end() - 1 && last == end())
+				if (*first && last == end())
 				{
-					pop_back();
+					while (first++ != last)
+						pop_back();
 					return (end());
 				}
 				T tmp[_size];
@@ -423,8 +422,6 @@ namespace ft
 			}
 			void swap(vector& x)
 			{
-				if (x == *this)
-					return ;
 				T *_data_tmp = x.data();
 				Alloc allocator_tmp = x.get_allocator();
 				size_t _capacity_tmp = x.capacity();
