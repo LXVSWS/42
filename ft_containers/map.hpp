@@ -293,16 +293,13 @@ namespace ft
 			}
 			void clear()
 			{
-				Node *tmp[_size];
-				size_t i = 0;
+				if (!_size)
+					return ;
 				for (iterator it = begin() ; it != end() ; ++it)
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
-					tmp[i++] = it.base();
 				}
-				for (size_t j = 0 ; j < i ; ++j)
-					na.deallocate(tmp[j], 1);
 				_size = 0;
 				root = _end;
 			}
@@ -425,16 +422,20 @@ namespace ft
 						char toggle = 0;
 						if (!root->par && root->right == _end)
 							toggle = 1;
+						else if (root->par && root->right == _end)
+							toggle = 2;
 						allocator.destroy(root->val);
 						allocator.deallocate(root->val, 1);
 						na.deallocate(root, 1);
 						--_size;
-						if (toggle)
+						if (toggle == 1)
 						{
 							root = na.allocate(1);
 							return root;
 						}
-						return (_end);
+						else if (toggle == 2)
+							return (_end);
+						return (NULL);
 					}
 					else if (root->left && root->right)
 					{
