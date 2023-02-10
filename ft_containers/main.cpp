@@ -12,6 +12,74 @@
 	namespace ft = std;
 #endif
 
+template <class K, class V>
+void	printMap(ft::map<K, V> m){
+	std::string r = "";
+	for (typename ft::map<K,V>::iterator it = m.begin(); it != m.end(); it++){
+		r += std::to_string((*it).first);
+		r += ":";
+		r += std::to_string((*it).second);
+		r += " ";
+	}
+	std::cout << r << std::endl;
+}
+
+int main()
+{
+	ft::map<int, int> m;
+	m[-34] = 1;
+	m[0345] = 12;
+	m[654] = -24;
+	m[234] = 53;
+	ft::map<int, int> n(m);
+	ft::map<int, int> o = n;
+//ITERATORS
+	for (ft::map<int, int>::iterator it = m.begin(); it != m.end(); it++)
+		it->second = 0;
+	for (ft::map<int, int>::const_iterator it = m.begin(); it != m.end(); it++)
+		std::cout << it->first << ":" << it->second << " ";
+	std::cout << std::endl;
+	int i = 9;
+	for (ft::map<int, int>::reverse_iterator it = m.rbegin(); it != m.rend(); it++)
+		it->second = i++;
+	for (ft::map<int, int>::const_reverse_iterator it = m.rbegin(); it != m.rend(); it++)
+		std::cout << it->first << ":" << it->second << " ";
+	std::cout << std::endl;
+//CAPACITY
+	std::cout << m.empty() << m.size() << m.max_size() << std::endl;
+//ELEMENT_ACCESS
+	printMap(m);
+	std::cout << m[14];
+	printMap(m);
+	std::cout << m[229] << std::endl;
+//MODIFIERS
+	m.insert(ft::make_pair(35,54));
+	printMap(m);
+	ft::map<int, int>::iterator hh = m.begin();
+	hh++;
+	m.insert(hh, ft::make_pair(-200,-200));
+	m.insert(n.begin(), n.end());
+	for (int i = 0; i < 4; i++)
+		n.insert(ft::make_pair(i, i));
+	m.insert(n.begin(), n.end());
+	printMap(m);
+	m.erase(m.begin());
+	m.erase(1);
+	printMap(m);
+	m.clear();
+	for (int i = 0; i < 12; i++){
+		m.insert(ft::make_pair(i*5,i*5));
+		n.insert(ft::make_pair(i,i));
+	}
+	m.swap(n);
+	printMap(m);
+	printMap(n);
+//OPERATIONS
+	std::cout << m.find(5)->second << m.count(5) << m.count(43) << std::endl;
+	std::cout << m.lower_bound(30)->second << m.upper_bound(30)->second << std::endl;
+}
+
+/*
 int main ()
 {
   ft::map<char,int> mymap;
@@ -42,7 +110,7 @@ int main ()
 
   return 0;
 }
-/*
+
 #include <stdlib.h>
 
 #define MAX_RAM 4294967296

@@ -432,10 +432,9 @@ namespace ft
 						if (toggle)
 						{
 							root = na.allocate(1);
-							_end->par = root;
 							return root;
 						}
-						return (NULL);
+						return (_end);
 					}
 					else if (root->left && root->right)
 					{
