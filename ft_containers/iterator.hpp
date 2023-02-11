@@ -165,7 +165,7 @@ namespace ft
 			random_access_iterator& operator-=(difference_type n) { ptr -= n; return (*this); }
 			T& operator[](long n) const { return (ptr[n]); }
 			bool operator!() const { return (!ptr); }
-			operator random_access_iterator<const T>() { return random_access_iterator<const T>(ptr); }
+			operator random_access_iterator<const T>() const { return random_access_iterator<const T>(ptr); }
 	};
 
 	template <class Iterator>
@@ -222,11 +222,18 @@ namespace ft
 	bool operator>=(random_access_iterator<Iterator1> const & lhs, random_access_iterator<Iterator2> const & rhs) {
 		return (lhs.base() >= rhs.base()); }
 
-	template <typename T, typename N>
+	template <typename T>
 	class bidirectional_iterator : public iterator<bidirectional_iterator_tag, T>
 	{
 		private:
-			N* node;
+			struct Node
+			{
+				T* val;
+				Node* par;
+				Node* left;
+				Node* right;
+			};
+			Node* node;
 		public:
 			typedef iterator<bidirectional_iterator_tag, T> iterator_type;
 			typedef typename iterator_traits<bidirectional_iterator>::value_type		value_type;
@@ -236,12 +243,12 @@ namespace ft
 			typedef typename iterator_traits<bidirectional_iterator>::iterator_category	iterator_category;
 
 			bidirectional_iterator() : node(NULL) {}
-			bidirectional_iterator(N* node) : node(node) {}
+			bidirectional_iterator(void* node) { this->node = reinterpret_cast<Node*>(node); }
 			bidirectional_iterator(const bidirectional_iterator& src) : node(src.node) {}
 			bidirectional_iterator& operator=(const bidirectional_iterator& src) { node = src.node; return (*this); }
 			~bidirectional_iterator() {};
 
-			N* base() const { return (node); }
+			Node* base() const { return (node); }
 			T& operator*() const
 			{
 				return (*(node->val));
@@ -259,7 +266,7 @@ namespace ft
 						node = node->left;
 					return (*this);
 				}
-				N* parent = node->par;
+				Node* parent = node->par;
 				while (parent && parent->left != node)
 				{
 					node = parent;
@@ -283,7 +290,7 @@ namespace ft
 						node = node->right;
 					return (*this);
 				}
-				N* parent = node->par;
+				Node* parent = node->par;
 				while (parent && parent->right != node)
 				{
 					node = parent;
@@ -300,16 +307,16 @@ namespace ft
 			}
 			bool operator==(const bidirectional_iterator& src) const { return (node == src.node); }
 			bool operator!=(const bidirectional_iterator& src) const { return (node != src.node); }
-			operator bidirectional_iterator<const T, N>() { return bidirectional_iterator<const T, N>(node); }
+			operator bidirectional_iterator<const T>() const { return bidirectional_iterator<const T>(node); }
 	};
 
-	template <typename Iterator1, typename Iterator2, typename N>
-	bool operator==(const bidirectional_iterator<Iterator1, N>& lhs, const bidirectional_iterator<Iterator2, N>& rhs) {
-		return (lhs.base() == rhs.base()); }
+	template <typename Iterator1, typename Iterator2>
+	bool operator==(const bidirectional_iterator<Iterator1>& lhs, const bidirectional_iterator<Iterator2>& rhs) {
+		return (reinterpret_cast<void*>(lhs.base()) == reinterpret_cast<void*>(rhs.base())); }
 
-	template <typename Iterator1, typename Iterator2, typename N>
-	bool operator!=(bidirectional_iterator<Iterator1, N> const & lhs, bidirectional_iterator<Iterator2, N> const & rhs) {
-		return (lhs.base() != rhs.base()); }
+	template <typename Iterator1, typename Iterator2>
+	bool operator!=(bidirectional_iterator<Iterator1> const & lhs, bidirectional_iterator<Iterator2> const & rhs) {
+		return (reinterpret_cast<void*>(lhs.base()) != reinterpret_cast<void*>(rhs.base())); }
 }
 
 #endif

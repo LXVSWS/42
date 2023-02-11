@@ -34,8 +34,8 @@ namespace ft
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef ft::bidirectional_iterator<value_type, Node> iterator;
-			typedef ft::bidirectional_iterator<const value_type, Node> const_iterator;
+			typedef ft::bidirectional_iterator<value_type> iterator;
+			typedef ft::bidirectional_iterator<const value_type> const_iterator;
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef ptrdiff_t difference_type;
@@ -88,7 +88,7 @@ namespace ft
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
-					tmp[i++] = it.base();
+					tmp[i++] = reinterpret_cast<Node*>(it.base());
 				}
 				for (size_t j = 0 ; j < i ; ++j)
 					na.deallocate(tmp[j], 1);
@@ -243,8 +243,8 @@ namespace ft
 			}
 			iterator insert(iterator position, const value_type& val)
 			{
-				(void)position;
 				pair<iterator, bool> ret(insert(val));
+				(void)position;
 				return (ret.first);
 			}
 			template <class InputIterator>
@@ -255,7 +255,7 @@ namespace ft
 			}
 			void erase(iterator position)
 			{
-				Node* node = position.base();
+				Node* node = reinterpret_cast<Node*>(position.base());
 				if (!node || !node->val || node == _end)
 					return ;
 				root = deleteNode(root, node);
@@ -300,7 +300,7 @@ namespace ft
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
-					tmp[i++] = it.base();
+					tmp[i++] = reinterpret_cast<Node*>(it.base());
 				}
 				for (size_t j = 0 ; j < i ; ++j)
 				{
