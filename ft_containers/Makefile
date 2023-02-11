@@ -5,7 +5,7 @@ SRCS	= main.cpp
 CC		= c++
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98 -g#-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -g #-fsanitize=address
 
 $(NAME):
 			${CC} ${CFLAGS} ${SRCS} -o $@

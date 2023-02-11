@@ -165,8 +165,7 @@ namespace ft
 			mapped_type& operator[](const key_type& k)
 			{
 				pair<iterator, bool> ret = insert(ft::make_pair(k, mapped_type()));
-				iterator it = ret.first;
-				return (it->second);
+				return (ret.first.base()->val->second);
 			}
 			mapped_type& at(const key_type& k)
 			{
@@ -295,12 +294,27 @@ namespace ft
 			{
 				if (!_size)
 					return ;
+				Node *tmp[_size];
+				size_t i = 0;
 				for (iterator it = begin() ; it != end() ; ++it)
 				{
 					allocator.destroy(&*it);
 					allocator.deallocate(&*it, 1);
+					tmp[i++] = it.base();
+				}
+				for (size_t j = 0 ; j < i ; ++j)
+				{
+					Node *t = tmp[j];
+					t->par = NULL;
+					t->left = NULL;
+					t->right = NULL;
+					na.deallocate(t, 1);
 				}
 				_size = 0;
+				if (_end)
+					_end->par = NULL;
+				else
+					_end = na.allocate(1);
 				root = _end;
 			}
 			key_compare key_comp() const
