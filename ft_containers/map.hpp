@@ -104,19 +104,19 @@ namespace ft
 			}
 			iterator begin()
 			{
-				Node* leaf = root;
-				while (leaf->left)
-					leaf = leaf->left;
-				iterator i(leaf);
-				return (i);
+				Node* leaf = min(root);
+				if (!leaf)
+					return (end());
+				else
+					return (iterator(leaf));
 			}
 			const_iterator begin() const
 			{
-				Node* leaf = root;
-				while (leaf->left)
-					leaf = leaf->left;
-				const_iterator i(leaf);
-				return (i);
+				Node* leaf = min(root);
+				if (!leaf)
+					return (end());
+				else
+					return (const_iterator(leaf));
 			}
 			iterator end()
 			{
@@ -192,8 +192,11 @@ namespace ft
 					root->right = na.allocate(1);
 					_end = root->right;
 					_end->par = root;
+					_end->right = NULL;
+					_end->left = NULL;
 					root->val = allocator.allocate(1);
 					allocator.construct(root->val, val);
+					root->left = NULL;
 					_size++;
 					return (ft::make_pair<iterator, bool>(iterator(root), true));
 				}
@@ -211,6 +214,7 @@ namespace ft
 						allocator.construct(tmp->left->val, val);
 						tmp->left->par = tmp;
 						tmp->left->right = NULL;
+						tmp->left->left = NULL;
 						_size++;
 						return (ft::make_pair<iterator, bool>(iterator(tmp->left), true));
 					}
@@ -221,6 +225,7 @@ namespace ft
 						allocator.construct(tmp->right->val, val);
 						tmp->right->par = tmp;
 						tmp->right->right = NULL;
+						tmp->right->left = NULL;
 						_size++;
 						return (ft::make_pair<iterator, bool>(iterator(tmp->right), true));
 					}
@@ -229,9 +234,12 @@ namespace ft
 						tmp->right->right = na.allocate(1);
 						_end = tmp->right->right;
 						_end->par = tmp->right;
+						_end->right = NULL;
+						_end->left = NULL;
 						tmp->right->val = allocator.allocate(1);
 						allocator.construct(tmp->right->val, val);
 						tmp->right->par = tmp;
+						tmp->right->left = NULL;
 						_size++;
 						return (ft::make_pair<iterator, bool>(iterator(tmp->right), true));
 					}
@@ -408,18 +416,18 @@ namespace ft
 			Node* min(Node* root) const
 			{
 				if (root == _end)
-					return NULL;
+					return (NULL);
 				while (root->left)
 					root = root->left;
-				return root;
+				return (root);
 			}
 			Node* max(Node* root) const
 			{
 				if (root == _end)
-					return NULL;
+					return (NULL);
 				while (root->right && root->right != _end)
 					root = root->right;
-				return root;
+				return (root);
 			}
 			Node *deleteNode(Node* root, Node* node)
 			{
@@ -434,20 +442,13 @@ namespace ft
 					if (!root->left && (!root->right || root->right == _end))
 					{
 						char toggle = 0;
-						if (!root->par && root->right == _end)
+						if (root->right == _end)
 							toggle = 1;
-						else if (root->par && root->right == _end)
-							toggle = 2;
 						allocator.destroy(root->val);
 						allocator.deallocate(root->val, 1);
 						na.deallocate(root, 1);
 						--_size;
-						if (toggle == 1)
-						{
-							root = na.allocate(1);
-							return root;
-						}
-						else if (toggle == 2)
+						if (toggle)
 							return (_end);
 						return (NULL);
 					}
