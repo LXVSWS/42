@@ -1,13 +1,18 @@
-#include "map.hpp"
+namespace ft {}
+using namespace ft;
+
 #include "vector.hpp"
+#include "map.hpp"
+#include <vector>
+#include <map>
 
 int main()
 {
-    ft::map<int, int> m1;
-    m1.insert(ft::pair<int, int>(1, 1));
-	m1.erase(1);
-	m1.insert(ft::pair<int, int>(2, 2));
-	for (ft::map<int, int>::iterator it = m1.begin() ; it != m1.end() ; ++it)
-		std::cout << it->first << std::endl;
+	vector<int> t1(1, 42);
+
+	std::cout << t1.max_size() << std::endl;
+	for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+		std::cout << *it << std::endl;
+
 	return (0);
 }

@@ -355,8 +355,6 @@ namespace ft
 				size_t n = 0;
 				for (InputIterator i = first ; i != last ; ++i)
 					n++;
-				if (_size + n > _capacity)
-					reserve(_capacity + n);
 				for (size_t k = j ; k < i + j ; k++)
 				{
 					allocator.destroy(&_data[k]);
@@ -364,7 +362,7 @@ namespace ft
 				}
 				n = 0;
 				for (InputIterator it = first ; it != last ; ++it)
-					allocator.construct(&_data[_size++], *it);
+					push_back(*it);
 				for (size_t k = 0 ; k < i ; k++)
 					push_back(tmp[k]);
 			}
@@ -416,18 +414,21 @@ namespace ft
 			}
 			void swap(vector& x)
 			{
-				T *_data_tmp = x.data();
-				Alloc allocator_tmp = x.get_allocator();
-				size_t _capacity_tmp = x.capacity();
-				size_t _size_tmp = x.size();
+				T *_data_tmp = x._data;
+				Alloc allocator_tmp = x.allocator;
+				size_t _capacity_tmp = x._capacity;
+				size_t _size_tmp = x._size;
+				size_t alloc_first_value_tmp = x.alloc_first_value;
 				x._data = _data;
 				x.allocator = allocator;
 				x._capacity = _capacity;
 				x._size = _size;
+				x.alloc_first_value = alloc_first_value;
 				_data = _data_tmp;
 				allocator = allocator_tmp;
 				_capacity = _capacity_tmp;
 				_size = _size_tmp;
+				alloc_first_value = alloc_first_value_tmp;
 			}
 			void clear()
 			{
