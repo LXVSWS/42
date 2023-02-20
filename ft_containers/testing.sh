@@ -31,7 +31,7 @@ test=$(make test)
 ft
 clear
 printf "${WHITE}FT_CONTAINERS TESTER |\n_____________________|\n\n${GREEN}COMPILATION OK \xE2\x9C\x85${RESET}\n\n"
-printf "${WHITE}• VECTOR TESTS${RESET}\n\n${YELLOW}CONSTRUCTOR${RESET} | "
+printf "${WHITE}• VECTOR TESTS •${RESET}\n\n${YELLOW}CONSTRUCTOR${RESET} | "
 diff=$(diff <(./ft_containers 0) <(./std_containers 0))
 if [ -z "$diff" ]
 then
@@ -39,7 +39,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers 1
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 1
@@ -52,7 +52,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers 3
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 3
@@ -65,7 +65,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers 5
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 5
@@ -78,7 +78,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers 7
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 7
@@ -91,7 +91,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers 9
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 9
@@ -104,7 +104,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers b
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers b
@@ -117,7 +117,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers d
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers d
@@ -130,7 +130,7 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers f
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers f
@@ -143,8 +143,125 @@ printf "${GREEN}OK${RESET} \xE2\x9C\x85"
 else
 printf "${RED}KO${RESET} \xE2\x9D\x8C"
 fi
-printf "\n${CYAN}FT EXEC TIME : ${RESET}"
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers h
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers h
+sleep 1
+printf "\n${YELLOW}RESERVE${RESET} | "
+diff=$(diff <(./ft_containers i) <(./std_containers i))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers j
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers j
+sleep 1
+printf "\n${YELLOW}OPERATOR[] OVERLOADING${RESET} | "
+diff=$(diff <(./ft_containers k) <(./std_containers k))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers l
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers l
+sleep 1
+printf "\n${YELLOW}AT${RESET} | "
+diff=$(diff <(./ft_containers m) <(./std_containers m))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers n
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers n
+sleep 1
+printf "\n${YELLOW}FRONT${RESET} | "
+diff=$(diff <(./ft_containers o) <(./std_containers o))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers p
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers p
+sleep 1
+printf "\n${YELLOW}BACK${RESET} | "
+diff=$(diff <(./ft_containers q) <(./std_containers q))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers r
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers r
+sleep 1
+printf "\n${YELLOW}DATA${RESET} | "
+diff=$(diff <(./ft_containers s) <(./std_containers s))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers t
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers t
+sleep 1
+printf "\n${YELLOW}ASSIGN (ITERATORS)${RESET} | "
+diff=$(diff <(./ft_containers u) <(./std_containers u))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers v
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers v
+sleep 1
+printf "\n${YELLOW}ASSIGN${RESET} | "
+diff=$(diff <(./ft_containers w) <(./std_containers w))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers x
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers x
+sleep 1
+printf "\n${YELLOW}PUSH_BACK${RESET} | "
+diff=$(diff <(./ft_containers y) <(./std_containers y))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers z
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers z
 sleep 1
