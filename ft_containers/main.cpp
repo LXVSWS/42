@@ -21,10 +21,22 @@ int main(int ac, char **av)
 		std::cout << "Please select a valid test" << std::endl;
 		return (1);
 	}
-	if (av[1][0] == '0' || av[1][0] == '1')
+	if (av[1][0] == '!' || av[1][0] == '$')
 	{
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-		vector<int> t1(7, 42);
+		vector<int> t1;
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '!')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '$')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '0' || av[1][0] == '1') && !av[1][1])
+	{
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		vector<int> t1(2, 42);
 		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 		if (av[1][0] == '0')
 			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
@@ -33,7 +45,7 @@ int main(int ac, char **av)
 			printTime(begin, end);
 		return (0);
 	}
-	if (av[1][0] == '2' || av[1][0] == '3')
+	if ((av[1][0] == '2' || av[1][0] == '3') && !av[1][1])
 	{
 		vector<int> t1(9, 66);
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
@@ -253,6 +265,167 @@ int main(int ac, char **av)
 			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
 				std::cout << *it << std::endl;
 		if (av[1][0] == 'z')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '0' && av[1][1] == '0') || (av[1][0] == '0' && av[1][1] == '1'))
+	{
+		vector<int> t1(4, 12);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.pop_back();
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '0' && av[1][1] == '0')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '0' && av[1][1] == '1')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '0' && av[1][1] == '2') || (av[1][0] == '0' && av[1][1] == '3'))
+	{
+		vector<int> t1(1, 89);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.insert(t1.begin(), 90);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '0' && av[1][1] == '2')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '0' && av[1][1] == '3')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '0' && av[1][1] == '4') || (av[1][0] == '0' && av[1][1] == '5'))
+	{
+		vector<int> t1(2, 77);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.insert(t1.begin(), 4, 80);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '0' && av[1][1] == '4')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '0' && av[1][1] == '5')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '0' && av[1][1] == '6') || (av[1][0] == '0' && av[1][1] == '7'))
+	{
+		vector<int> t1(3, 33);
+		vector<int> t2(2, 22);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.insert(t1.begin(), t2.begin(), t2.end());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '0' && av[1][1] == '6')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '0' && av[1][1] == '7')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '0' && av[1][1] == '8') || (av[1][0] == '0' && av[1][1] == '9'))
+	{
+		vector<int> t1(6, 66);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.erase(t1.begin());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '0' && av[1][1] == '8')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '0' && av[1][1] == '9')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '1' && av[1][1] == '0') || (av[1][0] == '1' && av[1][1] == '1'))
+	{
+		vector<int> t1(5, 55);
+		vector<int>::iterator itr = t1.begin();
+		++itr;
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.erase(itr, t1.end());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '0')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '1' && av[1][1] == '1')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '1' && av[1][1] == '2') || (av[1][0] == '1' && av[1][1] == '3'))
+	{
+		vector<int> t1(6, 12);
+		vector<int> t2(5, 19);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.swap(t2);
+		swap< vector<int> >(t1, t2);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '2')
+		{
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+			for (vector<int>::iterator it = t2.begin() ; it != t2.end() ; ++it)
+				std::cout << *it << std::endl;
+		}
+		if (av[1][0] == '1' && av[1][1] == '3')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '1' && av[1][1] == '4') || (av[1][0] == '1' && av[1][1] == '5'))
+	{
+		vector<int> t1(7, 77);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.clear();
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '4')
+			for (vector<int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << *it << std::endl;
+		if (av[1][0] == '1' && av[1][1] == '5')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '1' && av[1][1] == '6') || (av[1][0] == '1' && av[1][1] == '7'))
+	{
+		vector<int> t1(2, 10);
+		vector<int> t2(2, 20);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '6')
+		{
+			std::cout << (t1 == t2) << std::endl;
+			std::cout << (t1 != t2) << std::endl;
+			std::cout << (t1 < t2) << std::endl;
+			std::cout << (t1 <= t2) << std::endl;
+			std::cout << (t1 > t2) << std::endl;
+			std::cout << (t1 >= t2) << std::endl;
+		}
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '7')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '1' && av[1][1] == '8') || (av[1][0] == '1' && av[1][1] == '9'))
+	{
+		vector<int> t1(5, 50);
+		t1.push_back(100);
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '8')
+		{
+			std::cout << *t1.begin() << std::endl;
+			std::cout << *t1.end() << std::endl;
+			std::cout << *t1.rbegin() << std::endl;
+			std::cout << *t1.rend() << std::endl;
+		}
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '1' && av[1][1] == '9')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '2' && av[1][1] == '0') || (av[1][0] == '2' && av[1][1] == '1'))
+	{
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		map<int, int> t1;
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '2' && av[1][1] == '0')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '2' && av[1][1] == '1')
 			printTime(begin, end);
 		return (0);
 	}
