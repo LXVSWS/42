@@ -410,7 +410,7 @@ printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 19
 sleep 1
 '
-printf "\n${WHITE}• MAP TESTS •${RESET}\n\n${YELLOW}EMPTY CONSTRUCTOR${RESET} | "
+printf "\n${WHITE}• MAP TESTS •${RESET}\n\n${YELLOW}CONSTRUCTOR${RESET} | "
 diff=$(diff <(./ft_containers 20) <(./std_containers 20))
 if [ -z "$diff" ]
 then
@@ -422,4 +422,160 @@ printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 ./ft_containers 21
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 21
+sleep 1
+printf "\n${YELLOW}CONSTRUCTOR (RANGE)${RESET} | "
+diff=$(diff <(./ft_containers 22) <(./std_containers 22))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 23
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 23
+sleep 1
+printf "\n${YELLOW}COPY CONSTRUCTOR${RESET} | "
+diff=$(diff <(./ft_containers 24) <(./std_containers 24))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 25
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 25
+sleep 1
+printf "\n${YELLOW}OPERATOR= OVERLOADING${RESET} | "
+diff=$(diff <(./ft_containers 26) <(./std_containers 26))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 27
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 27
+sleep 1
+printf "\n${YELLOW}EMPTY${RESET} | "
+diff=$(diff <(./ft_containers 28) <(./std_containers 28))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 29
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 29
+sleep 1
+printf "\n${YELLOW}SIZE${RESET} | "
+diff=$(diff <(./ft_containers 30) <(./std_containers 30))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 31
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 31
+sleep 1
+printf "\n${YELLOW}OPERATOR[] OVERLOADING${RESET} | "
+diff=$(diff <(./ft_containers 32) <(./std_containers 32))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 33
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 33
+sleep 1
+printf "\n${YELLOW}AT${RESET} | "
+diff=$(diff <(./ft_containers 34) <(./std_containers 34))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 35
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 35
+sleep 1
+printf "\n${YELLOW}INSERT${RESET} | "
+diff=$(diff <(./ft_containers 36) <(./std_containers 36))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 37
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 37
+sleep 1
+printf "\n${YELLOW}INSERT (RANGE)${RESET} | "
+diff=$(diff <(./ft_containers 38) <(./std_containers 38))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 39
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 39
+sleep 1
+printf "\n${YELLOW}ERASE${RESET} | "
+diff=$(diff <(./ft_containers 40) <(./std_containers 40))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 41
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 41
+sleep 1
+printf "\n${YELLOW}ERASE (KEY)${RESET} | "
+diff=$(diff <(./ft_containers 42) <(./std_containers 42))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 43
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 43
+sleep 1
+printf "\n${YELLOW}ERASE (RANGE)${RESET} | "
+diff=$(diff <(./ft_containers 44) <(./std_containers 44))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 45
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 45
 sleep 1

@@ -18,7 +18,7 @@ int main(int ac, char **av)
 {
 	if (ac < 2 || ac > 3)
 	{
-		std::cout << "Please select a valid test" << std::endl;
+		std::cout << "Select a valid test" << std::endl;
 		return (1);
 	}
 	if (av[1][0] == '!' || av[1][0] == '$')
@@ -58,7 +58,7 @@ int main(int ac, char **av)
 			printTime(begin, end);
 		return (0);
 	}
-	if (av[1][0] == '4' || av[1][0] == '5')
+	if ((av[1][0] == '4' || av[1][0] == '5') && !av[1][1])
 	{
 		vector<int> t2(8, 6);
 		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
@@ -426,6 +426,174 @@ int main(int ac, char **av)
 			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
 				std::cout << it->first << ":" << it->second << std::endl;
 		if (av[1][0] == '2' && av[1][1] == '1')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '2' && av[1][1] == '2') || (av[1][0] == '2' && av[1][1] == '3'))
+	{
+		map<int, int> t2;
+		t2.insert(pair<int, int>(1, 1));t2.insert(pair<int, int>(2, 2));t2.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		map<int, int> t1(t2.begin(), t2.end());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '2' && av[1][1] == '2')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '2' && av[1][1] == '3')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '2' && av[1][1] == '4') || (av[1][0] == '2' && av[1][1] == '5'))
+	{
+		map<int, int> t2;
+		t2.insert(pair<int, int>(1, 1));t2.insert(pair<int, int>(2, 2));t2.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		map<int, int> t1(t2);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '2' && av[1][1] == '4')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '2' && av[1][1] == '5')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '2' && av[1][1] == '6') || (av[1][0] == '2' && av[1][1] == '7'))
+	{
+		map<int, int> t2;
+		t2.insert(pair<int, int>(1, 1));t2.insert(pair<int, int>(2, 2));t2.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		map<int, int> t1 = t2;
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '2' && av[1][1] == '6')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '2' && av[1][1] == '7')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '2' && av[1][1] == '8') || (av[1][0] == '2' && av[1][1] == '9'))
+	{
+		map<int, int> t1;
+		map<int, int> t2;
+		t2.insert(pair<int, int>(1, 1));t2.insert(pair<int, int>(2, 2));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		int res = t1.empty();
+		int res2 = t2.empty();
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '2' && av[1][1] == '8')
+			std::cout << res << " " << res2 << std::endl;
+		if (av[1][0] == '2' && av[1][1] == '9')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '3' && av[1][1] == '0') || (av[1][0] == '3' && av[1][1] == '1'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));t1.insert(pair<int, int>(2, 2));t1.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		int res = t1.size();
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '3' && av[1][1] == '0')
+			std::cout << res << std::endl;
+		if (av[1][0] == '3' && av[1][1] == '1')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '3' && av[1][1] == '2') || (av[1][0] == '3' && av[1][1] == '3'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1[2];
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '3' && av[1][1] == '2')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '3' && av[1][1] == '3')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '3' && av[1][1] == '4') || (av[1][0] == '3' && av[1][1] == '5'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));t1.insert(pair<int, int>(2, 2));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		int res = t1.at(2);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '3' && av[1][1] == '4')
+			std::cout << res << std::endl;
+		if (av[1][0] == '3' && av[1][1] == '5')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '3' && av[1][1] == '6') || (av[1][0] == '3' && av[1][1] == '7'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));t1.insert(pair<int, int>(2, 2));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '3' && av[1][1] == '6')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '3' && av[1][1] == '7')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '3' && av[1][1] == '8') || (av[1][0] == '3' && av[1][1] == '9'))
+	{
+		map<int, int> t1;
+		map<int, int> t2;
+		t2.insert(pair<int, int>(1, 1));t2.insert(pair<int, int>(2, 2));t2.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.insert(t2.begin(), t2.end());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '3' && av[1][1] == '8')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '3' && av[1][1] == '9')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '4' && av[1][1] == '0') || (av[1][0] == '4' && av[1][1] == '1'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));t1.insert(pair<int, int>(2, 2));t1.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.erase(t1.begin());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '4' && av[1][1] == '0')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '4' && av[1][1] == '1')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '4' && av[1][1] == '2') || (av[1][0] == '4' && av[1][1] == '3'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));t1.insert(pair<int, int>(2, 2));t1.insert(pair<int, int>(0, 0));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.erase(2);
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '4' && av[1][1] == '2')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '4' && av[1][1] == '3')
+			printTime(begin, end);
+		return (0);
+	}
+	if ((av[1][0] == '4' && av[1][1] == '4') || (av[1][0] == '4' && av[1][1] == '5'))
+	{
+		map<int, int> t1;
+		t1.insert(pair<int, int>(1, 1));t1.insert(pair<int, int>(2, 2));
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		t1.erase(t1.begin(), t1.end());
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		if (av[1][0] == '4' && av[1][1] == '4')
+			for (map<int, int>::iterator it = t1.begin() ; it != t1.end() ; ++it)
+				std::cout << it->first << ":" << it->second << std::endl;
+		if (av[1][0] == '4' && av[1][1] == '5')
 			printTime(begin, end);
 		return (0);
 	}
