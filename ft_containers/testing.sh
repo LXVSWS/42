@@ -31,7 +31,6 @@ test=$(make test)
 ft
 clear
 printf "${WHITE}FT_CONTAINERS TESTER |\n_____________________|\n\n${GREEN}COMPILATION OK \xE2\x9C\x85${RESET}\n"
-: '
 printf "\n${WHITE}• VECTOR TESTS •${RESET}\n\n${YELLOW}EMPTY CONSTRUCTOR${RESET} | "
 diff=$(diff <(./ft_containers !) <(./std_containers !))
 if [ -z "$diff" ]
@@ -409,7 +408,6 @@ printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 19
 sleep 1
-'
 printf "\n${WHITE}• MAP TESTS •${RESET}\n\n${YELLOW}CONSTRUCTOR${RESET} | "
 diff=$(diff <(./ft_containers 20) <(./std_containers 20))
 if [ -z "$diff" ]
@@ -579,3 +577,107 @@ printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
 printf "${BLUE}STD EXEC TIME : ${RESET}"
 ./std_containers 45
 sleep 1
+printf "\n${YELLOW}SWAP (MEMBER & OVERLOADED)${RESET} | "
+diff=$(diff <(./ft_containers 46) <(./std_containers 46))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 47
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 47
+sleep 1
+printf "\n${YELLOW}CLEAR${RESET} | "
+diff=$(diff <(./ft_containers 48) <(./std_containers 48))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 49
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 49
+sleep 1
+printf "\n${YELLOW}FIND${RESET} | "
+diff=$(diff <(./ft_containers 50) <(./std_containers 50))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 51
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 51
+sleep 1
+printf "\n${YELLOW}COUNT${RESET} | "
+diff=$(diff <(./ft_containers 52) <(./std_containers 52))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 53
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 53
+sleep 1
+printf "\n${YELLOW}LOWER & UPPER BOUND${RESET} | "
+diff=$(diff <(./ft_containers 54) <(./std_containers 54))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 55
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 55
+sleep 1
+printf "\n${YELLOW}EQUAL RANGE${RESET} | "
+diff=$(diff <(./ft_containers 56) <(./std_containers 56))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 57
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 57
+sleep 1
+printf "\n${YELLOW}COMPARISON OPERATORS${RESET} | "
+diff=$(diff <(./ft_containers 58) <(./std_containers 58))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 59
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 59
+sleep 1
+printf "\n${YELLOW}ITERATORS & REVERSE ITERATORS${RESET} | "
+diff=$(diff <(./ft_containers 60) <(./std_containers 60))
+if [ -z "$diff" ]
+then
+printf "${GREEN}OK${RESET} \xE2\x9C\x85"
+else
+printf "${RED}KO${RESET} \xE2\x9D\x8C"
+fi
+printf "\n${CYAN}FT  EXEC TIME : ${RESET}"
+./ft_containers 61
+printf "${BLUE}STD EXEC TIME : ${RESET}"
+./std_containers 61
+printf "\n \xE2\x9C\x85 ${GREEN}SUCCESS${RESET} \xE2\x9C\x85 \n\n"
