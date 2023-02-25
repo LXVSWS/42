@@ -13,6 +13,6 @@
 ### 11) net_practice (100%)
 ### 12) C++ (100%)
 ### 13) inception (110%)
-### 14) ft_containers (in progress...)
-### 15) ft_irc (idle)
+### 14) ft_containers (80%)
+### 15) ft_irc (in progress...)
 ### 16) ft_transcendence (idle)
