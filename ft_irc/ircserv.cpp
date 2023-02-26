@@ -32,10 +32,17 @@ int	main(int ac, char **av)
 		std::cerr << "Listen::Fatal error" << std::endl;
 		return (1);
 	}
-	fd_set master;
-	FD_ZERO(&master);
-	FD_SET(socketfd, &master);
-	ret = select(0, &master, NULL, NULL, NULL);
-	std::cout << ret << std::endl;
+	fd_set fdset;
+	FD_ZERO(&fdset);
+	FD_SET(socketfd, &fdset);
+	struct timeval timeval;
+	timeval.tv_sec = 1;
+	timeval.tv_usec = 0;
+	ret = select(0, &fdset, NULL, NULL, &timeval);
+	if (ret < 0)
+	{
+		std::cerr << "Select::Fatal error" << std::endl;
+		return (1);
+	}
 	return (0);
 }
