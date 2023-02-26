@@ -9,7 +9,7 @@ int	main(int ac, char **av)
 	}
 	int port = atoi(av[1]);
 	std::string password = av[2];
-	int socketfd = socket(AF_INET, SOCK_STREAM, 0);
+	int socketfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (socketfd < 0)
 	{
 		std::cerr << "Socket::Fatal error" << std::endl;
@@ -32,5 +32,10 @@ int	main(int ac, char **av)
 		std::cerr << "Listen::Fatal error" << std::endl;
 		return (1);
 	}
+	fd_set master;
+	FD_ZERO(&master);
+	FD_SET(socketfd, &master);
+	ret = select(0, &master, NULL, NULL, NULL);
+	std::cout << ret << std::endl;
 	return (0);
 }
