@@ -11,7 +11,7 @@
 ### 9) minishell (101% - w/ <a href="https://github.com/rahmed42/" target="_blank">@rahmed</a>)
 ### 10) cub3d (110%)
 ### 11) net_practice (100%)
-### 12) C++ (100%)
+### 12) CPP Modules (100%)
 ### 13) inception (110%)
 ### 14) ft_containers (80%)
 ### 15) ft_irc (in progress...)
