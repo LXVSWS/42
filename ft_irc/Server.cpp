@@ -1,23 +1,25 @@
 #include "ircserv.hpp"
 
-int	main(int ac, char **av)
+Server::Server() {}
+
+Server::Server(int port, std::string password) : port(port), password(password)
 {
-	if (ac != 3)
-	{
-		std::cerr << "Wrong number of arguments" << std::endl;
-		return (1);
-	}
-	int port = atoi(av[1]);
 	if (port < 1024 || port > 65535)
 		std::cout << "Careful, chosen port is out of range (allowed ports : 1024 to 65535)" << std::endl;
-	std::string password = av[2];
-	int sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+}
+
+Server::~Server() {}
+
+int Server::init()
+{
+	int ret = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sockfd < 0)
 	{
 		std::cerr << "Socket::Fatal error" << std::endl;
 		return (1);
 	}
-	int ret = fcntl(sockfd, F_SETFL, O_NONBLOCK);
+	sockfd = ret;
+	ret = fcntl(sockfd, F_SETFL, O_NONBLOCK);
 	if (ret < 0)
 	{
 		std::cerr << "Fcntl::Fatal error" << std::endl;
@@ -47,18 +49,23 @@ int	main(int ac, char **av)
 		std::cerr << "Listen::Fatal error" << std::endl;
 		return (1);
 	}
+	return (0);
+}
+
+int Server::loop()
+{
 	fd_set fdset;
 	FD_ZERO(&fdset);
 	FD_SET(sockfd, &fdset);
 	struct timeval timeval;
 	timeval.tv_sec = 10;
 	timeval.tv_usec = 0;
-	std::vector<int> clients;
+	std::vector<Client> clients;
 	std::cout << "Server up!" << std::endl;
 	while (1)
 	{
 		fd_set copyset = fdset;
-		ret = select(FD_SETSIZE, &copyset, NULL, NULL, &timeval);
+		int ret = select(FD_SETSIZE, &copyset, NULL, NULL, &timeval);
 		if (ret < 0)
 		{
 			std::cerr << "Select::Fatal error" << std::endl;
@@ -76,22 +83,23 @@ int	main(int ac, char **av)
 					return (1);
 				}
 				FD_SET(client, &fdset);
-				clients.push_back(client);
+				Client new_client(client);
+				clients.push_back(new_client);
 				send(client, "Connected to the server!\n", 25, 0);
 				std::stringstream ss;
 				ss << "User " << client << " connected\n";
 				std::cout << ss.str();
-				for (std::vector<int>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-					if (*it != 0 && *it != client)
-						send(*it, ss.str().data(), ss.str().length(), 0);
+				for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+					if (it->fd != 0 && it->fd != client)
+						send(it->fd, ss.str().data(), ss.str().length(), 0);
 			}
 			else
 			{
 				for (size_t i = 0 ; i < clients.size() ; ++i)
 				{
-					if (FD_ISSET(clients[i], &copyset))
+					if (FD_ISSET(clients[i].fd, &copyset))
 					{
-						int client = clients[i];
+						int client = clients[i].fd;
 						char buffer[1024];
 						memset(buffer, 0, 1024);
 						int bytes_recv = recv(client, buffer, 1024, 0);
@@ -103,24 +111,22 @@ int	main(int ac, char **av)
 							std::stringstream ss;
 							ss << "User " << client << " disconnected\n";
 							std::cout << ss.str();
-							for (std::vector<int>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-								if (*it != 0 && *it != client)
-									send(*it, ss.str().data(), ss.str().length(), 0);
+							for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+								if (it->fd != 0 && it->fd != client)
+									send(it->fd, ss.str().data(), ss.str().length(), 0);
 						}
 						else
 						{
 							std::stringstream ss;
 							ss << "User " << client << " : " << buffer;
 							std::cout << ss.str();
-							for (std::vector<int>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-								if (*it != 0 && *it != client)
-									send(*it, ss.str().data(), ss.str().length(), 0);
+							for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+								if (it->fd != 0 && it->fd != client)
+									send(it->fd, ss.str().data(), ss.str().length(), 0);
 						}
 					}
 				}
 			}
 		}
 	}
-	close(sockfd);
-	return (0);
 }
