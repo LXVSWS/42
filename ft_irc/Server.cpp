@@ -175,13 +175,50 @@ int Server::handle(std::vector<std::string> cmd, Client client)
 	}
 	else if (*it == "USER")
 	{
-
+		++it;
+		it->pop_back();
+		if (it->empty() || (*it).length() > 9)
+		{
+			std::string str = ":ircserv NOTICE * :*** Bad username\n";
+			send(client.fd, str.data(), str.length(), 0);
+			return (-1);
+		}
+		client.set_username(*it);
+		++it;
+		if (it->empty() || (*it).length() > 9)
+		{
+			std::string str = ":ircserv NOTICE * :*** Bad hostname\n";
+			send(client.fd, str.data(), str.length(), 0);
+			return (-1);
+		}
+		client.set_hostname(*it);
+		++it;
+		if (it->empty() || (*it).length() > 9)
+		{
+			std::string str = ":ircserv NOTICE * :*** Bad servername\n";
+			send(client.fd, str.data(), str.length(), 0);
+			return (-1);
+		}
+		client.set_servername(*it);
+		++it;
+		if (it->empty() || (*it).length() > 9)
+		{
+			std::string str = ":ircserv NOTICE * :*** Bad realname\n";
+			send(client.fd, str.data(), str.length(), 0);
+			return (-1);
+		}
+		client.set_realname(*it);
+		++it;
 	}
 	else if (*it == "JOIN")
 	{
 
 	}
 	else if (*it == "PRIVMSG")
+	{
+
+	}
+	else if (*it == "CAP")
 	{
 
 	}

@@ -7,9 +7,10 @@ class Client
 {
 	bool password_valid;
 	std::string nickname;
-	std::string host;
 	std::string username;
-	std::string server;
+	std::string hostname;
+	std::string servername;
+	std::string realname;
 
 	public:
 		int fd;
@@ -17,6 +18,10 @@ class Client
 		~Client() {}
 		void toggle_password(bool success) { password_valid = success; }
 		void set_nickname(std::string nick) { nickname = nick; }
+		void set_username(std::string user) { username = user; }
+		void set_hostname(std::string host) { hostname = host; }
+		void set_servername(std::string server) { servername = server; }
+		void set_realname(std::string name) { realname = name; }
 	private:
 		Client();
 };
