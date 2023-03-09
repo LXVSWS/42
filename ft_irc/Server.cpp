@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-Server::Server(int port, std::string password) : port(port), password(password)
+Server::Server(int port, std::string password) : port(port), password(password), sockfd(0)
 {
 	if (port < 1024 || port > 65535)
 		std::cout << "Careful, chosen port is out of range (allowed ports : 1024 to 65535)" << std::endl;
@@ -12,7 +12,7 @@ int Server::init()
 	if (sockfd < 0)
 	{
 		std::cerr << "Socket::Fatal error" << std::endl;
-		return (1);
+		return (-1);
 	}
 	sockfd = ret;
 	ret = fcntl(sockfd, F_SETFL, O_NONBLOCK);
@@ -119,13 +119,7 @@ int Server::loop()
 							if (ret <= 0)
 								continue;
 							std::stringstream ss;
-							ss << "User " << clientfd << " : ";
-							std::vector<std::string>::iterator it = cmd.begin() + 1;
-							while (++it != cmd.end())
-								if (it != cmd.end() - 1)
-									ss << *it << ' ';
-								else
-									ss << *it;
+							ss << "User " << clientfd << " : " << buffer;
 							std::cout << ss.str();
 							for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
 								if (it->fd != 0 && it->fd != clientfd)
@@ -171,7 +165,7 @@ int Server::handle(std::vector<std::string> cmd, Client client)
 	{
 		++it;
 		it->pop_back();
-		if (it->empty() || it->size() <= 9)
+		if (it->empty() || (*it).length() > 9)
 		{
 			std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
 			send(client.fd, str.data(), str.length(), 0);
@@ -188,6 +182,10 @@ int Server::handle(std::vector<std::string> cmd, Client client)
 
 	}
 	else if (*it == "PRIVMSG")
+	{
+
+	}
+	else
 		return (1);
 	return (0);
 }

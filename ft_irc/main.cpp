@@ -9,9 +9,12 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	Server serv(atoi(av[1]), av[2]);
-	if (serv.init())
-		return (1);
-	if (serv.loop())
+	int ret = serv.init();
+	if (ret)
 		close(serv.sock());
+	if (ret || ret == -1)
+		return (1);
+	serv.loop();
+	close(serv.sock());
 	return (0);
 }
