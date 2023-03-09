@@ -2,7 +2,6 @@
 #define CLIENT_HPP
 
 #include "ircserv.hpp"
-#include "Server.hpp"
 
 class Client
 {
@@ -14,13 +13,12 @@ class Client
 
 	public:
 		int fd;
-
+		Client(int fd) : password_valid(false), fd(fd) {}
+		~Client() {}
+		void toggle_password(bool success) { password_valid = success; }
+		void set_nickname(std::string nick) { nickname = nick; }
+	private:
 		Client();
-		Client(int fd) : password_valid(0), fd(fd) {}
-		~Client();
-
-		void toggle_password(bool success);
-		void set_nickname(std::string nick);
 };
 
 #endif

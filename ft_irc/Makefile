@@ -1,6 +1,6 @@
 NAME	= ircserv
 
-SRCS	= main.cpp Client.cpp Server.cpp
+SRCS	= main.cpp Server.cpp
 
 CC		= c++
 RM		= rm -f

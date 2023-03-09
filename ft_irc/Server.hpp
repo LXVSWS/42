@@ -13,15 +13,15 @@ class Server
 	int sockfd;
 
 	public:
-		Server();
 		Server(int port, std::string password);
-		~Server();
-
+		~Server() {}
 		int init();
 		int loop();
 		int sock() { return (sockfd); }
 		std::vector<std::string> check(char *buffer);
 		int handle(std::vector<std::string> cmd, Client client);
+	private:
+		Server();
 };
 
 #endif

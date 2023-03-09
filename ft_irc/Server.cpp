@@ -1,14 +1,10 @@
 #include "Server.hpp"
 
-Server::Server() {}
-
 Server::Server(int port, std::string password) : port(port), password(password)
 {
 	if (port < 1024 || port > 65535)
 		std::cout << "Careful, chosen port is out of range (allowed ports : 1024 to 65535)" << std::endl;
 }
-
-Server::~Server() {}
 
 int Server::init()
 {
@@ -118,22 +114,22 @@ int Server::loop()
 						}
 						else
 						{
-							std::vector<std::string> tokens = check(buffer);
-							ret = handle(tokens, clients[i]);
-							if (ret < 0)
+							std::vector<std::string> cmd = check(buffer);
+							ret = handle(cmd, clients[i]);
+							if (ret <= 0)
 								continue;
-							if (ret)
-							{
-								std::stringstream ss;
-								ss << "User " << clientfd << " : " << buffer;
-								std::cout << ss.str();
-								for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-									if (it->fd != 0 && it->fd != clientfd)
-										send(it->fd, ss.str().data(), ss.str().length(), 0);
-								continue;
-							}
-							std::string str = ":ircserv NOTICE * :*** Command successfully executed\n";
-							send(clientfd, str.data(), str.length(), 0);
+							std::stringstream ss;
+							ss << "User " << clientfd << " : ";
+							std::vector<std::string>::iterator it = cmd.begin() + 1;
+							while (++it != cmd.end())
+								if (it != cmd.end() - 1)
+									ss << *it << ' ';
+								else
+									ss << *it;
+							std::cout << ss.str();
+							for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+								if (it->fd != 0 && it->fd != clientfd)
+									send(it->fd, ss.str().data(), ss.str().length(), 0);
 						}
 					}
 				}
@@ -162,32 +158,36 @@ int Server::handle(std::vector<std::string> cmd, Client client)
 	{
 		++it;
 		it->pop_back();
-		if (*it == password)
+		if (*it != password)
 		{
-			client.toggle_password(true);
-			return (0);
+			client.toggle_password(false);
+			std::string str = ":ircserv NOTICE * :*** Bad password\n";
+			send(client.fd, str.data(), str.length(), 0);
+			return (-1);
 		}
-		client.toggle_password(false);
-		std::string str = ":ircserv NOTICE * :*** Bad password\n";
-		send(client.fd, str.data(), str.length(), 0);
-		return (-1);
+		client.toggle_password(true);
 	}
 	else if (*it == "NICK")
 	{
 		++it;
 		it->pop_back();
-		if (!it->empty() && it->size() <= 9)
+		if (it->empty() || it->size() <= 9)
 		{
-			client.set_nickname(*it);
-			return (0);
+			std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
+			send(client.fd, str.data(), str.length(), 0);
+			return (-1);
 		}
-		std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
-		send(client.fd, str.data(), str.length(), 0);
-		return (-1);
+		client.set_nickname(*it);
 	}
 	else if (*it == "USER")
 	{
-		return (0);
+
 	}
-	return (1);
+	else if (*it == "JOIN")
+	{
+
+	}
+	else if (*it == "PRIVMSG")
+		return (1);
+	return (0);
 }
