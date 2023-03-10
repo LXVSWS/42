@@ -7,7 +7,7 @@ void Client::authentification()
 	{
 		auth = true;
 		std::stringstream ss;
-		ss << ":ircserv NOTICE * :*** :You are now registered! Welcome " << nickname << " !\n";
+		ss << ":ircserv NOTICE * :*** You are now registered! Welcome " << nickname << " !\n";
 		send(fd, ss.str().data(), ss.str().length(), 0);
 	}
 }

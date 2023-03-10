@@ -84,12 +84,6 @@ int Server::loop()
 				clients.push_back(new_client);
 				std::string str = ":ircserv NOTICE * :*** Connected to the server\n";
 				send(client, str.data(), str.length(), 0);
-				std::stringstream ss;
-				ss << "User " << client << " connected\n";
-				std::cout << ss.str();
-				for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-					if ((*it)->fd != 0 && (*it)->fd != client)
-						send((*it)->fd, ss.str().data(), ss.str().length(), 0);
 			}
 			else
 			{
@@ -103,6 +97,7 @@ int Server::loop()
 						int bytes_recv = recv(clientfd, buffer, 512, 0);
 						if (bytes_recv <= 0)
 						{
+							std::string name = clients[i]->nickname;
 							close(clientfd);
 							FD_CLR(clientfd, &fdset);
 							std::vector<Client*>::iterator it = clients.begin();
@@ -110,8 +105,7 @@ int Server::loop()
 								++it;
 							clients.erase(it);
 							std::stringstream ss;
-							ss << "User " << clientfd << " disconnected\n";
-							std::cout << ss.str();
+							ss << ":ircserv NOTICE * :*** " << name << " disconnected\n";
 							for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
 								if ((*it)->fd != 0 && (*it)->fd != clientfd)
 									send((*it)->fd, ss.str().data(), ss.str().length(), 0);
@@ -119,8 +113,8 @@ int Server::loop()
 						else
 						{
 							std::vector<std::string> cmd = check(buffer);
-							for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
-								std::cout << "---" << *it << "---" << std::endl;
+							//for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
+							//	std::cout << "---" << *it << "---" << std::endl;
 							std::vector<std::string>::iterator it = cmd.begin();
 							while (*it == "CAP" || *it == "LS" || (*it).at(0) == '3')
 								cmd.erase(it);
@@ -129,25 +123,34 @@ int Server::loop()
 								continue;
 							if ((cmd.front() == "JOIN" || cmd.front() == "join") && clients[i]->is_auth() == true)
 							{
+								if (cmd.at(1).back() == '\n')
+									cmd.at(1).pop_back();
+								std::string chan = cmd.at(1);
 								std::stringstream s;
-								s << ":" << clients[i]->nickname << " JOIN :#channel\n";
+								s << ":" << clients[i]->nickname << " JOIN :" << chan << "\n";
 								send(clients[i]->fd, s.str().data(), s.str().length(), 0);
-								std::string str = ":ircserv 332 * #channel :😈 Bienvenue sur ircserv 😈\n";
-								send(clients[i]->fd, str.data(), str.length(), 0);
+								std::stringstream str;
+								str << ":ircserv 332 * " << chan << " : Bienvenue sur ircserv!\n";
+								send(clients[i]->fd, str.str().data(), str.str().length(), 0);
 								std::stringstream ss;
-								ss << ":ircserv 353 * " << clients[i]->nickname << " = #channel :" << clients[i]->nickname << "\n";
+								ss << ":ircserv 353 * " << clients[i]->nickname << " = " << chan << " :" << clients[i]->nickname << "\n";
 								send(clients[i]->fd, ss.str().data(), ss.str().length(), 0);
 								std::stringstream sss;
-								sss << ":ircserv 366 * " << clients[i]->nickname << " #channel :End of /NAMES list\n";
+								sss << ":ircserv 366 * " << clients[i]->nickname << " " << chan << " :End of /NAMES list\n";
 								send(clients[i]->fd, sss.str().data(), sss.str().length(), 0);
+								clients[i]->channels = chan;
 							}
 							else if (cmd.front() == "PRIVMSG" && clients[i]->is_auth() == true)
 							{
+								if (cmd.at(1).back() == '\n')
+									cmd.at(1).pop_back();
+								std::string chan = cmd.at(1);
 								std::stringstream ss;
-								ss << clients[i]->nickname << " : " << cmd.at(2);
-								std::cout << ss.str();
+								ss << ":" << clients[i]->nickname << " PRIVMSG " << chan << " " << cmd.at(2);
+								if (cmd.at(2).back() != '\n')
+									ss << "\n";
 								for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-									if ((*it)->fd != 0 && (*it)->fd != clientfd)
+									if ((*it)->fd != 0 && (*it)->fd != clientfd && (*it)->channels == chan)
 										send((*it)->fd, ss.str().data(), ss.str().length(), 0);
 							}
 							else if (cmd.front() == "NICK" && clients[i]->is_auth() == true)
