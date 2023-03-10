@@ -6,7 +6,6 @@
 class Client
 {
 	bool password_valid;
-	std::string nickname;
 	std::string username;
 	std::string hostname;
 	std::string servername;
@@ -15,6 +14,7 @@ class Client
 
 	public:
 		int fd;
+		std::string nickname;
 		Client(int fd) : password_valid(false), auth(false), fd(fd) {}
 		~Client() {}
 		void toggle_password(const bool success) { password_valid = success; }

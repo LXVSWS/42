@@ -119,22 +119,47 @@ int Server::loop()
 						else
 						{
 							std::vector<std::string> cmd = check(buffer);
+							for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
+								std::cout << "---" << *it << "---" << std::endl;
 							std::vector<std::string>::iterator it = cmd.begin();
 							while (*it == "CAP" || *it == "LS" || (*it).at(0) == '3')
 								cmd.erase(it);
 							ret = handle(cmd, clients[i]);
-							if (ret <= 0)
+							if (ret <= 0 || ((cmd.front() == "PASS" || cmd.front() == "USER") && clients[i]->is_auth() == true))
 								continue;
-							if (cmd.front() == "PRIVMSG" && clients[i]->is_auth() == true)
+							if ((cmd.front() == "JOIN" || cmd.front() == "join") && clients[i]->is_auth() == true)
 							{
-								if (cmd.at(2).back() == '\n')
-									cmd.at(2).pop_back();
+								std::stringstream s;
+								s << ":" << clients[i]->nickname << " JOIN :#channel\n";
+								send(clients[i]->fd, s.str().data(), s.str().length(), 0);
+								std::string str = ":ircserv 332 * #channel :😈 Bienvenue sur ircserv 😈\n";
+								send(clients[i]->fd, str.data(), str.length(), 0);
 								std::stringstream ss;
-								ss << "User " << clients[i]->fd << " : " << cmd.at(2) << "\n";
+								ss << ":ircserv 353 * " << clients[i]->nickname << " = #channel :" << clients[i]->nickname << "\n";
+								send(clients[i]->fd, ss.str().data(), ss.str().length(), 0);
+								std::stringstream sss;
+								sss << ":ircserv 366 * " << clients[i]->nickname << " #channel :End of /NAMES list\n";
+								send(clients[i]->fd, sss.str().data(), sss.str().length(), 0);
+							}
+							else if (cmd.front() == "PRIVMSG" && clients[i]->is_auth() == true)
+							{
+								std::stringstream ss;
+								ss << clients[i]->nickname << " : " << cmd.at(2);
 								std::cout << ss.str();
 								for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
 									if ((*it)->fd != 0 && (*it)->fd != clientfd)
 										send((*it)->fd, ss.str().data(), ss.str().length(), 0);
+							}
+							else if (cmd.front() == "NICK" && clients[i]->is_auth() == true)
+							{
+								if (cmd.at(1).back() == '\n')
+									cmd.at(1).pop_back();
+								if (cmd.at(1).empty() || cmd.at(1).length() > 9)
+								{
+									std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
+									send(clients[i]->fd, str.data(), str.length(), 0);
+								}
+								clients[i]->set_nickname(cmd.at(1));
 							}
 							else
 							{
@@ -167,6 +192,11 @@ std::vector<std::string> Server::check(char *buffer)
 			if (token.at(i) == '\r' && token.at(i + 1) == '\n')
 			{
 				tokens.push_back(token.substr(0, i));
+				if (token.back() == '\n')
+				{
+					toggle = 1;
+					break;
+				}
 				tokens.push_back(token.substr(i + 2));
 				toggle = 1;
 				break;
@@ -264,5 +294,7 @@ int Server::handle(std::vector<std::string> cmd, Client* client)
 	}
 	if (client->is_auth() == false)
 		client->authentification();
+	if (it == cmd.begin())
+		return (1);
 	return (0);
 }
