@@ -56,7 +56,7 @@ int Server::loop()
 	struct timeval timeval;
 	timeval.tv_sec = 10;
 	timeval.tv_usec = 0;
-	std::vector<Client> clients;
+	std::vector<Client*> clients;
 	std::cout << "Server up!" << std::endl;
 	while (1)
 	{
@@ -79,24 +79,25 @@ int Server::loop()
 					return (1);
 				}
 				FD_SET(client, &fdset);
-				Client new_client(client);
+				Client* new_client;
+				new_client = new Client(client);
 				clients.push_back(new_client);
 				std::string str = ":ircserv NOTICE * :*** Connected to the server\n";
 				send(client, str.data(), str.length(), 0);
 				std::stringstream ss;
 				ss << "User " << client << " connected\n";
 				std::cout << ss.str();
-				for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-					if (it->fd != 0 && it->fd != client)
-						send(it->fd, ss.str().data(), ss.str().length(), 0);
+				for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+					if ((*it)->fd != 0 && (*it)->fd != client)
+						send((*it)->fd, ss.str().data(), ss.str().length(), 0);
 			}
 			else
 			{
 				for (size_t i = 0 ; i < clients.size() ; ++i)
 				{
-					if (FD_ISSET(clients[i].fd, &copyset))
+					if (FD_ISSET(clients[i]->fd, &copyset))
 					{
-						int clientfd = clients[i].fd;
+						int clientfd = clients[i]->fd;
 						char buffer[512];
 						memset(buffer, 0, 512);
 						int bytes_recv = recv(clientfd, buffer, 512, 0);
@@ -104,13 +105,16 @@ int Server::loop()
 						{
 							close(clientfd);
 							FD_CLR(clientfd, &fdset);
-							clients[i] = 0;
+							std::vector<Client*>::iterator it = clients.begin();
+							while (*it != clients[i])
+								++it;
+							clients.erase(it);
 							std::stringstream ss;
 							ss << "User " << clientfd << " disconnected\n";
 							std::cout << ss.str();
-							for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-								if (it->fd != 0 && it->fd != clientfd)
-									send(it->fd, ss.str().data(), ss.str().length(), 0);
+							for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+								if ((*it)->fd != 0 && (*it)->fd != clientfd)
+									send((*it)->fd, ss.str().data(), ss.str().length(), 0);
 						}
 						else
 						{
@@ -118,12 +122,20 @@ int Server::loop()
 							ret = handle(cmd, clients[i]);
 							if (ret <= 0)
 								continue;
-							std::stringstream ss;
-							ss << "User " << clientfd << " : " << buffer;
-							std::cout << ss.str();
-							for (std::vector<Client>::iterator it = clients.begin() ; it != clients.end() ; ++it)
-								if (it->fd != 0 && it->fd != clientfd)
-									send(it->fd, ss.str().data(), ss.str().length(), 0);
+							if (clients[i]->is_auth() == true)
+							{
+								std::stringstream ss;
+								ss << "User " << clientfd << " : " << buffer;
+								std::cout << ss.str();
+								for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+									if ((*it)->fd != 0 && (*it)->fd != clientfd)
+										send((*it)->fd, ss.str().data(), ss.str().length(), 0);
+							}
+							else
+							{
+								std::string str = ":ircserv 451 * :You have not registered\n";
+								send(clients[i]->fd, str.data(), str.length(), 0);
+							}
 						}
 					}
 				}
@@ -145,21 +157,27 @@ std::vector<std::string> Server::check(char *buffer)
 	return (tokens);
 }
 
-int Server::handle(std::vector<std::string> cmd, Client client)
+int Server::handle(std::vector<std::string> cmd, Client* client)
 {
 	std::vector<std::string>::iterator it = cmd.begin();
 	if (*it == "PASS")
 	{
+		if (client->is_auth() == true)
+		{
+			std::string str = ":ircserv NOTICE * :*** Already registered\n";
+			send(client->fd, str.data(), str.length(), 0);
+			return (-1);
+		}
 		++it;
 		it->pop_back();
 		if (*it != password)
 		{
-			client.toggle_password(false);
+			client->toggle_password(false);
 			std::string str = ":ircserv NOTICE * :*** Bad password\n";
-			send(client.fd, str.data(), str.length(), 0);
+			send(client->fd, str.data(), str.length(), 0);
 			return (-1);
 		}
-		client.toggle_password(true);
+		client->toggle_password(true);
 	}
 	else if (*it == "NICK")
 	{
@@ -168,47 +186,51 @@ int Server::handle(std::vector<std::string> cmd, Client client)
 		if (it->empty() || (*it).length() > 9)
 		{
 			std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
-			send(client.fd, str.data(), str.length(), 0);
+			send(client->fd, str.data(), str.length(), 0);
 			return (-1);
 		}
-		client.set_nickname(*it);
+		client->set_nickname(*it);
 	}
 	else if (*it == "USER")
 	{
+		if (client->is_auth() == true)
+		{
+			std::string str = ":ircserv NOTICE * :*** Cannot change those informations\n";
+			send(client->fd, str.data(), str.length(), 0);
+			return (-1);
+		}
 		++it;
-		it->pop_back();
 		if (it->empty() || (*it).length() > 9)
 		{
 			std::string str = ":ircserv NOTICE * :*** Bad username\n";
-			send(client.fd, str.data(), str.length(), 0);
+			send(client->fd, str.data(), str.length(), 0);
 			return (-1);
 		}
-		client.set_username(*it);
+		client->set_username(*it);
 		++it;
 		if (it->empty() || (*it).length() > 9)
 		{
 			std::string str = ":ircserv NOTICE * :*** Bad hostname\n";
-			send(client.fd, str.data(), str.length(), 0);
+			send(client->fd, str.data(), str.length(), 0);
 			return (-1);
 		}
-		client.set_hostname(*it);
+		client->set_hostname(*it);
 		++it;
 		if (it->empty() || (*it).length() > 9)
 		{
 			std::string str = ":ircserv NOTICE * :*** Bad servername\n";
-			send(client.fd, str.data(), str.length(), 0);
+			send(client->fd, str.data(), str.length(), 0);
 			return (-1);
 		}
-		client.set_servername(*it);
+		client->set_servername(*it);
 		++it;
 		if (it->empty() || (*it).length() > 9)
 		{
 			std::string str = ":ircserv NOTICE * :*** Bad realname\n";
-			send(client.fd, str.data(), str.length(), 0);
+			send(client->fd, str.data(), str.length(), 0);
 			return (-1);
 		}
-		client.set_realname(*it);
-		++it;
+		client->set_realname(*it);
 	}
 	else if (*it == "JOIN")
 	{
@@ -224,5 +246,7 @@ int Server::handle(std::vector<std::string> cmd, Client client)
 	}
 	else
 		return (1);
+	if (client->is_auth() == false)
+		client->authentification();
 	return (0);
 }

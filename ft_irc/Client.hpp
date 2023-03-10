@@ -11,17 +11,20 @@ class Client
 	std::string hostname;
 	std::string servername;
 	std::string realname;
+	bool auth;
 
 	public:
 		int fd;
-		Client(int fd) : password_valid(false), fd(fd) {}
+		Client(int fd) : password_valid(false), auth(false), fd(fd) {}
 		~Client() {}
-		void toggle_password(bool success) { password_valid = success; }
-		void set_nickname(std::string nick) { nickname = nick; }
-		void set_username(std::string user) { username = user; }
-		void set_hostname(std::string host) { hostname = host; }
-		void set_servername(std::string server) { servername = server; }
-		void set_realname(std::string name) { realname = name; }
+		void toggle_password(const bool success) { password_valid = success; }
+		void set_nickname(const std::string& nick) { nickname = nick; }
+		void set_username(const std::string& user) { username = user; }
+		void set_hostname(const std::string& host) { hostname = host; }
+		void set_servername(const std::string& server) { servername = server; }
+		void set_realname(const std::string& name) { realname = name; }
+		void authentification();
+		char is_auth() const { return (auth); }
 	private:
 		Client();
 };
