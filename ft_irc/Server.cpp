@@ -112,6 +112,8 @@ int Server::loop()
 						}
 						else
 						{
+							//for (int i = 0 ; buffer[i] ; ++i)
+							//	std::cout << buffer[i] << " : " << static_cast<int>(buffer[i]) << std::endl;
 							std::vector<std::string> cmd = check(buffer);
 							//for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
 							//	std::cout << "---" << *it << "---" << std::endl;
@@ -189,7 +191,7 @@ std::vector<std::string> Server::check(char *buffer)
 	char toggle = 0;
     while (std::getline(ss, token, ' '))
 	{
-		if (!token.size())
+		if (!token.size() || token == "\r\n")
 			continue;
 		for (size_t i = 0 ; i < token.length() ; ++i)
 			if (token.at(i) == '\r' && token.at(i + 1) == '\n')
