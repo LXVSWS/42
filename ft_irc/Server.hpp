@@ -16,10 +16,10 @@ class Server
 		Server(int port, std::string password);
 		~Server() {}
 		int init();
-		int loop();
+		void loop();
 		int sock() const { return (sockfd); }
 		std::vector<std::string> check(char *buffer);
-		int handle(std::vector<std::string> cmd, Client* client);
+		int handle(std::vector<std::string>	cmd, Client* client);
 	private:
 		Server();
 };

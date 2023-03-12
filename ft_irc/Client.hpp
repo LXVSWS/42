@@ -14,8 +14,8 @@ class Client
 
 	public:
 		int fd;
-		std::string nickname;
-		std::string channels;
+		std::string	nickname;
+		std::string	channels;
 		Client(int fd) : password_valid(false), auth(false), fd(fd) {}
 		~Client() {}
 		void toggle_password(const bool success) { password_valid = success; }
