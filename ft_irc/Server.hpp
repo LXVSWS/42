@@ -3,14 +3,15 @@
 
 #include "ircserv.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"
 
 class Client;
 
 class Server
 {
 	int port;
-	std::string password;
 	int sockfd;
+	std::string password;
 
 	public:
 		Server(int port, std::string password);
@@ -19,7 +20,7 @@ class Server
 		void loop();
 		int sock() const { return (sockfd); }
 		std::vector<std::string> check(char *buffer);
-		int handle(std::vector<std::string>	cmd, Client* client);
+		int handle(std::vector<std::string>	cmd, std::vector<Client*> clients, Client* client);
 	private:
 		Server();
 };
