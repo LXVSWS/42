@@ -39,7 +39,7 @@ int Server::init()
 		std::cerr << "Bind::Fatal error" << std::endl;
 		return (1);
 	}
-	ret = listen(sockfd, 50);
+	ret = listen(sockfd, 10);
 	if (ret < 0)
 	{
 		std::cerr << "Listen::Fatal error" << std::endl;
@@ -290,86 +290,67 @@ int Server::handle(std::vector<std::string> cmd, std::vector<Client*> clients, C
 {
 	if (client->is_auth() == true)
 		return (1);
-	std::vector<std::string>::iterator it = cmd.begin();
-	if (*it == "CAP")
-		it += 3;
-	if (*it == "PASS")
+	for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
 	{
-		++it;
-		if (*it != password)
+		if (*it == "CAP" || *it == "LS" || *it == "302")
+			continue;
+		if (*it == "PASS")
 		{
-			client->toggle_password(false);
-			std::string str = ":ircserv NOTICE * :*** Bad password\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
-		}
-		client->toggle_password(true);
-		++it;
-	}
-	if (*it == "NICK")
-	{
-		++it;
-		if (it->empty() || (*it).length() > 9)
-		{
-			std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
-		}
-		for (size_t i = 0 ; i < clients.size() ; ++i)
-			if (clients[i]->nickname == *it)
+			if (++it == cmd.end())
+				break;
+			if (*it != password)
 			{
-				std::stringstream ss;
-				ss << ":ircserv 436 " << clients[i]->nickname << " :Nickname collision KILL\n";
-				send(client->fd, ss.str().data(), ss.str().length(), 0);
-				return (-1);
+				client->toggle_password(false);
+				break;
 			}
-		client->set_nickname(*it);
-		++it;
-	}
-	if (*it == "USER")
-	{
-		if (client->is_auth() == true)
-		{
-			std::string str = ":ircserv NOTICE * :*** Cannot change those informations\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
+			if (*it == password)
+				client->toggle_password(true);
+			continue;
 		}
-		++it;
-		if (it->empty() || (*it).length() > 9)
+		if (*it == "NICK")
 		{
-			std::string str = ":ircserv NOTICE * :*** Bad username\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
+			if (++it == cmd.end())
+				break;
+			if (it->empty() || (*it).length() > 9)
+				break;
+			for (size_t i = 0 ; i < clients.size() ; ++i)
+				if (clients[i]->nickname == *it)
+				{
+					std::stringstream ss;
+					ss << ":ircserv 436 " << clients[i]->nickname << " :Nickname collision KILL\n";
+					send(client->fd, ss.str().data(), ss.str().length(), 0);
+					return (-1);
+				}
+			client->set_nickname(*it);
+			continue;
 		}
-		client->set_username(*it);
-		++it;
-		if (it->empty() || (*it).length() > 9)
+		if (*it == "USER")
 		{
-			std::string str = ":ircserv NOTICE * :*** Bad hostname\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
+			if (++it == cmd.end())
+				break;
+			if (it->empty() || (*it).length() > 9)
+				break;
+			client->set_username(*it);
+			if (++it == cmd.end())
+				break;
+			if (it->empty() || (*it).length() > 9)
+				break;
+			client->set_hostname(*it);
+			if (++it == cmd.end())
+				break;
+			if (it->empty() || (*it).length() > 9)
+				break;
+			client->set_servername(*it);
+			if (++it == cmd.end())
+				break;
+			if (it->empty() || it->front() == '\r' || it->front() == '\n')
+				break;
+			client->set_realname(*it);
 		}
-		client->set_hostname(*it);
-		++it;
-		if (it->empty() || (*it).length() > 9)
-		{
-			std::string str = ":ircserv NOTICE * :*** Bad servername\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
-		}
-		client->set_servername(*it);
-		++it;
-		if (it->empty() || (*it).length() > 9)
-		{
-			std::string str = ":ircserv NOTICE * :*** Bad realname\n";
-			send(client->fd, str.data(), str.length(), 0);
-			return (-1);
-		}
-		client->set_realname(*it);
+		if (it == cmd.begin())
+			return (1);
 	}
 	if (client->is_auth() == false)
 		client->authentification();
-	if (it == cmd.begin())
-		return (1);
 	return (0);
 }
