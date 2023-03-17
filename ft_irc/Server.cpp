@@ -6,6 +6,12 @@ Server::Server(int port, std::string password) : port(port), sockfd(0), password
 		std::cout << "Careful, chosen port is out of range (allowed ports : 1024 to 65535)" << std::endl;
 }
 
+Server::~Server()
+{
+	if (sockfd)
+		close(sockfd);
+}
+
 int Server::init()
 {
 	int ret = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -39,12 +45,13 @@ int Server::init()
 		std::cerr << "Bind::Fatal error" << std::endl;
 		return (1);
 	}
-	ret = listen(sockfd, 10);
+	ret = listen(sockfd, 100);
 	if (ret < 0)
 	{
 		std::cerr << "Listen::Fatal error" << std::endl;
 		return (1);
 	}
+	signal(SIGPIPE, SIG_IGN);
 	return (0);
 }
 
@@ -54,7 +61,7 @@ void Server::loop()
 	FD_ZERO(&fdset);
 	FD_SET(sockfd, &fdset);
 	struct timeval timeval;
-	timeval.tv_sec = 10;
+	timeval.tv_sec = 5;
 	timeval.tv_usec = 0;
 	std::vector<Client*> clients;
 	std::vector<Channel*> channels;
@@ -96,10 +103,12 @@ void Server::loop()
 					if (FD_ISSET(clients[i]->fd, &copyset))
 					{
 						Client* client = clients[i];
-						char buffer[512];
-						memset(buffer, 0, 512);
-						int bytes_recv = recv(client->fd, buffer, 512, 0);
-						if (bytes_recv <= 0)
+						char buffer[513];
+						memset(buffer, 0, sizeof(buffer));
+						int bytes_recv = recv(client->fd, buffer, sizeof(buffer) - 1, 0);
+						if (bytes_recv < 0)
+							break;
+						else if (!bytes_recv)
 						{
 							close(client->fd);
 							FD_CLR(client->fd, &fdset);
@@ -107,26 +116,15 @@ void Server::loop()
 							name.push_back(static_cast<char>(client->fd + 48));
 							if (!client->nickname.empty())
 								name = client->nickname;
-							char toggle = 0;
 							for (std::vector<Channel*>::iterator it = channels.begin() ; it != channels.end() ; ++it)
-							{
 								for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
 									if (itt->first == client->nickname)
 									{
 										(*it)->clients.erase(itt);
-										if ((*it)->clients.empty())
-										{
-											delete *it;
-											channels.erase(it);
-										}
-										else
+										if ((*it)->clients.size())
 											(*it)->send_userlist();
-										toggle = 1;
 										break;
 									}
-								if (toggle)
-									break;
-							}
 							for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
 								if (*it == client)
 								{
@@ -141,20 +139,30 @@ void Server::loop()
 							//for (int i = 0 ; buffer[i] ; ++i)
 							//	std::cout << buffer[i] << " : " << static_cast<int>(buffer[i]) << std::endl;
 							std::vector<std::string> cmd = check(buffer);
+							Command command(cmd, client, std::string(buffer));
+							cmd = command.return_vector();
 							//for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
 							//	std::cout << "---" << *it << "---" << std::endl;
+							if (cmd.empty() || cmd.front() == "QUIT" || cmd.front() == "MODE")
+								break;
 							ret = handle(cmd, clients, client);
 							if (ret <= 0 || ((cmd.front() == "PASS" || cmd.front() == "USER") && client->is_auth() == true))
-								continue;
+								break;
 							if ((cmd.front() == "JOIN" || cmd.front() == "join") && client->is_auth() == true)
 							{
 								if (cmd.size() < 2)
 								{
 									std::string str = ":ircserv NOTICE * :*** Not enough parameters\n";
 									send(client->fd, str.data(), str.length(), 0);
-									continue;
+									break;
 								}
 								std::string channel = cmd.at(1);
+								if (channel.front() != '#')
+								{
+									std::string str = ":ircserv NOTICE * :*** Channel must start with an #\n";
+									send(client->fd, str.data(), str.length(), 0);
+									break;
+								}
 								std::stringstream s;
 								s << ":" << client->nickname << " JOIN :" << channel << '\n';
 								send(client->fd, s.str().data(), s.str().length(), 0);
@@ -191,7 +199,7 @@ void Server::loop()
 								{
 									std::string str = ":ircserv NOTICE * :*** Not enough parameters\n";
 									send(client->fd, str.data(), str.length(), 0);
-									continue;
+									break;
 								}
 								char toggle = 0;
 								std::string channel = cmd.at(1);
@@ -220,13 +228,13 @@ void Server::loop()
 								{
 									std::string str = ":ircserv NOTICE * :*** Not enough parameters\n";
 									send(client->fd, str.data(), str.length(), 0);
-									continue;
+									break;
 								}
 								if (cmd.at(1).empty() || cmd.at(1).length() > 9)
 								{
 									std::string str = ":ircserv NOTICE * :*** Bad nickname\n";
 									send(client->fd, str.data(), str.length(), 0);
-									continue;
+									break;
 								}
 								for (size_t j = 0 ; j < clients.size() ; ++j)
 									if (clients[j]->nickname == cmd.at(1))
@@ -234,7 +242,7 @@ void Server::loop()
 										std::stringstream ss;
 										ss << ":ircserv 436 " << clients[j]->nickname << " :Nickname collision KILL\n";
 										send(client->fd, ss.str().data(), ss.str().length(), 0);
-										continue;
+										break;
 									}
 								client->set_nickname(cmd.at(1));
 							}
@@ -248,6 +256,7 @@ void Server::loop()
 								send(client->fd, str.data(), str.length(), 0);
 							}
 						}
+						break;
 					}
 				}
 			}
@@ -280,9 +289,6 @@ std::vector<std::string> Server::check(char *buffer)
 		else
 			toggle = 0;
 	}
-	for (std::vector<std::string>::iterator it = tokens.begin() ; it != tokens.end() ; ++it)
-		if (it->back() == '\n')
-			it->pop_back();
 	return (tokens);
 }
 
@@ -317,7 +323,7 @@ int Server::handle(std::vector<std::string> cmd, std::vector<Client*> clients, C
 				if (clients[i]->nickname == *it)
 				{
 					std::stringstream ss;
-					ss << ":ircserv 436 " << clients[i]->nickname << " :Nickname collision KILL\n";
+					ss << ":ircserv 436 " << clients[i]->nickname << " :Nickname collision KILL.\n";
 					send(client->fd, ss.str().data(), ss.str().length(), 0);
 					return (-1);
 				}
@@ -346,6 +352,7 @@ int Server::handle(std::vector<std::string> cmd, std::vector<Client*> clients, C
 			if (it->empty() || it->front() == '\r' || it->front() == '\n')
 				break;
 			client->set_realname(*it);
+			continue;
 		}
 		if (it == cmd.begin())
 			return (1);

@@ -4,6 +4,7 @@
 #include "ircserv.hpp"
 #include "Client.hpp"
 #include "Channel.hpp"
+#include "Command.hpp"
 
 class Client;
 
@@ -15,7 +16,7 @@ class Server
 
 	public:
 		Server(int port, std::string password);
-		~Server() {}
+		~Server();
 		int init();
 		void loop();
 		int sock() const { return (sockfd); }

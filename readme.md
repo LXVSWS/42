@@ -14,5 +14,5 @@
 ### 12) CPP Modules (100%)
 ### 13) inception (110%)
 ### 14) ft_containers (80%)
-### 15) ft_irc (in progress...)
+### 15) ft_irc (in progress... - w/ <a href="https://github.com/mmatthie98" target="_blank">@mmatthie</a> & <a href="https://github.com/Timothee-BRANDT" target="_blank">@tbrandt</a>)
 ### 16) ft_transcendence (idle)

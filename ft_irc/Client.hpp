@@ -11,11 +11,11 @@ class Client
 	std::string hostname;
 	std::string servername;
 	std::string realname;
-	std::vector<std::string> tmp;
 
 	public:
 		int fd;
-		std::string	nickname;
+		std::string nickname;
+		std::vector<std::string> tmp;
 
 		Client(int fd) : password_valid(false), auth(false), fd(fd) {}
 		~Client() {}
