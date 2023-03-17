@@ -193,7 +193,7 @@ void Server::loop()
 									new_channel->send_userlist();
 								}
 							}
-							else if (cmd.front() == "PRIVMSG" && client->is_auth() == true)
+							else if ((cmd.front() == "PRIVMSG" || cmd.front() == "NOTICE") && client->is_auth() == true)
 							{
 								if (cmd.size() < 3)
 								{
@@ -202,21 +202,34 @@ void Server::loop()
 									break;
 								}
 								char toggle = 0;
-								std::string channel = cmd.at(1);
+								std::string dst = cmd.at(1);
 								std::stringstream ss;
-								ss << ":" << client->nickname << " PRIVMSG " << channel << ' ' << cmd.at(2) << '\n';
-								for (std::vector<Channel*>::iterator it = channels.begin() ; it != channels.end() ; ++it)
-									if (channel == (*it)->getName())
-									{
-										for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
-											if (itt->first == client->nickname)
-												toggle = 1;
-										if (toggle)
+								ss << ":" << client->nickname << ' ' << cmd.at(0) << ' ' << dst << ' ' << cmd.at(2) << '\n';
+								if (dst.front() == '#')
+								{
+									for (std::vector<Channel*>::iterator it = channels.begin() ; it != channels.end() ; ++it)
+										if (dst == (*it)->getName())
+										{
 											for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
-												if (itt->first != client->nickname)
-													send(itt->second, ss.str().data(), ss.str().length(), 0);
-									}
-								if (!toggle)
+												if (itt->first == client->nickname)
+													toggle = 1;
+											if (toggle)
+												for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
+													if (itt->first != client->nickname)
+														send(itt->second, ss.str().data(), ss.str().length(), 0);
+										}
+								}
+								else
+								{
+									for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+										if (dst == (*it)->nickname)
+										{
+											toggle = 1;
+											send((*it)->fd, ss.str().data(), ss.str().length(), 0);
+											break;
+										}
+								}
+								if (!toggle && cmd.front() != "NOTICE")
 								{
 									std::string str = ":ircserv NOTICE * :*** You can't do this operation\n";
 									send(client->fd, str.data(), str.length(), 0);
@@ -236,24 +249,47 @@ void Server::loop()
 									send(client->fd, str.data(), str.length(), 0);
 									break;
 								}
+								char toggle = 0;
+								std::string dst = cmd.at(1);
+								if (dst.front() == '#')
+								{
+									std::string str = ":ircserv NOTICE * :*** Nickname can't start with an #\n";
+									send(client->fd, str.data(), str.length(), 0);
+									break;
+								}
 								for (size_t j = 0 ; j < clients.size() ; ++j)
 									if (clients[j]->nickname == cmd.at(1))
 									{
+										toggle = 1;
 										std::stringstream ss;
 										ss << ":ircserv 436 " << clients[j]->nickname << " :Nickname collision KILL\n";
 										send(client->fd, ss.str().data(), ss.str().length(), 0);
 										break;
 									}
-								client->set_nickname(cmd.at(1));
+								if (!toggle)
+								{
+									std::stringstream s;
+									s << ":" << client->nickname << " NICK :" << dst << '\n';
+									for (std::vector<Channel*>::iterator it = channels.begin() ; it != channels.end() ; ++it)
+										for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
+											if (itt->first == client->nickname)
+											{
+												itt->first = dst;
+												(*it)->send_userlist();
+												break;
+											}
+									client->set_nickname(dst);
+									send(client->fd, s.str().data(), s.str().length(), 0);
+								}
 							}
 							else
 							{
-								std::string str;
+								std::stringstream ss;
 								if (client->is_auth() == false)
-									str = ":ircserv 451 :You have not registered\n";
+									ss << ":ircserv 451 * :You have not registered\n";
 								else
-									str = ":ircserv NOTICE * :*** Unknow command\n";
-								send(client->fd, str.data(), str.length(), 0);
+									ss << ":ircserv 421 "<< client->nickname << ' ' << cmd.at(0) << " :Unknown command\n";
+								send(client->fd, ss.str().data(), ss.str().length(), 0);
 							}
 						}
 						break;

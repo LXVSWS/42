@@ -4,8 +4,8 @@ void Channel::send_userlist()
 {
 	for (std::vector< ft::pair<std::string, int> >::iterator it = clients.begin() ; it != clients.end() ; ++it)
 	{
-		std::stringstream ss;
-		std::stringstream s;
+		std::stringstream	ss;
+		std::stringstream	s;
 		ss << ":ircserv 353 " << it->first << " = " << name << " :";
 		for (std::vector< ft::pair<std::string, int> >::iterator it = clients.begin() ; it != clients.end() ; ++it)
 			ss << it->first << ' ';

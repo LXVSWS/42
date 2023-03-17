@@ -17,9 +17,9 @@ class Server
 	public:
 		Server(int port, std::string password);
 		~Server();
-		int init();
+		int	init();
 		void loop();
-		int sock() const { return (sockfd); }
+		int	sock() const { return (sockfd); }
 		std::vector<std::string> check(char *buffer);
 		int handle(std::vector<std::string>	cmd, std::vector<Client*> clients, Client* client);
 	private:

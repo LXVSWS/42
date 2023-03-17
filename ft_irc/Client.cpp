@@ -2,7 +2,8 @@
 
 void Client::authentification()
 {
-	if (password_valid == true && nickname.size() && username.size() && hostname.size() && servername.size() && realname.size())
+	if (password_valid == true && nickname.size() && username.size() \
+	&& hostname.size() && servername.size() && realname.size())
 	{
 		auth = true;
 		std::stringstream ss;

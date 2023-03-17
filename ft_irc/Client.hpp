@@ -13,7 +13,7 @@ class Client
 	std::string realname;
 
 	public:
-		int fd;
+		int	fd;
 		std::string nickname;
 		std::vector<std::string> tmp;
 
