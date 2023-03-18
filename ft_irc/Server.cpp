@@ -3,7 +3,10 @@
 Server::Server(int port, std::string password) : port(port), sockfd(0), password(password)
 {
 	if (port < 1024 || port > 65535)
+	{
 		std::cout << "Careful, chosen port is out of range (allowed ports : 1024 to 65535)" << std::endl;
+		exit(1);
+	}
 }
 
 Server::~Server()
@@ -82,10 +85,10 @@ void Server::loop()
 				socklen_t len = sizeof(struct sockaddr);
 				int client = accept(sockfd, NULL, &len);
 				if (client < 0)
-				{
-					std::cerr << "Accept::Fatal error" << std::endl;
-					return ;
-				}
+					continue;
+				ret = fcntl(client, F_SETFL, O_NONBLOCK);
+				if (ret < 0)
+					continue;
 				FD_SET(client, &fdset);
 				Client* new_client;
 				new_client = new Client(client);
@@ -110,6 +113,7 @@ void Server::loop()
 							break;
 						else if (!bytes_recv)
 						{
+							std::vector< ft::pair<std::string, std::string> > op;
 							close(client->fd);
 							FD_CLR(client->fd, &fdset);
 							std::string name = "guest";
@@ -122,7 +126,10 @@ void Server::loop()
 									{
 										(*it)->clients.erase(itt);
 										if ((*it)->clients.size())
-											(*it)->send_userlist();
+										{
+											ft::pair<std::string, std::string> tmp((*it)->send_userlist(), (*it)->getName());
+											op.push_back(tmp);
+										}
 										break;
 									}
 							for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
@@ -133,6 +140,10 @@ void Server::loop()
 									std::cout << name << " disconnected" << std::endl;
 									break;
 								}
+							for (std::vector<Client*>::iterator it = clients.begin() ; it != clients.end() ; ++it)
+								for (std::vector< ft::pair<std::string, std::string> >::iterator itt = op.begin() ; itt != op.end() ; ++itt)
+									if ((*it)->nickname == itt->first)
+										(*it)->op.push_back(itt->second);
 						}
 						else
 						{
@@ -157,9 +168,9 @@ void Server::loop()
 									break;
 								}
 								std::string channel = cmd.at(1);
-								if (channel.front() != '#')
-								{
-									std::string str = ":ircserv NOTICE * :*** Channel must start with an #\n";
+								if ((channel.front() != '#' && channel.front() != '&') || channel.length() <= 1 || channel.length() > 200)
+								{ // channel must not contain any virgule
+									std::string str = ":ircserv NOTICE * :*** Channel must start with an # or & followed by 1-200 character(s)\n";
 									send(client->fd, str.data(), str.length(), 0);
 									break;
 								}
@@ -178,9 +189,10 @@ void Server::loop()
 												toggle = 1;
 										if (!toggle)
 										{
-											(*it)->clients.push_back(ft::make_pair<std::string, int>(client->nickname, client->fd));
-											(*it)->send_userlist();
 											toggle = 1;
+											(*it)->clients.push_back(ft::make_pair<std::string, int>(client->nickname, client->fd));
+											if ((*it)->send_userlist() == client->nickname)
+												client->op.push_back(channel);
 										}
 										break;
 									}
@@ -191,6 +203,7 @@ void Server::loop()
 									new_channel->clients.push_back(ft::make_pair<std::string, int>(client->nickname, client->fd));
 									channels.push_back(new_channel);
 									new_channel->send_userlist();
+									client->op.push_back(channel);
 								}
 							}
 							else if ((cmd.front() == "PRIVMSG" || cmd.front() == "NOTICE") && client->is_auth() == true)

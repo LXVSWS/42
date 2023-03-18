@@ -5,7 +5,7 @@
 
 class Channel
 {
-	std::string	name;
+	std::string name;
 
 	public:
 		std::vector< ft::pair<std::string, int> > clients;
@@ -13,7 +13,7 @@ class Channel
 		Channel(std::string name) : name(name) {}
 		~Channel() {}
 		std::string getName() { return (name); }
-		void send_userlist();
+		std::string send_userlist();
 	private:
 		Channel();
 };
