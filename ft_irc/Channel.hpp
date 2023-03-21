@@ -6,6 +6,7 @@
 class Channel
 {
 	std::string name;
+	std::string topic;
 
 	public:
 		std::vector< ft::pair<std::string, int> > clients;
@@ -14,6 +15,8 @@ class Channel
 		Channel(std::string name): name(name) {}
 		~Channel() {}
 		std::string getName() const { return (name); }
+		std::string getTopic() { return (topic); }
+		void setTopic(std::string str) { topic = str; }
 		void send_userlist();
 	private:
 		Channel();
