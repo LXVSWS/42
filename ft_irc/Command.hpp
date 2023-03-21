@@ -23,10 +23,12 @@ class Command
 		void 	parse_user_wtf();
 		void	parse_quit();
 		void 	parse_join();
-		void 	parse_msg();
+		void 	parse_msg(std::string str);
 		void 	parse_kick();
 		void 	parse_topic();
+		void 	parse_mode();
 		void    control(std::string buffer);
+		unsigned int	coma_count(std::string str);
 		std::vector<std::string> split(std::string arg);
 		std::vector<std::string> get_next_command();
 		std::vector<std::string> return_vector();
@@ -34,6 +36,7 @@ class Command
 		std::string prefix;
 		// attributes
 		bool 		is_prefix;
+		bool		o_mode;
 		bool		join_flag;
 		Client		*cl;
 	private:

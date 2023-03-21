@@ -1,6 +1,6 @@
 #include "Channel.hpp"
 
-std::string Channel::send_userlist()
+void Channel::send_userlist()
 {
 	for (std::vector< ft::pair<std::string, int> >::iterator it = clients.begin() ; it != clients.end() ; ++it)
 	{
@@ -9,7 +9,11 @@ std::string Channel::send_userlist()
 		ss << ":ircserv 353 " << it->first << " = " << name << " :";
 		for (std::vector< ft::pair<std::string, int> >::iterator it = clients.begin() ; it != clients.end() ; ++it)
 		{
-			if (it == clients.begin())
+			char toggle = 0;
+			for (std::vector<std::string>::iterator itt = operators.begin() ; itt != operators.end() ; ++itt)
+				if (*itt == it->first)
+					toggle = 1;
+			if (toggle)
 				ss << '@' << it->first << ' ';
 			else
 				ss << it->first << ' ';
@@ -19,6 +23,4 @@ std::string Channel::send_userlist()
 		s << ":ircserv 366 " << it->first << ' ' << name << " :End of /NAMES list.\n";
 		send(it->second, s.str().data(), s.str().length(), 0);
 	}
-	std::string op = clients.front().first;
-	return (op);
 }

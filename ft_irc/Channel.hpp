@@ -9,11 +9,12 @@ class Channel
 
 	public:
 		std::vector< ft::pair<std::string, int> > clients;
+		std::vector<std::string> operators;
 
-		Channel(std::string name) : name(name) {}
+		Channel(std::string name): name(name) {}
 		~Channel() {}
-		std::string getName() { return (name); }
-		std::string send_userlist();
+		std::string getName() const { return (name); }
+		void send_userlist();
 	private:
 		Channel();
 };
