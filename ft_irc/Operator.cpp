@@ -141,3 +141,85 @@ int	Server::topic(Command *command, std::vector<Channel*> channels, Client *clie
     }
     return (0);
 }
+
+void	Server::invite(std::vector<std::string>& cmd,std::vector<Client*>& clients, Client* client,std::vector<Channel*>& channels)
+{
+	int	nick_flag_manu = 0;
+	int chann_flag_manu = 0;
+	if (cmd.size() < 3)
+	{
+		std::string str = ":ircserv 461 " + cmd[0] + " :Not enough parameters\n";
+		send(client->fd, str.data(), str.length(), 0);
+		return ;
+	}
+	else
+	{
+		size_t i = 0;
+		if (!clients.empty())
+		{
+			for (std::vector<Client *>::iterator it = clients.begin(); it != clients.end(); ++it)
+			{
+				if (clients.at(i)->nickname == cmd[1])
+				{
+					nick_flag_manu += 1;
+					continue ;
+				}
+				i++;
+			}
+		}
+		i = 0;
+		if (!channels.empty())
+		{
+			for (std::vector<Channel *>::iterator it = channels.begin(); it != channels.end(); ++it)
+			{	
+				if (channels.at(i)->getName() == cmd[2])
+				{
+					chann_flag_manu += 1;
+					continue ;
+				}
+				i++;
+			}
+		}
+		if (!nick_flag_manu)
+		{
+			std::string str = ":ircserv 401 " + cmd[1] + " :No such nick/channel\n";
+			send(client->fd, str.data(), str.length(), 0);
+			return ;
+		}
+		else if (!chann_flag_manu)
+		{
+			std::string str = ":ircserv 403 " + cmd[2] + " :No such channel\n";
+			send(client->fd, str.data(), str.length(), 0);
+			return ;
+		}
+		else
+		{
+			for (std::vector<Channel *>::iterator it = channels.begin(); it != channels.end(); ++it)
+			{
+				if ((*it)->getName() == cmd[2])
+				{
+					for (std::vector<ft::pair<std::string, int> >::iterator ite = (*it)->clients.begin(); ite != (*it)->clients.end(); ++ite)
+					{
+						if (ite->first == cmd[1])
+						{
+							std::stringstream str;
+							str << ":ircserv 443 " << cmd[1] << ' ' << cmd[2] << " :is already on channel\n";
+							send(client->fd, str.str().data(), str.str().length(), 0);
+							return ;
+						}
+					}
+				}
+			}
+			for (std::vector<Client *>::iterator it = clients.begin(); it != clients.end(); ++it)
+			{
+				if ((*it)->nickname == cmd[1])
+				{
+					std::stringstream str;
+					str << ":" << client->nickname << " INVITE " << cmd[1] << " :" << cmd[2] << '\n';
+					send((*it)->fd, str.str().data(), str.str().length(), 0);
+					return ;
+				}
+			}
+		}
+	}
+}

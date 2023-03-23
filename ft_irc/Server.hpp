@@ -32,6 +32,7 @@ class Server
 		void kick(std::vector<std::string>& cmd, Client* client, std::vector<Client *>& clients, std::vector<Channel *>& channels);
 		int	mode(Command *command, std::vector<Client*> clients, std::vector<Channel*> channels, Client *client);
 		int	topic(Command *command, std::vector<Channel*> channels, Client *client);
+		void invite(std::vector<std::string>& cmd,std::vector<Client*>& clients, Client* client,std::vector<Channel*>& channels);
 	private:
 		Server();
 };
