@@ -16,8 +16,8 @@ void Server::message(Client* client, fd_set& fdset, std::vector<Client*>& client
 		std::vector<std::string> cmd = check(buffer);
 		Command command(cmd, client, std::string(buffer));
 		cmd = command.return_vector();
-		for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
-			std::cout << "---" << *it << "---" << std::endl;
+		//for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
+		//	std::cout << "---" << *it << "---" << std::endl;
 		if (cmd.empty())
 			return ;
 		if (cmd.front() == "QUIT")
@@ -26,7 +26,7 @@ void Server::message(Client* client, fd_set& fdset, std::vector<Client*>& client
 		if (ret <= 0 || ((cmd.front() == "PASS" || cmd.front() == "USER") && client->is_auth() == true))
 			return ;
 		if (cmd.front() == "JOIN" && client->is_auth() == true)
-			join(cmd, client, clients, channels);
+			join(cmd, client, channels);
 		else if ((cmd.front() == "PRIVMSG" || cmd.front() == "NOTICE") && client->is_auth() == true)
 			privmsg(cmd, client, clients, channels);
 		else if (cmd.front() == "NICK" && client->is_auth() == true)
@@ -103,11 +103,11 @@ void Server::quit(Client* client, fd_set& fdset, std::vector<Client*>& clients, 
 		}
 }
 
-void Server::join(std::vector<std::string>& cmd, Client* client, std::vector<Client*>& clients, std::vector<Channel*>& channels)
+void Server::join(std::vector<std::string>& cmd, Client* client, std::vector<Channel*>& channels)
 {
 	if (cmd.size() < 2)
 	{
-        std::string str = ":ircserv 461 :Not enough parameters\n";
+    	std::string str = ":ircserv 461 :Not enough parameters\n";
 		send(client->fd, str.data(), str.length(), 0);
 		return ;
 	}
@@ -122,33 +122,38 @@ void Server::join(std::vector<std::string>& cmd, Client* client, std::vector<Cli
 		}
 		std::stringstream s;
 		s << ":" << client->nickname << " JOIN :" << channel << '\n';
-		send(client->fd, s.str().data(), s.str().length(), 0);
 		std::stringstream str;
 		str << ":ircserv 332 " << client->nickname << ' ' << channel << " :Bienvenue sur " << channel << '\n';
-		send(client->fd, str.str().data(), str.str().length(), 0);
 		char toggle = 0;
 		for (std::vector<Channel*>::iterator it = channels.begin() ; it != channels.end() ; ++it)
 			if (channel == (*it)->getName())
 			{
-				(*it)->setTopic("Bienvenue sur " + channel);
 				for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
 					if (itt->first == client->nickname)
-						toggle = 1;
-				if (!toggle)
-				{
-					toggle = 1;
-					if ((*it)->operators.empty())
 					{
-						(*it)->operators.push_back(client->nickname);
-						client->op.push_back(channel);
+						std::stringstream ss;
+						ss << ":ircserv NOTICE " << client->nickname << " :You are already on this channel\n";
+						send(client->fd, ss.str().data(), ss.str().length(), 0);
+						toggle = 1;
+						break;
 					}
-					(*it)->clients.push_back(ft::make_pair<std::string, int>(client->nickname, client->fd));
-					for (std::vector<Client*>::iterator i = clients.begin() ; i != clients.end() ; ++i)
-						if ((*i)->nickname != client->nickname)
-							send((*i)->fd, s.str().data(), s.str().length(), 0);
-					(*it)->send_userlist();
+				if (toggle)
+				{
+					toggle = 0;
+					continue;
 				}
-				break;
+				toggle = 1;
+				send(client->fd, s.str().data(), s.str().length(), 0);
+				send(client->fd, str.str().data(), str.str().length(), 0);
+				if ((*it)->operators.empty())
+				{
+					(*it)->operators.push_back(client->nickname);
+					client->op.push_back(channel);
+				}
+				for (std::vector< ft::pair<std::string, int> >::iterator itt = (*it)->clients.begin() ; itt != (*it)->clients.end() ; ++itt)
+					send(itt->second, s.str().data(), s.str().length(), 0);
+				(*it)->clients.push_back(ft::make_pair<std::string, int>(client->nickname, client->fd));
+				(*it)->send_userlist();
 			}
 		if (!toggle)
 		{
@@ -156,8 +161,11 @@ void Server::join(std::vector<std::string>& cmd, Client* client, std::vector<Cli
 			new_channel = new Channel(channel);
 			new_channel->clients.push_back(ft::make_pair<std::string, int>(client->nickname, client->fd));
 			new_channel->operators.push_back(client->nickname);
+			new_channel->setTopic("Bienvenue sur " + channel);
 			channels.push_back(new_channel);
 			client->op.push_back(channel);
+			send(client->fd, s.str().data(), s.str().length(), 0);
+			send(client->fd, str.str().data(), str.str().length(), 0);
 			new_channel->send_userlist();
 		}
 		cmd.pop_back();
@@ -428,6 +436,9 @@ void Server::part(std::vector<std::string>& cmd, Client* client, std::vector<Cli
 			channel = cmd.back();
 			continue;
 		}
+		std::stringstream s;
+		s << ':' << client->nickname << " PART " << channel << " :Bye\n";
+		send(client->fd, s.str().data(), s.str().length(), 0);
 		for (std::vector<Channel*>::iterator it = channels.begin() ; it != channels.end() ; ++it)
 			if (channel == (*it)->getName())
 			{
@@ -457,7 +468,8 @@ void Server::part(std::vector<std::string>& cmd, Client* client, std::vector<Cli
 					std::stringstream s;
 					s << ':' << client->nickname << " PART " << channel << " :Bye\n";
 					for (std::vector<Client*>::iterator i = clients.begin() ; i != clients.end() ; ++i)
-						send((*i)->fd, s.str().data(), s.str().length(), 0);
+						if ((*i)->nickname != client->nickname)
+							send((*i)->fd, s.str().data(), s.str().length(), 0);
 					(*it)->send_userlist();
 				}
 			}

@@ -93,7 +93,7 @@ void Server::loop()
 				Client* new_client;
 				new_client = new Client(client);
 				clients.push_back(new_client);
-				std::string str = ":ircserv NOTICE * :*** Connected to the server\n";
+				std::string str = ":ircserv NOTICE * :Connected to the server, checking ident...\n";
 				send(client, str.data(), str.length(), 0);
 			}
 			else
