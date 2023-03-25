@@ -170,7 +170,7 @@ int Server::handle(std::vector<std::string> cmd, std::vector<Client*> clients, C
 				if (clients[i]->nickname == *it)
 				{
 					std::stringstream ss;
-					ss << ":ircserv 436 " << clients[i]->nickname << " :Nickname collision KILL.\n";
+					ss << ":ircserv 436 " << clients[i]->nickname << " :Nickname collision KILL\n";
 					send(client->fd, ss.str().data(), ss.str().length(), 0);
 					return (-1);
 				}

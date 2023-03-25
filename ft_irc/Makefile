@@ -5,7 +5,7 @@ SRCS	= main.cpp Client.cpp Server.cpp Channel.cpp Message.cpp Command.cpp Operat
 CC		= c++
 RM		= rm -f
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98#-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 
 $(NAME):
 			${CC} ${CFLAGS} ${SRCS} -o $@

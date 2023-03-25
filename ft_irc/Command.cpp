@@ -89,14 +89,8 @@ std::vector<std::string> Command::get_next_command() {
 
 void	Command::upper_commands()
 {
-	for (std::vector<std::string>::iterator it = command.begin(); it != command.end(); ++it)
-	{
-		if (is_command((*it)))
-		{
-			for (unsigned int i = 0; i < (*it).size(); i++)
-				(*it).at(i) = std::toupper((*it).at(i));
-		}
-	}
+	for (unsigned int i = 0; i < (command[0]).size(); i++)
+		(command[0]).at(i) = std::toupper((command[0]).at(i));
 }
 
 void	Command::parse_commands()
@@ -145,14 +139,21 @@ void Command::parse_user(void)
 		regroup_last_args();
 }
 
-void Command::parse_user_wtf(void)
+void Command::parse_quit(void) 
 {
+	if (command.size() < 2)
+	{
+		command.clear();
+		command.push_back("QUIT");
+		command.push_back("Bye");
+		return ;
+	}
+	if (command.size() > 1 && command[1].at(0) == ':')
 		regroup_last_args();
 }
 
-void Command::parse_quit(void)
+void Command::parse_user_wtf(void)
 {
-	if (command.size() > 1 && command[1].at(0) == ':')
 		regroup_last_args();
 }
 
@@ -176,9 +177,13 @@ void Command::parse_join(void)
 	unsigned int count;
 	std::stringstream forgeron;
 	std::string tmp;
-	tmp = command[1];
-	if (tmp.empty())
+	if (command.size() < 2)
+	{
+		command.clear();
+		command.push_back("JOIN");
 		return;
+	}
+	tmp = command[1];
 	command.clear();
 	command.push_back("JOIN");
 	count = coma_count(tmp);
@@ -292,7 +297,7 @@ void Command::parse_kick(void)
 			return;
 		}
 	}
-	if (coma_canal == 1 && coma_canal == 1)
+	if (coma_canal == 1 && coma_users == 1)
 	{
 		command.clear();
 		command.push_back("KICK");
@@ -304,6 +309,8 @@ void Command::parse_kick(void)
 	j = 0;
 	if (coma_users > 1)
 	{
+		if (coma_canal == 1)
+			command.push_back(save_canal);
 		command.push_back(",");
 		while (i < coma_users)
 		{
@@ -320,6 +327,7 @@ void Command::parse_kick(void)
 			i++;
 		}
 	}
+	command.push_back(",");
 	if (save_commentary.size())
 		command.push_back(save_commentary);
 }
