@@ -184,6 +184,12 @@ void Server::privmsg(std::vector<std::string>& cmd, Client* client ,std::vector<
 	std::string txt = cmd.back();
 	cmd.pop_back();
 	std::string dst = cmd.back();
+	if (txt == "!bot" || txt == "!BOT")
+	{
+		std::string s = ":BOT PRIVMSG " + dst + " 🤖\n";
+		send(client->fd, s.data(), s.length(), 0);
+		return ;
+	}
 	while (dst != cmd.front())
 	{
 		char toggle = 0;

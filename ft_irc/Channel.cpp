@@ -18,7 +18,7 @@ void Channel::send_userlist()
 			else
 				ss << it->first << ' ';
 		}
-		ss << "\n";
+		ss << "+BOT\n";
 		send(it->second, ss.str().data(), ss.str().length(), 0);
 		s << ":ircserv 366 " << it->first << ' ' << name << " :End of /NAMES list.\n";
 		send(it->second, s.str().data(), s.str().length(), 0);
