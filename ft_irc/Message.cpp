@@ -11,13 +11,9 @@ void Server::message(Client* client, fd_set& fdset, std::vector<Client*>& client
 		quit(client, fdset, clients, channels, "Timeout");
 	else
 	{
-		//for (int i = 0 ; buffer[i] ; ++i)
-		//	std::cout << buffer[i] << " : " << static_cast<int>(buffer[i]) << std::endl;
 		std::vector<std::string> cmd = check(buffer);
 		Command command(cmd, client, std::string(buffer));
 		cmd = command.return_vector();
-		//for (std::vector<std::string>::iterator it = cmd.begin() ; it != cmd.end() ; ++it)
-		//	std::cout << "---" << *it << "---" << std::endl;
 		if (cmd.empty())
 			return ;
 		if (cmd.front() == "QUIT")
