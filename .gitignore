@@ -14,5 +14,4 @@ mlx
 */*.o
 */*/*.o
 .vscode
-tester*
-stack.hpp
+node_modules
