@@ -7,9 +7,36 @@
 	<title>ft_transcendence</title>
 </head>
 <body>
-	<form action="chat" method="get">
-		<input type="text" size="42" required>
-		<input type="submit">
-	</form>
+	<div>
+		<ul id="messages"></ul>
+	</div>
+	<div>
+		<form onsubmit="handleSubmitMessage();return false">
+			<input id="message" type="text" size="42" required>
+			<input type="submit">
+		</form>
+	</div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	const socket = io("http://localhost:3000");
+
+	const messages = document.getElementById("messages");
+	const message = document.getElementById("message");
+
+	const handleSubmitMessage = () => {
+		socket.emit("message", { data: message.value });
+		message.value = null;
+	}
+
+	const handleMessage = (message) => {
+		const li = document.createElement("li");
+		li.appendChild(document.createTextNode(message));
+		messages.appendChild(li);
+	}
+
+	socket.on("message", ({ data }) => {
+		handleMessage(data);
+	})
+</script>
 </html>
