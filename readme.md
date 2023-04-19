@@ -15,4 +15,4 @@
 ### 13) inception (110%)
 ### 14) ft_containers (80%)
 ### 15) ft_irc (110% - w/ <a href="https://github.com/mmatthie98" target="_blank">@mmatthie</a> & <a href="https://github.com/Timothee-BRANDT" target="_blank">@tbrandt</a>)
-### 16) ft_transcendence (in progress...)
+### 16) ft_transcendence (100% - w/ <a href="https://github.com/yo-dst" target="_blank">@ydanset</a> & <a href="https://github.com/NoahFerre" target="_blank">@nferre</a>)
