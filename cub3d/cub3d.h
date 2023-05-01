@@ -13,8 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include <mlx.h>
-// # include "mlx/mlx.h" add mlx sources to use this include
+# include "mlx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>

@@ -7,9 +7,6 @@ a.out
 *.dSYM
 */*.dSYM
 */*/*.dSYM
-mlx
-*/mlx
-*/*/mlx
 *.o
 */*.o
 */*/*.o

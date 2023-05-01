@@ -67,7 +67,7 @@ int	**parsing(char **set)
 				clean_exit((void **)set, 1);
 			if ((set[i][y] == 45 && (set[i][y + 1] < 48 || set[i][y + 1] > 57)))
 				clean_exit((void **)set, 1);
-			if (((set[i][y] > 48 || set[i][y] < 57) && set[i][y + 1] == 45 && \
+			if (((set[i][y] > 48 && set[i][y] < 57) && set[i][y + 1] == 45 && \
 			(set[i][y + 2] > 48 || set[i][y + 2] < 57)))
 				clean_exit((void **)set, 1);
 		}
@@ -116,6 +116,8 @@ int	main(int ac, char **av)
 			a = parsing_multiple_args(av);
 		else
 			a = parsing(ft_split(av[1], ' '));
+		list_a = NULL;
+		list_b = NULL;
 		i = -1;
 		while (a[++i])
 		{

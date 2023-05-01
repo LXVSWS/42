@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror
 			${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} -lmlx -framework OpenGL -framework AppKit ${OBJS} -o $@
+			${CC} ${CFLAGS} -Lmlx -lmlx -framework OpenGL -framework AppKit ${OBJS} -o $@
 
 all:	${NAME}
 

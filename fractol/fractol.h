@@ -15,7 +15,7 @@
 # define W 1000
 # define H 1000
 
-# include <mlx.h>
+# include "mlx/mlx.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
