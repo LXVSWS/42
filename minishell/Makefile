@@ -47,18 +47,18 @@ OBJS		=	${SRCS:.c=.o}
 CC			=	gcc
 RM			=	rm -f
 AR			=	ar rcs
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-Wall -Wextra -Werror
 FSFLAGS		=	-fsanitize=address
 
 # IF NEEDED at 42 on MacOS10 Install :
 #  rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && echo 'export PATH=$HOME/.brew/bin:$PATH' >> $HOME/.zshrc && source $HOME/.zshrc && brew update
 #  brew install readline
-HEADER		=	-I${INC_DIR} -I/Users/$(USER)/.brew/opt/readline/include
-LDFLAGS		=	-L${SRC_DIR} -L/Users/$(USER)/.brew/opt/readline/lib
+#HEADER		=	-I${INC_DIR} -I/Users/$(USER)/.brew/opt/readline/include
+#LDFLAGS		=	-L${SRC_DIR} -L/Users/$(USER)/.brew/opt/readline/lib
 
 # @HOME on MacOS12 Monterey
-#HEADER		=	-I${INC_DIR} -I/usr/local/opt/readline/include
-#LDFLAGS		=	-L${SRC_DIR} -L/usr/local/opt/readline/lib
+HEADER		=	-I${INC_DIR} -I/usr/local/opt/readline/include
+LDFLAGS		=	-L${SRC_DIR} -L/usr/local/opt/readline/lib
 
 MSHELLFLAG	=	-lreadline
 
