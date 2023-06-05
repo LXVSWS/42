@@ -1,4 +1,4 @@
-# :desktop_computer: 42 projects (Common Core) :desktop_computer:
+# :desktop_computer: 42 projects (Common Core / 2021-2023) :desktop_computer:
 
 ### 1) libft (125%)
 ### 2) ft_printf (100%)
